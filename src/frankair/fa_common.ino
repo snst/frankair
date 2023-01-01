@@ -21,3 +21,14 @@ bool interval(uint32_t& last, uint32_t delay)
   }
   return false;
 }
+
+template<typename T>
+bool update_if_changed(T& dest, T src, const char* txt) {
+  if (dest != src) {
+    dest = src;
+    IMSG("Change ");
+    IMSG(txt, dest);
+    return true;
+  }
+  return false;
+}

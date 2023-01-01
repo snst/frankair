@@ -41,10 +41,10 @@ void sensors_read()
 {
   IMSG("sensors_read()\n");
   dallas.requestTemperatures();
-  filter_value(fa_controller.temp_fresh_in, dallas.getTempC(sensor_fresh_in));
-  // filter_value(fa_controller.temp_fresh_out, dallas.getTempC(sensor_fresh_out));
-  // filter_value(fa_controller.temp_exhaust_in, dallas.getTempC(sensor_exhaust_in));
-  filter_value(fa_controller.temp_exhaust_out, dallas.getTempC(sensor_exhaust_out));
+  filter_value(fa_state.temp_fresh_in, dallas.getTempC(sensor_fresh_in));
+  // filter_value(fa_state.temp_fresh_out, dallas.getTempC(sensor_fresh_out));
+  // filter_value(fa_state.temp_exhaust_in, dallas.getTempC(sensor_exhaust_in));
+  filter_value(fa_state.temp_exhaust_out, dallas.getTempC(sensor_exhaust_out));
 }
 
 void sensors_update()

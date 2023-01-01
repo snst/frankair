@@ -14,6 +14,11 @@ void settings_load()
   fa_settings.temp_sensor_read_interval_sec = preferences.getUShort("A", 3000);
   fa_settings.controller_interval_sec = preferences.getUShort("B", 60000);
   fa_settings.measurement_alpha = preferences.getFloat("C", 1.0);
+  fa_settings.manual.power_fan_fresh = preferences.getUChar("D", 0);
+  fa_settings.manual.power_fan_exhaust = preferences.getUChar("E", 0);
+  fa_settings.manual.power_fan_frost = preferences.getUChar("F", 0);
+  fa_settings.manual.flap_open_frost = preferences.getUChar("G", 0);
+  fa_settings.mode = (controller_mode_t)preferences.getUChar("H", 0);
   preferences.end();
   settings_dump("Loading settings from flash..\n");
 }
@@ -26,6 +31,11 @@ void settings_write()
   preferences.putUShort("A", fa_settings.temp_sensor_read_interval_sec);
   preferences.putUShort("B", fa_settings.controller_interval_sec);
   preferences.putFloat("C", fa_settings.measurement_alpha);
+  preferences.putUChar("D", fa_settings.manual.power_fan_fresh);
+  preferences.putUChar("E", fa_settings.manual.power_fan_exhaust);
+  preferences.putUChar("F", fa_settings.manual.power_fan_frost);
+  preferences.putUChar("G", fa_settings.manual.flap_open_frost);
+  preferences.putUChar("H", fa_settings.mode);
   preferences.end();
 }
 

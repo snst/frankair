@@ -11,30 +11,11 @@
 #include "fa_settings.h"
 #include "fa_sensors.h"
 #include "fa_controller.h"
+#include "fa_fan.h"
+#include "fa_servo.h"
 
 OneWire oneWire(GPIO_ONE_WIRE);
 TwoWire I2CBME = TwoWire(0);
-
- 
-
-float val_temp[MAX_TEMP_SENSORS] = {0};
-float val_temp_interval = 1000;
-uint8_t val_pwm = 0;
-bool val_enabled = true;
-
-uint8_t val_snooping_fan_level = 5;
-uint8_t val_snooping_duration_sec = 60;
-uint8_t val_snooping_interval_min = 30;
-uint8_t val_measuring_interval_sec = 10;
-uint8_t val_control_interval_sec = 60;
-uint8_t val_state = 0;
-uint8_t val_servo_frost = 0;
-uint8_t val_fan_frost = 0;
-uint8_t val_fan_exhaust_air = 0;
-uint8_t val_fan_fresh_air = 0;
-
-bool flag_scan_sensors = false;
-
 
 void setup()
 {
