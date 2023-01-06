@@ -1,8 +1,10 @@
 // Copyright (c) 2022 by Stefan Schmidt
-#include "fa_controller.h"
 #include "fa_common.h"
+#include "fa_settings.h"
+#include "fa_controller.h"
 #include "fa_fan.h"
-#include "fa_servo.h"
+#include "fa_flap.h"
+#include "fa_log.h"
 
 static uint32_t controller_now = 0;
 fa_state_t fa_state;
@@ -14,7 +16,7 @@ void controller_setup()
 
 void controller_manual_update()
 {
-  //IMSG("MANUAL\n");
+  // IMSG("MANUAL\n");
   if (update_if_changed(fa_state.actuator.power_fan_fresh, fa_settings.manual.power_fan_fresh, MANUAL_POWER_FAN_FRESH))
   {
     fan_set_power_fresh(fa_state.actuator.power_fan_fresh);
@@ -29,7 +31,7 @@ void controller_manual_update()
   }
   if (update_if_changed(fa_state.actuator.flap_open_frost, fa_settings.manual.flap_open_frost, MANUAL_FLAP_OPEN_FROST))
   {
-    servo_set(fa_state.actuator.flap_open_frost);
+    flap_set(fa_state.actuator.flap_open_frost);
   }
 }
 
@@ -48,9 +50,14 @@ void change_mode()
   // IMSG("Change mode to", fa_state.out.mode);
 }
 
+void controller_calculate()
+{
+  fa_state.humidity_abs_delta = fa_state.humidity_abs_fresh_out - fa_state.humidity_abs_exaust_in;
+}
+
 void controller_update()
 {
-  if (interval(controller_now, fa_settings.controller_interval_sec) || fa_settings.changed)
+  if (interval(controller_now, fa_settings.controller_interval_sec) || g_force_update)
   {
     // IMSG("control!\n");
 
@@ -58,6 +65,8 @@ void controller_update()
     {
       change_mode();
     }
+
+    controller_calculate();
 
     switch (fa_state.mode)
     {
@@ -73,6 +82,6 @@ void controller_update()
       break;
     }
 
-    fa_settings.changed = false;
+    g_force_update = false;
   }
 }

@@ -1,8 +1,9 @@
 // Copyright (c) 2022 by Stefan Schmidt
 #include "fa_fan.h"
-#include "fa_defines.h"
 
 #include <pwmWrite.h>
+#include "fa_log.h"
+
 Pwm pwm = Pwm();
 
 void fan_setup()

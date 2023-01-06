@@ -3,7 +3,7 @@
 
 void logging_setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
 }
 
 void IMSG(const char *txt)
@@ -27,4 +27,12 @@ void IMSG(const char *txt, float val)
 void IMSGHEX(uint8_t val)
 {
   Serial.print(val, HEX);
+}
+
+void IMSG(const char *txt, const char *val)
+{
+  Serial.print(txt);
+  Serial.print(": ");
+  Serial.print(val);
+  Serial.println();
 }

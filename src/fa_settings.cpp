@@ -1,6 +1,7 @@
 // Copyright (c) 2022 by Stefan Schmidt
 #include "fa_settings.h"
 #include <Preferences.h>
+#include "fa_log.h"
 //#include <nvs_flash.h>
 
 #define SETTINGS_NAMESPACE "settings"

@@ -4,7 +4,7 @@
 
 #define GPIO_ONE_WIRE 5
 #define GPIO_PWM1 15 // fresh air
-#define GPIO_PWM2 4 // exhaust air
+#define GPIO_PWM2 4  // exhaust air
 #define GPIO_PWM3 16 // frost
 #define GPIO_SERVO 17
 

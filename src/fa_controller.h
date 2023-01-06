@@ -2,7 +2,15 @@
 #ifndef FA_CONTROLLER_H
 #define FA_CONTROLLER_H
 
-enum controller_mode_t { kOff = 0, kAuto, kManual, kUndefined };
+#include "fa_common.h"
+
+enum controller_mode_t
+{
+  kOff = 0,
+  kAuto,
+  kManual,
+  kUndefined
+};
 
 struct fa_actuator_t
 {

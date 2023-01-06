@@ -15,7 +15,6 @@
 #define CFG_FLAP_MIN "cfg_flap_min"
 #define CFG_FLAP_MAX "cfg_flap_max"
 
-
 struct fa_settings_t
 {
   uint16_t temp_sensor_read_interval_sec;
@@ -25,7 +24,6 @@ struct fa_settings_t
   controller_mode_t mode;
   float measurement_alpha;
   fa_actuator_t manual;
-  bool changed;
 };
 
 extern fa_settings_t fa_settings;
@@ -33,5 +31,6 @@ extern fa_settings_t fa_settings;
 void settings_load();
 void settings_write();
 void settings_clear();
+void settings_dump(const char *txt);
 
 #endif // FA_SETTINGS_H
