@@ -15,13 +15,16 @@ void fan_setup()
   ledcAttachPin(GPIO_PWM1, PWM1_CHANNEL);
   ledcAttachPin(GPIO_PWM2, PWM2_CHANNEL);
   ledcAttachPin(GPIO_PWM3, PWM3_CHANNEL);*/
+  pwm.attach(GPIO_PWM1, 2);
+  pwm.attach(GPIO_PWM2, 3);
+  pwm.attach(GPIO_PWM3, 4);
 }
 
 void fan_set(uint8_t gpio, uint8_t val)
 {
   val = val <= 10 ? 10 - val : 0;
   val = 255U * val / 10;
-  pwm.write(gpio, val);
+  pwm.write(gpio, val, 20U);
   IMSG("Gpio", gpio);
   IMSG("Set", val);
 }

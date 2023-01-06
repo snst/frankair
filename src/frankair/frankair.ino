@@ -15,7 +15,7 @@
 #include "fa_servo.h"
 
 OneWire oneWire(GPIO_ONE_WIRE);
-TwoWire I2CBME = TwoWire(0);
+//TwoWire i2c = TwoWire(0);
 
 void setup()
 {

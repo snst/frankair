@@ -12,7 +12,7 @@ uint32_t now()
   return s_now;
 }
 
-bool interval(uint32_t& last, uint32_t delay)
+bool interval(uint32_t &last, uint32_t delay)
 {
   if (s_now - last >= delay)
   {
@@ -22,9 +22,11 @@ bool interval(uint32_t& last, uint32_t delay)
   return false;
 }
 
-template<typename T>
-bool update_if_changed(T& dest, T src, const char* txt) {
-  if (dest != src) {
+template <typename T>
+bool update_if_changed(T &dest, T src, const char *txt)
+{
+  if ((dest != src) || fa_settings.changed)
+  {
     dest = src;
     IMSG("Change ");
     IMSG(txt, dest);

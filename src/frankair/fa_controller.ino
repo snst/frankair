@@ -53,7 +53,6 @@ void controller_update()
   if (interval(controller_now, fa_settings.controller_interval_sec) || fa_settings.changed)
   {
     // IMSG("control!\n");
-    fa_settings.changed = false;
 
     if (update_if_changed(fa_state.mode, fa_settings.mode, "Mode"))
     {
@@ -73,5 +72,7 @@ void controller_update()
       controller_off_update();
       break;
     }
+
+    fa_settings.changed = false;
   }
 }

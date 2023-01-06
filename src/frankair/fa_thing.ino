@@ -47,33 +47,39 @@ void thing_setup()
     if (in.is_empty())
     {
       IMSG("Dashboard reads settings:\n");
-      in[TEMP_SENSOR_READ_INTERVAL] = fa_settings.temp_sensor_read_interval_sec;
-      in[CONTROLLER_INTERVAL] = fa_settings.controller_interval_sec;
-      in[MEASUREMENT_ALPHA] = fa_settings.measurement_alpha;
-      in[CONTROLLER_MODE] = (uint8_t) fa_settings.mode;
+      in[CFG_TEMP_SENSOR_READ_INTERVAL] = fa_settings.temp_sensor_read_interval_sec;
+      in[CFG_CONTROLLER_INTERVAL] = fa_settings.controller_interval_sec;
+      in[CFG_MEASUREMENT_ALPHA] = fa_settings.measurement_alpha;
+      in[CFG_CONTROLLER_MODE] = (uint8_t) fa_settings.mode;
       in[MANUAL_POWER_FAN_FRESH] = fa_settings.manual.power_fan_fresh;
       in[MANUAL_POWER_FAN_EXHAUST] = fa_settings.manual.power_fan_exhaust;
       in[MANUAL_POWER_FAN_FROST] = fa_settings.manual.power_fan_frost;
       in[MANUAL_FLAP_OPEN_FROST] = fa_settings.manual.flap_open_frost;
+      in[CFG_FLAP_MIN] = fa_settings.flap_min;
+      in[CFG_FLAP_MAX] = fa_settings.flap_max;
     }
     else
     {
       IMSG("Dashboard writes settings:\n");
-      fa_settings.temp_sensor_read_interval_sec = in[TEMP_SENSOR_READ_INTERVAL];
-      fa_settings.controller_interval_sec = in[CONTROLLER_INTERVAL];
-      fa_settings.measurement_alpha = in[MEASUREMENT_ALPHA];
-      fa_settings.mode = (controller_mode_t) (uint8_t) in[CONTROLLER_MODE];
+      fa_settings.temp_sensor_read_interval_sec = in[CFG_TEMP_SENSOR_READ_INTERVAL];
+      fa_settings.controller_interval_sec = in[CFG_CONTROLLER_INTERVAL];
+      fa_settings.measurement_alpha = in[CFG_MEASUREMENT_ALPHA];
+      fa_settings.mode = (controller_mode_t) (uint8_t) in[CFG_CONTROLLER_MODE];
 
       fa_settings.manual.power_fan_fresh = in[MANUAL_POWER_FAN_FRESH];
       fa_settings.manual.power_fan_exhaust = in[MANUAL_POWER_FAN_EXHAUST];
       fa_settings.manual.power_fan_frost = in[MANUAL_POWER_FAN_FROST];
       fa_settings.manual.flap_open_frost = in[MANUAL_FLAP_OPEN_FROST];
+
+      fa_settings.flap_min = in[CFG_FLAP_MIN];
+      fa_settings.flap_max = in[CFG_FLAP_MAX];
+
       fa_settings.changed = true;
     }
 
-    IMSG(TEMP_SENSOR_READ_INTERVAL, fa_settings.temp_sensor_read_interval_sec);
-    IMSG(CONTROLLER_INTERVAL, fa_settings.controller_interval_sec);
-    IMSG(MEASUREMENT_ALPHA, fa_settings.measurement_alpha);
+    IMSG(CFG_TEMP_SENSOR_READ_INTERVAL, fa_settings.temp_sensor_read_interval_sec);
+    IMSG(CFG_CONTROLLER_INTERVAL, fa_settings.controller_interval_sec);
+    IMSG(CFG_MEASUREMENT_ALPHA, fa_settings.measurement_alpha);
   };
 
   thing["controller"] >> [](pson &out)

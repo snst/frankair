@@ -19,6 +19,8 @@ void settings_load()
   fa_settings.manual.power_fan_frost = preferences.getUChar("F", 0);
   fa_settings.manual.flap_open_frost = preferences.getUChar("G", 0);
   fa_settings.mode = (controller_mode_t)preferences.getUChar("H", 0);
+  fa_settings.flap_max = preferences.getUChar("I", 55);
+  fa_settings.flap_min = preferences.getUChar("J", 150);
   preferences.end();
   settings_dump("Loading settings from flash..\n");
 }
@@ -36,6 +38,8 @@ void settings_write()
   preferences.putUChar("F", fa_settings.manual.power_fan_frost);
   preferences.putUChar("G", fa_settings.manual.flap_open_frost);
   preferences.putUChar("H", fa_settings.mode);
+  preferences.putUChar("I", fa_settings.flap_max);
+  preferences.putUChar("J", fa_settings.flap_min);
   preferences.end();
 }
 
@@ -54,7 +58,7 @@ void settings_clear()
 void settings_dump(const char *txt)
 {
   IMSG(txt);
-  IMSG(TEMP_SENSOR_READ_INTERVAL, fa_settings.temp_sensor_read_interval_sec);
-  IMSG(CONTROLLER_INTERVAL, fa_settings.controller_interval_sec);
-  IMSG(MEASUREMENT_ALPHA, fa_settings.measurement_alpha);
+  IMSG(CFG_TEMP_SENSOR_READ_INTERVAL, fa_settings.temp_sensor_read_interval_sec);
+  IMSG(CFG_CONTROLLER_INTERVAL, fa_settings.controller_interval_sec);
+  IMSG(CFG_MEASUREMENT_ALPHA, fa_settings.measurement_alpha);
 }
