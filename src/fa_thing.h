@@ -1,4 +1,4 @@
-// Copyright (c) 2022 by Stefan Schmidt
+// Copyright (c) 2023 by Stefan Schmidt
 #ifndef FA_THING_H
 #define FA_THING_H
 

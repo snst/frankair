@@ -1,4 +1,4 @@
-// Copyright (c) 2022 by Stefan Schmidt
+// Copyright (c) 2023 by Stefan Schmidt
 #ifndef FA_SERVO_H
 #define FA_SERVO_H
 

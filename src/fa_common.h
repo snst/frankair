@@ -1,4 +1,4 @@
-// Copyright (c) 2022 by Stefan Schmidt
+// Copyright (c) 2023 by Stefan Schmidt
 #ifndef FA_COMMON_H
 #define FA_COMMON_H
 
@@ -15,7 +15,7 @@ void interval_update();
 uint32_t now();
 
 template <typename T>
-bool update_if_changed(T &dest, T src, const char *txt)
+bool update_if_changed(T &dest, T src)
 {
   if ((dest != src) || g_force_update)
   {

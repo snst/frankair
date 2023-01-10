@@ -1,4 +1,4 @@
-// Copyright (c) 2022 by Stefan Schmidt
+// Copyright (c) 2023 by Stefan Schmidt
 #ifndef FA_DEFINES_H
 #define FA_DEFINES_H
 
@@ -7,6 +7,7 @@
 #define GPIO_PWM2 4  // exhaust air
 #define GPIO_PWM3 16 // frost
 #define GPIO_SERVO 17
+#define GPIO_LED 18
 
 #define PWM_FREQ 25000
 #define PWM1_CHANNEL 0

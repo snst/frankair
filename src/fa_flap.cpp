@@ -1,10 +1,11 @@
-// Copyright (c) 2022 by Stefan Schmidt
+// Copyright (c) 2023 by Stefan Schmidt
 #include "fa_defines.h"
 
 #include <pwmWrite.h>
 
 #include "fa_flap.h"
 #include "fa_settings.h"
+#include "fa_calibration.h"
 
 extern Pwm pwm;
 
@@ -15,5 +16,5 @@ void flap_setup()
 
 void flap_set(uint8_t val)
 {
-    pwm.writeServo(GPIO_SERVO, map(toRange(val, 0U, 10U), 0U, 10U, fa_settings.flap_min, fa_settings.flap_max));
+    pwm.writeServo(GPIO_SERVO, map(toRange(val, 0U, 10U), 0U, 10U, fa_calibration_actuator.flap_pos.min, fa_calibration_actuator.flap_pos.max));
 }

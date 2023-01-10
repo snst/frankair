@@ -1,4 +1,4 @@
-// Copyright (c) 2022 by Stefan Schmidt
+// Copyright (c) 2023 by Stefan Schmidt
 #define THINGER_SERIAL_DEBUG
 
 #include "fa_common.h"
@@ -10,13 +10,15 @@
 #include "fa_controller.h"
 #include "fa_fan.h"
 #include "fa_flap.h"
+#include "fa_led.h"
 
 void setup()
 {
   logging_setup();
-  IMSG("Welcome to frankair!\n");
-
+  IMSG(LM_COMMON, "Welcome to frankair!");
+  calibration_load();
   settings_load();
+  led_setup();
   fan_setup();
   sensors_setup();
   flap_setup();
@@ -29,4 +31,5 @@ void loop()
   thing_update();
   sensors_update();
   controller_update();
+  led_update();
 }

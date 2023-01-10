@@ -1,4 +1,4 @@
-// Copyright (c) 2022 by Stefan Schmidt
+// Copyright (c) 2023 by Stefan Schmidt
 #include "fa_sensors.h"
 
 #include <OneWire.h>
@@ -9,6 +9,7 @@
 #include "fa_settings.h"
 #include "fa_controller.h"
 #include "fa_calc.h"
+#include "fa_calibration.h"
 
 OneWire oneWire(GPIO_ONE_WIRE);
 
@@ -39,7 +40,7 @@ void bme_setup()
   // 0b01:     In forced mode a single measured is performed and the device returns automatically to sleep mode
   // 0b11:     In normal mode the sensor measures continually (default value)
   bmeF.parameter.sensorMode = 0b11;
-  bmeE.parameter.sensorMode = 0b11;
+  bmeE.parameter.sensorMode = bmeF.parameter.sensorMode;
 
   // The IIR (Infinite Impulse Response) filter suppresses high frequency fluctuations
   // In short, a high factor value means less noise, but measurements are also less responsive
@@ -50,8 +51,8 @@ void bme_setup()
   // 0b010:      factor 4
   // 0b011:      factor 8
   // 0b100:      factor 16 (default value)
-  bmeF.parameter.IIRfilter = 0b100;
-  bmeE.parameter.IIRfilter = 0b100;
+  bmeF.parameter.IIRfilter = 0b010;
+  bmeE.parameter.IIRfilter = bmeF.parameter.IIRfilter;
 
   // Next you'll define the oversampling factor for the humidity measurements
   // Again, higher values mean less noise, but slower responses
@@ -62,8 +63,8 @@ void bme_setup()
   // 0b011:      factor 4
   // 0b100:      factor 8
   // 0b101:      factor 16 (default value)
-  bmeF.parameter.humidOversampling = 0b101;
-  bmeE.parameter.humidOversampling = 0b101;
+  bmeF.parameter.humidOversampling = 0b011;
+  bmeE.parameter.humidOversampling = bmeF.parameter.humidOversampling;
 
   // Now define the oversampling factor for the temperature measurements
   // You know now, higher values lead to less noise but slower measurements
@@ -73,8 +74,8 @@ void bme_setup()
   // 0b011:      factor 4
   // 0b100:      factor 8
   // 0b101:      factor 16 (default value)
-  bmeF.parameter.tempOversampling = 0b101;
-  bmeE.parameter.tempOversampling = 0b101;
+  bmeF.parameter.tempOversampling = 0b011;
+  bmeE.parameter.tempOversampling = bmeF.parameter.tempOversampling;
 
   // Finally, define the oversampling factor for the pressure measurements
   // For altitude measurements a higher factor provides more stable values
@@ -85,20 +86,20 @@ void bme_setup()
   // 0b011:      factor 4
   // 0b100:      factor 8
   // 0b101:      factor 16 (default value)
-  bmeF.parameter.pressOversampling = 0b101;
-  bmeE.parameter.pressOversampling = 0b101;
+  bmeF.parameter.pressOversampling = 0b000;
+  bmeE.parameter.pressOversampling = bmeF.parameter.pressOversampling;
 
   // For precise altitude measurements please put in the current pressure corrected for the sea level
   // On doubt, just leave the standard pressure as default (1013.25 hPa);
   bmeF.parameter.pressureSeaLevel = 1013.25;
-  bmeE.parameter.pressureSeaLevel = 1013.25;
+  bmeE.parameter.pressureSeaLevel = bmeF.parameter.pressureSeaLevel;
 
   // Also put in the current average temperature outside (yes, really outside!)
   // For slightly less precise altitude measurements, just leave the standard temperature as default (15°C and 59°F);
   bmeF.parameter.tempOutsideCelsius = 15;
-  bmeE.parameter.tempOutsideCelsius = 15;
+  bmeE.parameter.tempOutsideCelsius = bmeF.parameter.tempOutsideCelsius;
   bmeF.parameter.tempOutsideFahrenheit = 59;
-  bmeE.parameter.tempOutsideFahrenheit = 59;
+  bmeE.parameter.tempOutsideFahrenheit = bmeF.parameter.tempOutsideFahrenheit;
 }
 
 void sensors_setup()
@@ -107,41 +108,34 @@ void sensors_setup()
   bme_setup();
 }
 
-void filter_value(const char *txt, float &val, float measurement)
-{
-  val = (fa_settings.measurement_alpha * measurement) + ((1.0f - fa_settings.measurement_alpha) * val);
-  IMSG(txt, measurement);
-}
-
-void read_bme(const char *name, BlueDot_BME280 &bme, bool &fInit, float &tempC, float &humR, float &humA)
+void read_bme(const char *name, BlueDot_BME280 &bme, bool &fInit, float &tempC, float &humR)
 {
   if (!fInit)
   {
-    fInit = bme.init() == 0x60;
+    fInit = bme.init();
   }
   if (!fInit)
   {
-    IMSG(name, "failed");
+    IMSG(LM_SENSOR, name, "failed");
   }
   else
   {
-    IMSG(name, "data");
-    filter_value("TempC", tempC, bme.readTempC());
-    filter_value("hum rel", humR, bme.readHumidity());
-    filter_value("hum abs", humA, convertRelativeToAbsoluteHumidity(tempC, humR));
+    IMSG(LM_SENSOR, name, "ok");
+    tempC = bme.readTempC();
+    humR = bme.readHumidity();
   }
 }
 
-void sensors_read()
+void sensorsRead()
 {
-  IMSG("sensors_read()\n");
+  IMSG(LM_SENSOR, "*** sensorsRead() ***");
 
   dallas.requestTemperatures();
-  filter_value("dallas1", fa_state.temp_fresh_in, dallas.getTempC(sensor_fresh_in));
-  filter_value("dallas2", fa_state.temp_exhaust_out, dallas.getTempC(sensor_exhaust_out));
+  fa_state_raw.temp.fresh_in = dallas.getTempC(sensor_fresh_in);
+  fa_state_raw.temp.exhaust_out = dallas.getTempC(sensor_exhaust_out);
 
-  read_bme("bme_fresh", bmeF, s_flag_bmeF_init, fa_state.temp_fresh_out, fa_state.humidity_rel_fresh_out, fa_state.humidity_abs_fresh_out);
-  read_bme("bme_exhaust", bmeE, s_flag_bmeE_init, fa_state.temp_exhaust_in, fa_state.humidity_rel_exaust_in, fa_state.humidity_abs_exaust_in);
+  read_bme("bme_fresh_out", bmeF, s_flag_bmeF_init, fa_state_raw.temp.fresh_out, fa_state_raw.humidity.rel_fresh_out);
+  read_bme("bme_exhaust_in", bmeE, s_flag_bmeE_init, fa_state_raw.temp.exhaust_in, fa_state_raw.humidity.rel_exaust_in);
 }
 
 void sensors_update()
@@ -152,7 +146,8 @@ void sensors_update()
   }
   else if (interval(sensors_now, fa_settings.temp_sensor_read_interval_sec))
   {
-    sensors_read();
+    sensorsRead();
+    sensorsProcessValues();
   }
 }
 
@@ -167,18 +162,17 @@ void sensors_scan_intern()
 
   if (!oneWire.search(addr))
   {
-    IMSG("\nNo more onewire addresses.\n");
+    IMSG(LM_SENSOR, "No more onewire addresses.");
     oneWire.reset_search();
     s_flag_scan_sensors = false;
   }
   else
   {
-    IMSG("\naddr=");
+    IMSG(LM_SENSOR, "addr=");
     for (uint8_t i = 0; i < sizeof(addr); i++)
     {
-      IMSG("0x");
-      IMSGHEX(addr[i]);
-      IMSG(", ");
+      IMSG(LM_SENSOR, "0x");
+      IMSGHEX(LM_SENSOR, addr[i]);
     }
   }
 }
