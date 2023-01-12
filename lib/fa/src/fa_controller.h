@@ -10,5 +10,6 @@ extern fa_state_raw_t fa_state_raw;
 
 void controller_setup();
 void controller_update();
+void controller_auto_update();
 
 #endif // FA_CONTROLLER_H

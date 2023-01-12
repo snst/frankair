@@ -3,17 +3,9 @@
 #define FA_SETTINGS_H
 
 #include "fa_structs.h"
+#include "fa_defines.h"
 
-struct fa_settings_t
-{
-  uint16_t temp_sensor_read_interval_sec;
-  uint16_t controller_interval_sec;
-  controller_mode_t mode;
-  float measurement_alpha;
-  bool use_calibration;
-  fa_actuator_t manual;
-  uint8_t log_mask;
-};
+
 
 extern fa_settings_t fa_settings;
 

@@ -2,8 +2,9 @@
 #ifndef FA_LED_H
 #define FA_LED_H
 
-#include "fa_common.h"
+#include <stdint.h>
 
+void led_enable(bool enable);
 void led_setup();
 void led_update();
 

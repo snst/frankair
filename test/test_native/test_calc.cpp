@@ -7,27 +7,10 @@
 #include "fa_calibration.h"
 #include "fa_settings.h"
 
-fa_settings_t fa_settings;
-fa_state_t fa_state;
-fa_state_raw_t fa_state_raw;
+extern fa_state_t fa_state;
+extern fa_state_raw_t fa_state_raw;
 
-void setUp(void)
-{
-  // set stuff up here
-}
-
-void tearDown(void)
-{
-  // clean stuff up here
-}
-
-void cleanData()
-{
-  memset(&fa_calibration_sensor, 0U, sizeof(fa_calibration_sensor));
-  memset(&fa_state_raw, 0U, sizeof(fa_state_raw));
-  memset(&fa_state, 0U, sizeof(fa_state));
-  memset(&fa_settings, 0U, sizeof(fa_settings));
-}
+void cleanData();
 
 void test_convertRelativeToAbsoluteHumidity(void)
 {
@@ -166,20 +149,4 @@ void test_sensorsProcessValues(void)
   offset = fa_calibration_sensor.ref_humidity.min - fa_calibration_sensor.exhaust_in_humidity.min;
   TEST_ASSERT_EQUAL_FLOAT(offset + fa_settings.measurement_alpha * fa_state_raw.humidity.rel_exaust_in, fa_state.humidity.rel_exaust_in);
   TEST_ASSERT_EQUAL_FLOAT(offset + fa_settings.measurement_alpha * fa_state_raw.humidity.rel_fresh_out, fa_state.humidity.rel_fresh_out);
-}
-
-int main(int argc, char **argv)
-{
-  UNITY_BEGIN();
-
-  RUN_TEST(test_convertRelativeToAbsoluteHumidity);
-  RUN_TEST(test_calcAverage);
-  RUN_TEST(test_calcCorrectedValue);
-  RUN_TEST(test_filterValue);
-  RUN_TEST(test_correctTempWithCalibrationData);
-  RUN_TEST(test_correctHumidityWithCalibrationData);
-  RUN_TEST(test_sensorsProcessValues);
-
-  UNITY_END();
-  return 0;
 }

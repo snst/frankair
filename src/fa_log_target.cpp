@@ -1,11 +1,7 @@
 // Copyright (c) 2023 by Stefan Schmidt
 #include "fa_log.h"
 #include <Arduino.h>
-#include "fa_settings.h"
 
-#define CHECK_LOG_MASK(x)          \
-  if (!(x & fa_settings.log_mask)) \
-    return;
 
 void logging_setup()
 {

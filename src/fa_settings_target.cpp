@@ -23,6 +23,26 @@ void settings_load()
     fa_settings.controller_interval_sec = 5000U;
     fa_settings.measurement_alpha = 1.0f;
     fa_settings.mode = controller_mode_t::kManual;
+    fa_settings.sniff.duration_sec = 60U;
+    fa_settings.sniff.interval_min = 30U;
+    fa_settings.sniff.fan_level = 5U;
+    fa_settings.constraints.fan_level_max = FAN_LEVEL_MAX;
+    fa_settings.constraints.fan_level_min = FAN_LEVEL_MIN;
+    fa_settings.constraints.humidity.abs_min_start = 1.0f;
+    fa_settings.constraints.humidity.abs_min_stop = 0.5;
+    fa_settings.constraints.humidity.rel_min_start = 50U;
+    fa_settings.constraints.temp_fan[0].val = 5.0f;
+    fa_settings.constraints.temp_fan[0].level = 3U;
+    fa_settings.constraints.temp_fan[1].val = 10.0f;
+    fa_settings.constraints.temp_fan[1].level = 5U;
+    fa_settings.constraints.temp_fan[2].val = 15.0f;
+    fa_settings.constraints.temp_fan[2].level = 8U;
+    fa_settings.constraints.humidity_fan[0].val = 1.0f;
+    fa_settings.constraints.humidity_fan[0].level = 4U;
+    fa_settings.constraints.humidity_fan[1].val = 2.0f;
+    fa_settings.constraints.humidity_fan[1].level = 6U;
+    fa_settings.constraints.humidity_fan[2].val = 3.0f;
+    fa_settings.constraints.humidity_fan[2].level = 8;
   }
   preferences.end();
 }

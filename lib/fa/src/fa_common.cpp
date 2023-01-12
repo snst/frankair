@@ -6,7 +6,7 @@ static uint32_t s_now = 0;
 
 void interval_update()
 {
-  s_now = millis();
+  s_now = getMillis();
 }
 
 uint32_t now()

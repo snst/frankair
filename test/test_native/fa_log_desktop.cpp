@@ -1,5 +1,6 @@
 // Copyright (c) 2023 by Stefan Schmidt
 #include "fa_log.h"
+#include <stdio.h>
 #include "fa_settings.h"
 
 void logging_setup()
@@ -8,20 +9,29 @@ void logging_setup()
 
 void IMSG(uint8_t mask, const char *txt)
 {
+    CHECK_LOG_MASK(mask);
+    printf("%s\n", txt);
 }
 
 void IMSG(uint8_t mask, float val)
 {
+    CHECK_LOG_MASK(mask);
+    printf("%f\n", val);
 }
 
 void IMSG(uint8_t mask, const char *txt, float val)
 {
+    CHECK_LOG_MASK(mask);
+    printf("%s: %f\n", txt, val);
 }
 
 void IMSGHEX(uint8_t mask, uint8_t val)
 {
+    CHECK_LOG_MASK(mask);
 }
 
 void IMSG(uint8_t mask, const char *txt, const char *val)
 {
+    CHECK_LOG_MASK(mask);
+    printf("%s: %s\n", txt, val);
 }

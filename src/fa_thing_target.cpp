@@ -49,6 +49,31 @@ const char *CAL_HUMIDITY_EXHAST_IN_MAX = "cal_humidity_exhaust_in_max";
 const char *CAL_HUMIDITY_FRESH_OUT_MIN = "cal_humidity_fresh_out_min";
 const char *CAL_HUMIDITY_FRESH_OUT_MAX = "cal_humidity_fresh_out_max";
 
+const char *CFG_CONSTRAINT_FAN_LEVEL_MAX = "cfg_constraint_fan_level_max";
+const char *CFG_CONSTRAINT_FAN_LEVEL_MIN = "cfg_constraint_fan_level_min";
+const char *CFG_CONSTRAINT_TEMP_ON = "cfg_constraint_temp_on";
+const char *CFG_CONSTRAINT_HUMIDITY_ON = "cfg_constraint_humidity_on";
+const char *CFG_CONSTRAINT_HUMIDITY2_ON = "cfg_constraint_humidity2_on";
+const char *CFG_CONSTRAINT_HUMIDITY2_ABS_MIN_START = "cfg_constraint_humidity2_abs_min_start";
+const char *CFG_CONSTRAINT_HUMIDITY2_ABS_MIN_STOP = "cfg_constraint_humidity2_abs_min_stop";
+const char *CFG_CONSTRAINT_HUMIDITY2_REL_MIN_STOP = "cfg_constraint_humidity2_rel_min_stop";
+const char *CFG_SNIFF_INTERVAL_MIN = "cfg_sniff_interval_min";
+const char *CFG_SNIFF_DURATION_SEC = "cfg_sniff_duration_sec";
+const char *CFG_SNIFF_FAN_LEVEL = "cfg_sniff_fan_level";
+const char *CFG_SNIFF_ON = "cfg_sniff_on";
+const char *CFG_CONSTRAINT_TEMP_0_VAL = "cfg_constraint_temp_0_val";
+const char *CFG_CONSTRAINT_TEMP_0_FAN = "cfg_constraint_temp_0_fan";
+const char *CFG_CONSTRAINT_TEMP_1_VAL = "cfg_constraint_temp_1_val";
+const char *CFG_CONSTRAINT_TEMP_1_FAN = "cfg_constraint_temp_1_fan";
+const char *CFG_CONSTRAINT_TEMP_2_VAL = "cfg_constraint_temp_2_val";
+const char *CFG_CONSTRAINT_TEMP_2_FAN = "cfg_constraint_temp_2_fan";
+const char *CFG_CONSTRAINT_HUMIDITY_0_VAL = "cfg_constraint_humidity_0_val";
+const char *CFG_CONSTRAINT_HUMIDITY_0_FAN = "cfg_constraint_humidity_0_fan";
+const char *CFG_CONSTRAINT_HUMIDITY_1_VAL = "cfg_constraint_humidity_1_val";
+const char *CFG_CONSTRAINT_HUMIDITY_1_FAN = "cfg_constraint_humidity_1_fan";
+const char *CFG_CONSTRAINT_HUMIDITY_2_VAL = "cfg_constraint_humidity_2_val";
+const char *CFG_CONSTRAINT_HUMIDITY_2_FAN = "cfg_constraint_humidity_2_fan";
+
 ThingerESP32 thing(FA_USERNAME, FA_DEVICE_ID, FA_DEVICE_CREDENTIAL);
 
 void thing_update()
@@ -85,6 +110,10 @@ void thing_setup()
       in[CFG_CONTROLLER_MODE] = (uint8_t)fa_settings.mode;
       in[CFG_USE_CALIBRATION] = fa_settings.use_calibration;
       in[CFG_LOG_MASK] = fa_settings.log_mask;
+      in[CFG_SNIFF_INTERVAL_MIN] = fa_settings.sniff.interval_min;
+      in[CFG_SNIFF_DURATION_SEC] = fa_settings.sniff.duration_sec;
+      in[CFG_SNIFF_FAN_LEVEL] = fa_settings.sniff.fan_level;
+      in[CFG_SNIFF_ON] = fa_settings.sniff.on;
       in[MANUAL_POWER_FAN_FRESH] = fa_settings.manual.power_fan_fresh;
       in[MANUAL_POWER_FAN_EXHAUST] = fa_settings.manual.power_fan_exhaust;
       in[MANUAL_POWER_FAN_FROST] = fa_settings.manual.power_fan_frost;
@@ -99,6 +128,10 @@ void thing_setup()
       fa_settings.mode = (controller_mode_t)(uint8_t)in[CFG_CONTROLLER_MODE];
       fa_settings.use_calibration = in[CFG_USE_CALIBRATION];
       fa_settings.log_mask = in[CFG_LOG_MASK];
+      fa_settings.sniff.interval_min = in[CFG_SNIFF_INTERVAL_MIN];
+      fa_settings.sniff.duration_sec = in[CFG_SNIFF_DURATION_SEC];
+      fa_settings.sniff.fan_level = in[CFG_SNIFF_FAN_LEVEL];
+      fa_settings.sniff.on = in[CFG_SNIFF_ON];
       fa_settings.manual.power_fan_fresh = in[MANUAL_POWER_FAN_FRESH];
       fa_settings.manual.power_fan_exhaust = in[MANUAL_POWER_FAN_EXHAUST];
       fa_settings.manual.power_fan_frost = in[MANUAL_POWER_FAN_FROST];
@@ -173,6 +206,59 @@ void thing_setup()
         sprintf(str, "cal_fan_frost_%u", i);
         fa_calibration_actuator.fan_power_frost[i] = in[(const char *)str];
       }
+      g_force_update = true;
+    }
+  };
+
+  thing["constraints"] << [](pson &in)
+  {
+    if (in.is_empty())
+    {
+      IMSG(LM_THING, "Dashboard reads constraints..");
+      in[CFG_CONSTRAINT_TEMP_ON] = fa_settings.constraints.temp_fan_on;
+      in[CFG_CONSTRAINT_HUMIDITY_ON] = fa_settings.constraints.humidity_fan_on;
+      in[CFG_CONSTRAINT_HUMIDITY2_ON] = fa_settings.constraints.humidity_on;
+      in[CFG_CONSTRAINT_HUMIDITY2_ABS_MIN_START] = fa_settings.constraints.humidity.abs_min_start;
+      in[CFG_CONSTRAINT_HUMIDITY2_ABS_MIN_STOP] = fa_settings.constraints.humidity.abs_min_stop;
+      in[CFG_CONSTRAINT_HUMIDITY2_REL_MIN_STOP] = fa_settings.constraints.humidity.rel_min_start;
+      in[CFG_CONSTRAINT_TEMP_0_VAL] = fa_settings.constraints.temp_fan[0].val;
+      in[CFG_CONSTRAINT_TEMP_0_FAN] = fa_settings.constraints.temp_fan[0].level;
+      in[CFG_CONSTRAINT_TEMP_1_VAL] = fa_settings.constraints.temp_fan[1].val;
+      in[CFG_CONSTRAINT_TEMP_1_FAN] = fa_settings.constraints.temp_fan[1].level;
+      in[CFG_CONSTRAINT_TEMP_2_VAL] = fa_settings.constraints.temp_fan[2].val;
+      in[CFG_CONSTRAINT_TEMP_2_FAN] = fa_settings.constraints.temp_fan[2].level;
+      in[CFG_CONSTRAINT_HUMIDITY_0_VAL] = fa_settings.constraints.humidity_fan[0].val;
+      in[CFG_CONSTRAINT_HUMIDITY_0_FAN] = fa_settings.constraints.humidity_fan[0].level;
+      in[CFG_CONSTRAINT_HUMIDITY_1_VAL] = fa_settings.constraints.humidity_fan[1].val;
+      in[CFG_CONSTRAINT_HUMIDITY_1_FAN] = fa_settings.constraints.humidity_fan[1].level;
+      in[CFG_CONSTRAINT_HUMIDITY_2_VAL] = fa_settings.constraints.humidity_fan[2].val;
+      in[CFG_CONSTRAINT_HUMIDITY_2_FAN] = fa_settings.constraints.humidity_fan[2].level;
+      in[CFG_CONSTRAINT_FAN_LEVEL_MAX] = fa_settings.constraints.fan_level_max;
+      in[CFG_CONSTRAINT_FAN_LEVEL_MIN] = fa_settings.constraints.fan_level_min;
+    }
+    else
+    {
+      IMSG(LM_THING, "Dashboard writes constraints..");
+      fa_settings.constraints.temp_fan_on = in[CFG_CONSTRAINT_TEMP_ON];
+      fa_settings.constraints.humidity_fan_on = in[CFG_CONSTRAINT_HUMIDITY_ON];
+      fa_settings.constraints.humidity_on = in[CFG_CONSTRAINT_HUMIDITY2_ON];
+      fa_settings.constraints.humidity.abs_min_start = in[CFG_CONSTRAINT_HUMIDITY2_ABS_MIN_START];
+      fa_settings.constraints.humidity.abs_min_stop = in[CFG_CONSTRAINT_HUMIDITY2_ABS_MIN_STOP];
+      fa_settings.constraints.humidity.rel_min_start = in[CFG_CONSTRAINT_HUMIDITY2_REL_MIN_STOP];
+      fa_settings.constraints.temp_fan[0].val = in[CFG_CONSTRAINT_TEMP_0_VAL];
+      fa_settings.constraints.temp_fan[0].level = in[CFG_CONSTRAINT_TEMP_0_FAN];
+      fa_settings.constraints.temp_fan[1].val = in[CFG_CONSTRAINT_TEMP_1_VAL];
+      fa_settings.constraints.temp_fan[1].level = in[CFG_CONSTRAINT_TEMP_1_FAN];
+      fa_settings.constraints.temp_fan[2].val = in[CFG_CONSTRAINT_TEMP_2_VAL];
+      fa_settings.constraints.temp_fan[2].level = in[CFG_CONSTRAINT_TEMP_2_FAN];
+      fa_settings.constraints.humidity_fan[0].val = in[CFG_CONSTRAINT_HUMIDITY_0_VAL];
+      fa_settings.constraints.humidity_fan[0].level = in[CFG_CONSTRAINT_HUMIDITY_0_FAN];
+      fa_settings.constraints.humidity_fan[1].val = in[CFG_CONSTRAINT_HUMIDITY_1_VAL];
+      fa_settings.constraints.humidity_fan[1].level = in[CFG_CONSTRAINT_HUMIDITY_1_FAN];
+      fa_settings.constraints.humidity_fan[2].val = in[CFG_CONSTRAINT_HUMIDITY_2_VAL];
+      fa_settings.constraints.humidity_fan[2].level = in[CFG_CONSTRAINT_HUMIDITY_2_FAN];
+      fa_settings.constraints.fan_level_max = in[CFG_CONSTRAINT_FAN_LEVEL_MAX];
+      fa_settings.constraints.fan_level_min = in[CFG_CONSTRAINT_FAN_LEVEL_MIN];
       g_force_update = true;
     }
   };

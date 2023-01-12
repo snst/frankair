@@ -2,7 +2,6 @@
 #ifndef FA_COMMON_H
 #define FA_COMMON_H
 
-#include <Arduino.h>
 #include <stdint.h>
 #include "fa_defines.h"
 #include "fa_log.h"
@@ -10,6 +9,7 @@
 #define toRange(x, min, max) (x < min ? min : (x > max ? max : x))
 extern bool g_force_update;
 
+uint32_t getMillis();
 bool interval(uint32_t &last, uint32_t delay);
 void interval_update();
 uint32_t now();

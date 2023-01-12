@@ -17,8 +17,6 @@ BlueDot_BME280 bmeF;
 BlueDot_BME280 bmeE;
 DallasTemperature dallas(&oneWire);
 
-static uint32_t sensors_now = 0;
-static bool s_flag_scan_sensors = false;
 static bool s_flag_bmeF_init = false;
 static bool s_flag_bmeE_init = false;
 
@@ -26,8 +24,6 @@ DeviceAddress sensor_fresh_in = {0x28, 0xFF, 0x64, 0x01, 0xB9, 0xD9, 0x54, 0xAB}
 DeviceAddress sensor_exhaust_out = {0x28, 0xFF, 0x64, 0x01, 0xB9, 0xBB, 0x64, 0xDE};
 // DeviceAddress sensor_fresh_out =    { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 // DeviceAddress sensor_exhaust_in =   { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
-
-void sensors_scan_intern();
 
 void bme_setup()
 {
@@ -136,24 +132,6 @@ void sensorsRead()
 
   read_bme("bme_fresh_out", bmeF, s_flag_bmeF_init, fa_state_raw.temp.fresh_out, fa_state_raw.humidity.rel_fresh_out);
   read_bme("bme_exhaust_in", bmeE, s_flag_bmeE_init, fa_state_raw.temp.exhaust_in, fa_state_raw.humidity.rel_exaust_in);
-}
-
-void sensors_update()
-{
-  if (s_flag_scan_sensors)
-  {
-    sensors_scan_intern();
-  }
-  else if (interval(sensors_now, fa_settings.temp_sensor_read_interval_sec))
-  {
-    sensorsRead();
-    sensorsProcessValues();
-  }
-}
-
-void sensors_scan()
-{
-  s_flag_scan_sensors = true;
 }
 
 void sensors_scan_intern()

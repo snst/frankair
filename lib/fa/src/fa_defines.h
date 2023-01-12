@@ -20,4 +20,8 @@
 #define I2C_SDA 21
 #define I2C_SCL 22
 
+#define MAX_FAN_CONSTRAINTS 3U
+#define FAN_LEVEL_MAX 10U
+#define FAN_LEVEL_MIN 0U
+
 #endif // FA_DEFINES_H

@@ -2,13 +2,19 @@
 #ifndef FA_LOG_H
 #define FA_LOG_H
 
-//#include "fa_common.h"
 #include <stdint.h>
+#include "fa_settings.h"
 
 #define LM_COMMON 1U
 #define LM_SENSOR 2U
 #define LM_THING 4U
 #define LM_SETTING 8U
+#define LM_FAN 16U
+
+
+#define CHECK_LOG_MASK(x)          \
+  if (!(x & fa_settings.log_mask)) \
+    return;
 
 void logging_setup();
 void IMSG(uint8_t mask, float val);
