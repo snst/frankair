@@ -7,8 +7,8 @@
 #include "fa_calibration.h"
 #include "fa_settings.h"
 
-extern fa_state_t fa_state;
-extern fa_state_raw_t fa_state_raw;
+extern fa_state_t state;
+extern fa_state_raw_t state_raw;
 
 void cleanData();
 
@@ -40,12 +40,12 @@ void test_calcCorrectedValue(void)
 void test_filterValue(void)
 {
   cleanData();
-  fa_settings.measurement_alpha = 1.0f;
+  settings.measurement_alpha = 1.0f;
   float val = 10.0f;
   filterValue("", val, 5.0f);
   TEST_ASSERT_EQUAL_FLOAT(5.0f, val);
 
-  fa_settings.measurement_alpha = 0.5f;
+  settings.measurement_alpha = 0.5f;
   val = 10.0f;
   filterValue("", val, 5.0f);
   TEST_ASSERT_EQUAL_FLOAT(7.5f, val);
@@ -121,32 +121,32 @@ void test_sensorsProcessValues(void)
   fa_calibration_sensor.ref_humidity.min = 30.0f;
   fa_calibration_sensor.ref_humidity.max = 40.0f;
 
-  fa_state_raw.temp.exhaust_in = 11.0f;
-  fa_state_raw.temp.exhaust_out = 12.0f;
-  fa_state_raw.temp.fresh_in = 13.0f;
-  fa_state_raw.temp.fresh_out = 14.0f;
-  fa_state_raw.humidity.rel_exaust_in = 15.0f;
-  fa_state_raw.humidity.rel_fresh_out = 16.0f;
+  state_raw.temp.exhaust_in = 11.0f;
+  state_raw.temp.exhaust_out = 12.0f;
+  state_raw.temp.fresh_in = 13.0f;
+  state_raw.temp.fresh_out = 14.0f;
+  state_raw.humidity.rel_exaust_in = 15.0f;
+  state_raw.humidity.rel_fresh_out = 16.0f;
 
-  fa_settings.use_calibration = false;
-  fa_settings.measurement_alpha = 0.5f;
+  settings.use_calibration = false;
+  settings.measurement_alpha = 0.5f;
   sensorsProcessValues();
-  TEST_ASSERT_EQUAL_FLOAT(fa_settings.measurement_alpha * fa_state_raw.temp.exhaust_in, fa_state.temp.exhaust_in);
-  TEST_ASSERT_EQUAL_FLOAT(fa_settings.measurement_alpha * fa_state_raw.temp.exhaust_out, fa_state.temp.exhaust_out);
-  TEST_ASSERT_EQUAL_FLOAT(fa_settings.measurement_alpha * fa_state_raw.temp.fresh_in, fa_state.temp.fresh_in);
-  TEST_ASSERT_EQUAL_FLOAT(fa_settings.measurement_alpha * fa_state_raw.temp.fresh_out, fa_state.temp.fresh_out);
-  TEST_ASSERT_EQUAL_FLOAT(fa_settings.measurement_alpha * fa_state_raw.humidity.rel_exaust_in, fa_state.humidity.rel_exaust_in);
-  TEST_ASSERT_EQUAL_FLOAT(fa_settings.measurement_alpha * fa_state_raw.humidity.rel_fresh_out, fa_state.humidity.rel_fresh_out);
+  TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.temp.exhaust_in, state.temp.exhaust_in);
+  TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.temp.exhaust_out, state.temp.exhaust_out);
+  TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.temp.fresh_in, state.temp.fresh_in);
+  TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.temp.fresh_out, state.temp.fresh_out);
+  TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.humidity.rel_exaust_in, state.humidity.rel_exaust_in);
+  TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.humidity.rel_fresh_out, state.humidity.rel_fresh_out);
 
-  fa_settings.use_calibration = true;
-  fa_settings.measurement_alpha = 1.0f;
+  settings.use_calibration = true;
+  settings.measurement_alpha = 1.0f;
   sensorsProcessValues();
   float offset = fa_calibration_sensor.ref_temp.min - fa_calibration_sensor.exhaust_in_temp.min;
-  TEST_ASSERT_EQUAL_FLOAT(offset + fa_settings.measurement_alpha * fa_state_raw.temp.exhaust_in, fa_state.temp.exhaust_in);
-  TEST_ASSERT_EQUAL_FLOAT(offset + fa_settings.measurement_alpha * fa_state_raw.temp.exhaust_out, fa_state.temp.exhaust_out);
-  TEST_ASSERT_EQUAL_FLOAT(offset + fa_settings.measurement_alpha * fa_state_raw.temp.fresh_in, fa_state.temp.fresh_in);
-  TEST_ASSERT_EQUAL_FLOAT(offset + fa_settings.measurement_alpha * fa_state_raw.temp.fresh_out, fa_state.temp.fresh_out);
+  TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.temp.exhaust_in, state.temp.exhaust_in);
+  TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.temp.exhaust_out, state.temp.exhaust_out);
+  TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.temp.fresh_in, state.temp.fresh_in);
+  TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.temp.fresh_out, state.temp.fresh_out);
   offset = fa_calibration_sensor.ref_humidity.min - fa_calibration_sensor.exhaust_in_humidity.min;
-  TEST_ASSERT_EQUAL_FLOAT(offset + fa_settings.measurement_alpha * fa_state_raw.humidity.rel_exaust_in, fa_state.humidity.rel_exaust_in);
-  TEST_ASSERT_EQUAL_FLOAT(offset + fa_settings.measurement_alpha * fa_state_raw.humidity.rel_fresh_out, fa_state.humidity.rel_fresh_out);
+  TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.humidity.rel_exaust_in, state.humidity.rel_exaust_in);
+  TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.humidity.rel_fresh_out, state.humidity.rel_fresh_out);
 }

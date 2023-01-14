@@ -4,7 +4,7 @@
 
 #include "fa_common.h"
 
-void flap_setup();
-void flap_set(uint8_t val);
+void flapSetup();
+void flapSetOpen(uint8_t val);
 
 #endif // FA_FAN_H

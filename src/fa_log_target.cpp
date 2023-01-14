@@ -2,8 +2,7 @@
 #include "fa_log.h"
 #include <Arduino.h>
 
-
-void logging_setup()
+void loggingSetup()
 {
   Serial.begin(9600);
 }
@@ -39,7 +38,15 @@ void IMSG(uint8_t mask, const char *txt, const char *val)
 {
   CHECK_LOG_MASK(mask);
   Serial.print(txt);
-  Serial.print(": ");
   Serial.print(val);
   Serial.println();
+}
+
+void IMSG(uint8_t mask, const char *txt1, const char *txt2, const char *txt3, const char *txt4)
+{
+  CHECK_LOG_MASK(mask);
+  Serial.print(txt1);
+  Serial.print(txt2);
+  Serial.print(txt3);
+  Serial.println(txt4);
 }

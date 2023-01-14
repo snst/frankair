@@ -5,44 +5,44 @@
 
 fa_calibration_sensor_t fa_calibration_sensor;
 fa_calibration_actuator_t fa_calibration_actuator;
-extern fa_state_raw_t fa_state_raw;
+extern fa_state_raw_t state_raw;
 
-void sensors_calibrate_temp_low()
+void sensorsCalibrateTempLow()
 {
-    fa_calibration_sensor.exhaust_in_temp.min = fa_state_raw.temp.exhaust_in;
-    fa_calibration_sensor.exhaust_out_temp.min = fa_state_raw.temp.exhaust_out;
-    fa_calibration_sensor.fresh_in_temp.min = fa_state_raw.temp.fresh_in;
-    fa_calibration_sensor.fresh_out_temp.min = fa_state_raw.temp.fresh_out;
+    fa_calibration_sensor.exhaust_in_temp.min = state_raw.temp.exhaust_in;
+    fa_calibration_sensor.exhaust_out_temp.min = state_raw.temp.exhaust_out;
+    fa_calibration_sensor.fresh_in_temp.min = state_raw.temp.fresh_in;
+    fa_calibration_sensor.fresh_out_temp.min = state_raw.temp.fresh_out;
     fa_calibration_sensor.ref_temp.min = calcAverage(fa_calibration_sensor.exhaust_in_temp.min,
                                                      fa_calibration_sensor.exhaust_out_temp.min,
                                                      fa_calibration_sensor.fresh_in_temp.min,
                                                      fa_calibration_sensor.fresh_out_temp.min);
 }
 
-void sensors_calibrate_temp_high()
+void sensorsCalibrateTempHigh()
 {
-    fa_calibration_sensor.exhaust_in_temp.max = fa_state_raw.temp.exhaust_in;
-    fa_calibration_sensor.exhaust_out_temp.max = fa_state_raw.temp.exhaust_out;
-    fa_calibration_sensor.fresh_in_temp.max = fa_state_raw.temp.fresh_in;
-    fa_calibration_sensor.fresh_out_temp.max = fa_state_raw.temp.fresh_out;
+    fa_calibration_sensor.exhaust_in_temp.max = state_raw.temp.exhaust_in;
+    fa_calibration_sensor.exhaust_out_temp.max = state_raw.temp.exhaust_out;
+    fa_calibration_sensor.fresh_in_temp.max = state_raw.temp.fresh_in;
+    fa_calibration_sensor.fresh_out_temp.max = state_raw.temp.fresh_out;
     fa_calibration_sensor.ref_temp.max = calcAverage(fa_calibration_sensor.exhaust_in_temp.max,
                                                      fa_calibration_sensor.exhaust_out_temp.max,
                                                      fa_calibration_sensor.fresh_in_temp.max,
                                                      fa_calibration_sensor.fresh_out_temp.max);
 }
 
-void sensors_calibrate_humidity_low()
+void sensorsCalibrateHumidityLow()
 {
-    fa_calibration_sensor.exhaust_in_humidity.min = fa_state_raw.humidity.rel_exaust_in;
-    fa_calibration_sensor.fresh_out_humidity.min = fa_state_raw.humidity.rel_fresh_out;
+    fa_calibration_sensor.exhaust_in_humidity.min = state_raw.humidity.rel_exaust_in;
+    fa_calibration_sensor.fresh_out_humidity.min = state_raw.humidity.rel_fresh_out;
     fa_calibration_sensor.ref_humidity.min = calcAverage(fa_calibration_sensor.exhaust_in_humidity.min,
                                                          fa_calibration_sensor.fresh_out_humidity.min);
 }
 
-void sensors_calibrate_humidity_high()
+void sensorsCalibrateHumidityHigh()
 {
-    fa_calibration_sensor.exhaust_in_humidity.max = fa_state_raw.humidity.rel_exaust_in;
-    fa_calibration_sensor.fresh_out_humidity.max = fa_state_raw.humidity.rel_fresh_out;
+    fa_calibration_sensor.exhaust_in_humidity.max = state_raw.humidity.rel_exaust_in;
+    fa_calibration_sensor.fresh_out_humidity.max = state_raw.humidity.rel_fresh_out;
     fa_calibration_sensor.ref_humidity.max = calcAverage(fa_calibration_sensor.exhaust_in_humidity.max,
                                                          fa_calibration_sensor.fresh_out_humidity.max);
 }

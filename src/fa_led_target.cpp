@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include "fa_led.h"
 
-void led_setup()
+void ledSetup()
 {
     pinMode(GPIO_LED, OUTPUT);
 }

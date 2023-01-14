@@ -6,8 +6,8 @@
 #include "fa_log.h"
 #include "fa_calibration.h"
 
-extern fa_state_t fa_state;
-extern fa_state_raw_t fa_state_raw;
+extern fa_state_t state;
+extern fa_state_raw_t state_raw;
 
 float convertRelativeToAbsoluteHumidity(
     float temperature_C,
@@ -40,7 +40,7 @@ float calcAverage(float x1, float x2, float x3, float x4)
 
 void filterValue(const char *txt, float &val, float measurement)
 {
-    val = (fa_settings.measurement_alpha * measurement) + ((1.0f - fa_settings.measurement_alpha) * val);
+    val = (settings.measurement_alpha * measurement) + ((1.0f - settings.measurement_alpha) * val);
     IMSG(LM_SENSOR, txt, measurement);
 }
 
@@ -61,30 +61,30 @@ void sensorsProcessValues()
     fa_temp_t temp;
     fa_humidity_t humidity;
 
-    if (fa_settings.use_calibration)
+    if (settings.use_calibration)
     {
         IMSG(LM_SENSOR, "*** sensorsProcessValues(CALIBRATION) ***");
-        correctTempWithCalibrationData(temp, fa_state_raw.temp);
-        correctHumidityWithCalibrationData(humidity, fa_state_raw.humidity);
+        correctTempWithCalibrationData(temp, state_raw.temp);
+        correctHumidityWithCalibrationData(humidity, state_raw.humidity);
     }
     else
     {
         IMSG(LM_SENSOR, "*** sensorsProcessValues(RAW) ***");
-        temp.exhaust_in = fa_state_raw.temp.exhaust_in;
-        temp.exhaust_out = fa_state_raw.temp.exhaust_out;
-        temp.fresh_in = fa_state_raw.temp.fresh_in;
-        temp.fresh_out = fa_state_raw.temp.fresh_out;
-        humidity.rel_exaust_in = fa_state_raw.humidity.rel_exaust_in;
-        humidity.rel_fresh_out = fa_state_raw.humidity.rel_fresh_out;
+        temp.exhaust_in = state_raw.temp.exhaust_in;
+        temp.exhaust_out = state_raw.temp.exhaust_out;
+        temp.fresh_in = state_raw.temp.fresh_in;
+        temp.fresh_out = state_raw.temp.fresh_out;
+        humidity.rel_exaust_in = state_raw.humidity.rel_exaust_in;
+        humidity.rel_fresh_out = state_raw.humidity.rel_fresh_out;
     }
 
-    filterValue("temp_exhaust_in", fa_state.temp.exhaust_in, temp.exhaust_in);
-    filterValue("temp_exhaust_out", fa_state.temp.exhaust_out, temp.exhaust_out);
-    filterValue("temp_fresh_in", fa_state.temp.fresh_in, temp.fresh_in);
-    filterValue("temp_fresh_out", fa_state.temp.fresh_out, temp.fresh_out);
-    filterValue("hum_rel_exaust_in", fa_state.humidity.rel_exaust_in, humidity.rel_exaust_in);
-    filterValue("hum_rel_fresh_out", fa_state.humidity.rel_fresh_out, humidity.rel_fresh_out);
-    fa_state.humidity.abs_exaust_in = convertRelativeToAbsoluteHumidity(fa_state.temp.exhaust_in, fa_state.humidity.rel_exaust_in);
-    fa_state.humidity.abs_fresh_out = convertRelativeToAbsoluteHumidity(fa_state.temp.fresh_out, fa_state.humidity.rel_fresh_out);
-    fa_state.humidity.abs_delta = fa_state.humidity.abs_exaust_in - fa_state.humidity.abs_fresh_out;
+    filterValue("temp_exhaust_in", state.temp.exhaust_in, temp.exhaust_in);
+    filterValue("temp_exhaust_out", state.temp.exhaust_out, temp.exhaust_out);
+    filterValue("temp_fresh_in", state.temp.fresh_in, temp.fresh_in);
+    filterValue("temp_fresh_out", state.temp.fresh_out, temp.fresh_out);
+    filterValue("hum_rel_exaust_in", state.humidity.rel_exaust_in, humidity.rel_exaust_in);
+    filterValue("hum_rel_fresh_out", state.humidity.rel_fresh_out, humidity.rel_fresh_out);
+    state.humidity.abs_exaust_in = convertRelativeToAbsoluteHumidity(state.temp.exhaust_in, state.humidity.rel_exaust_in);
+    state.humidity.abs_fresh_out = convertRelativeToAbsoluteHumidity(state.temp.fresh_out, state.humidity.rel_fresh_out);
+    state.humidity.abs_delta = state.humidity.abs_exaust_in - state.humidity.abs_fresh_out;
 }

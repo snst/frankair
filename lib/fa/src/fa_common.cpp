@@ -1,24 +1,35 @@
+// Copyright (c) 2023 by Stefan Schmidt
 #include "fa_common.h"
 #include "fa_log.h"
 
-bool g_force_update = true;
-static uint32_t s_now = 0;
+bool force_update = true;
+static uint32_t now_ms = 0U;
 
-void interval_update()
+void intervalUpdate()
 {
-  s_now = getMillis();
+  now_ms = getMillis();
 }
 
 uint32_t now()
 {
-  return s_now;
+  return now_ms;
 }
 
-bool interval(uint32_t &last, uint32_t delay)
+void intervalReset(uint32_t &val)
 {
-  if (s_now - last >= delay)
+  val = now();
+}
+
+bool intervalCheckSec(uint32_t &last, uint32_t sec)
+{
+  return intervalCheckMS(last, (1000U * sec));
+}
+
+bool intervalCheckMS(uint32_t &last, uint32_t ms)
+{
+  if (now() - last >= ms)
   {
-    last = s_now;
+    last = now();
     return true;
   }
   return false;

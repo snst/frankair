@@ -7,8 +7,8 @@
 #include "fa_calibration.h"
 #include "fa_settings.h"
 
-extern fa_state_t fa_state;
-extern fa_state_raw_t fa_state_raw;
+extern fa_state_t state;
+extern fa_state_raw_t state_raw;
 
 void setUp(void)
 {
@@ -23,9 +23,9 @@ void tearDown(void)
 void cleanData()
 {
   memset(&fa_calibration_sensor, 0U, sizeof(fa_calibration_sensor));
-  memset(&fa_state_raw, 0U, sizeof(fa_state_raw));
-  memset(&fa_state, 0U, sizeof(fa_state));
-  memset(&fa_settings, 0U, sizeof(fa_settings));
+  memset(&state_raw, 0U, sizeof(state_raw));
+  memset(&state, 0U, sizeof(state));
+  memset(&settings, 0U, sizeof(settings));
 }
 
 void test_convertRelativeToAbsoluteHumidity(void);

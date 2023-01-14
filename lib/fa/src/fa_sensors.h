@@ -6,10 +6,10 @@
 
 extern bool s_flag_scan_sensors;
 
-void sensors_setup();
+void sensorsSetup();
 void sensorsRead();
-void sensors_update();
-void sensors_scan();
+void sensorsUpdate();
+void sensorsScan();
 void sensors_scan_intern();
 
 #endif // FA_SENSORS_H

@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 void led_enable(bool enable);
-void led_setup();
-void led_update();
+void ledSetup();
+void ledUpdate();
 
 #endif // FA_LED_H

@@ -9,20 +9,20 @@ static uint32_t sensors_now = 0;
 bool s_flag_scan_sensors = false;
 
 
-void sensors_update()
+void sensorsUpdate()
 {
   if (s_flag_scan_sensors)
   {
     sensors_scan_intern();
   }
-  else if (interval(sensors_now, fa_settings.temp_sensor_read_interval_sec))
+  else if (intervalCheckSec(sensors_now, settings.temp_sensor_read_interval_sec))
   {
     sensorsRead();
     sensorsProcessValues();
   }
 }
 
-void sensors_scan()
+void sensorsScan()
 {
   s_flag_scan_sensors = true;
 }

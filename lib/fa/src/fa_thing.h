@@ -4,7 +4,7 @@
 
 #include "fa_common.h"
 
-void thing_setup();
-void thing_update();
+void thingSetup();
+void thingUpdate();
 
 #endif // FA_THING_H

@@ -7,17 +7,19 @@
 #include "fa_log.h"
 
 #define toRange(x, min, max) (x < min ? min : (x > max ? max : x))
-extern bool g_force_update;
+extern bool force_update;
 
 uint32_t getMillis();
-bool interval(uint32_t &last, uint32_t delay);
-void interval_update();
+bool intervalCheckSec(uint32_t &last, uint32_t sec);
+bool intervalCheckMS(uint32_t &last, uint32_t ms);
+void intervalUpdate();
+void intervalReset(uint32_t &val);
 uint32_t now();
 
 template <typename T>
-bool update_if_changed(T &dest, T src)
+bool updateIfChanged(T &dest, T src)
 {
-  if ((dest != src) || g_force_update)
+  if ((dest != src) || force_update)
   {
     dest = src;
     // IMSG("Change ");

@@ -5,17 +5,15 @@
 #include "fa_structs.h"
 #include "fa_defines.h"
 
+extern fa_settings_t settings;
 
+void calibrationLoad();
+void calibrationWrite();
+void calibrationClear();
 
-extern fa_settings_t fa_settings;
-
-void calibration_load();
-void calibration_write();
-void calibration_clear();
-
-void settings_load();
-void settings_write();
-void settings_clear();
+void settingsLoad();
+void settingsWrite();
+void settingsClear();
 
 void format();
 

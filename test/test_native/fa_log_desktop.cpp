@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "fa_settings.h"
 
-void logging_setup()
+void loggingSetup()
 {
 }
 

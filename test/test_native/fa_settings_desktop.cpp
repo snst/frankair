@@ -6,29 +6,29 @@
 const char *SETTINGS_NAMESPACE = "settings";
 const char *CALIBRATION_NAMESPACE = "calibration";
 
-fa_settings_t fa_settings;
+fa_settings_t settings;
 
-void settings_load()
+void settingsLoad()
 {
 }
 
-void settings_write()
+void settingsWrite()
 {
 }
 
-void settings_clear()
+void settingsClear()
 {
 }
 
-void calibration_load()
+void calibrationLoad()
 {
 }
 
-void calibration_write()
+void calibrationWrite()
 {
 }
 
-void calibration_clear()
+void calibrationClear()
 {
 }
 

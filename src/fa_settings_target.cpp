@@ -8,55 +8,55 @@
 const char *SETTINGS_NAMESPACE = "settings";
 const char *CALIBRATION_NAMESPACE = "calibration";
 
-fa_settings_t fa_settings;
+fa_settings_t settings;
 
-void settings_load()
+void settingsLoad()
 {
   Preferences preferences;
   preferences.begin(SETTINGS_NAMESPACE, true /*readonly*/);
-  memset(&fa_settings, 0U, sizeof(fa_settings));
-  size_t len = preferences.getBytes("s", &fa_settings, sizeof(fa_settings));
+  memset(&settings, 0U, sizeof(settings));
+  size_t len = preferences.getBytes("s", &settings, sizeof(settings));
   IMSG(LM_SETTING, "Loading settings from flash..", len);
   if (0U == len)
   {
-    fa_settings.temp_sensor_read_interval_sec = 1000U;
-    fa_settings.controller_interval_sec = 5000U;
-    fa_settings.measurement_alpha = 1.0f;
-    fa_settings.mode = controller_mode_t::kManual;
-    fa_settings.sniff.duration_sec = 60U;
-    fa_settings.sniff.interval_min = 30U;
-    fa_settings.sniff.fan_level = 5U;
-    fa_settings.constraints.fan_level_max = FAN_LEVEL_MAX;
-    fa_settings.constraints.fan_level_min = FAN_LEVEL_MIN;
-    fa_settings.constraints.humidity.abs_min_start = 1.0f;
-    fa_settings.constraints.humidity.abs_min_stop = 0.5;
-    fa_settings.constraints.humidity.rel_min_start = 50U;
-    fa_settings.constraints.temp_fan[0].val = 5.0f;
-    fa_settings.constraints.temp_fan[0].level = 3U;
-    fa_settings.constraints.temp_fan[1].val = 10.0f;
-    fa_settings.constraints.temp_fan[1].level = 5U;
-    fa_settings.constraints.temp_fan[2].val = 15.0f;
-    fa_settings.constraints.temp_fan[2].level = 8U;
-    fa_settings.constraints.humidity_fan[0].val = 1.0f;
-    fa_settings.constraints.humidity_fan[0].level = 4U;
-    fa_settings.constraints.humidity_fan[1].val = 2.0f;
-    fa_settings.constraints.humidity_fan[1].level = 6U;
-    fa_settings.constraints.humidity_fan[2].val = 3.0f;
-    fa_settings.constraints.humidity_fan[2].level = 8;
+    settings.temp_sensor_read_interval_sec = 1U;
+    settings.controller_interval_sec = 5U;
+    settings.measurement_alpha = 1.0f;
+    settings.mode = controller_mode_t::kManual;
+    settings.sniff.duration_sec = 60U;
+    settings.sniff.interval_sec = (30U * 60U);
+    settings.sniff.fan_level = 5U;
+    settings.ctrl.fan_level_max = FAN_LEVEL_MAX;
+    settings.ctrl.fan_level_min = FAN_LEVEL_MIN;
+    settings.ctrl.humidity_fan_off.abs_min_start = 1.0f;
+    settings.ctrl.humidity_fan_off.abs_min_stop = 0.5;
+    settings.ctrl.humidity_fan_off.rel_min_start = 50U;
+    settings.ctrl.temp_fan_level.item[0].val = 5.0f;
+    settings.ctrl.temp_fan_level.item[0].level = 3U;
+    settings.ctrl.temp_fan_level.item[1].val = 10.0f;
+    settings.ctrl.temp_fan_level.item[1].level = 5U;
+    settings.ctrl.temp_fan_level.item[2].val = 15.0f;
+    settings.ctrl.temp_fan_level.item[2].level = 8U;
+    settings.ctrl.humidity_fan_level.item[0].val = 1.0f;
+    settings.ctrl.humidity_fan_level.item[0].level = 4U;
+    settings.ctrl.humidity_fan_level.item[1].val = 2.0f;
+    settings.ctrl.humidity_fan_level.item[1].level = 6U;
+    settings.ctrl.humidity_fan_level.item[2].val = 3.0f;
+    settings.ctrl.humidity_fan_level.item[2].level = 8;
   }
   preferences.end();
 }
 
-void settings_write()
+void settingsWrite()
 {
   Preferences preferences;
   preferences.begin(SETTINGS_NAMESPACE, false /*readonly*/);
-  size_t len = preferences.putBytes("s", &fa_settings, sizeof(fa_settings));
+  size_t len = preferences.putBytes("s", &settings, sizeof(settings));
   IMSG(LM_SETTING, "Writing settings to flash..", len);
   preferences.end();
 }
 
-void settings_clear()
+void settingsClear()
 {
   Preferences preferences;
   IMSG(LM_SETTING, "Clear settings in flash..");
@@ -65,7 +65,7 @@ void settings_clear()
   preferences.end();
 }
 
-void calibration_load()
+void calibrationLoad()
 {
   memset(&fa_calibration_sensor, 0U, sizeof(fa_calibration_sensor));
   memset(&fa_calibration_actuator, 0U, sizeof(fa_calibration_actuator));
@@ -79,16 +79,16 @@ void calibration_load()
   {
     fa_calibration_actuator.flap_pos.min = 150U;
     fa_calibration_actuator.flap_pos.max = 55U;
-    for (uint8_t i = 0U; i < FAN_POWER_STEPS; i++)
+    for (uint8_t i = 0U; i < FAN_LEVEL_STEPS; i++)
     {
-      fa_calibration_actuator.fan_power_frost[i] = 255U * i / (FAN_POWER_STEPS - 1U);
-      fa_calibration_actuator.fan_power_main[i] = fa_calibration_actuator.fan_power_frost[i];
+      fa_calibration_actuator.fan_pwm_frost[i] = 255U * i / (FAN_LEVEL_STEPS - 1U);
+      fa_calibration_actuator.fan_pwm_main[i] = fa_calibration_actuator.fan_pwm_frost[i];
     }
   }
   preferences.end();
 }
 
-void calibration_write()
+void calibrationWrite()
 {
   Preferences preferences;
   preferences.begin(CALIBRATION_NAMESPACE, false /*readonly*/);
@@ -99,7 +99,7 @@ void calibration_write()
   preferences.end();
 }
 
-void calibration_clear()
+void calibrationClear()
 {
   Preferences preferences;
   IMSG(LM_SETTING, "Clear calibration in flash..");

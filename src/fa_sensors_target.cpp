@@ -17,8 +17,8 @@ BlueDot_BME280 bmeF;
 BlueDot_BME280 bmeE;
 DallasTemperature dallas(&oneWire);
 
-static bool s_flag_bmeF_init = false;
-static bool s_flag_bmeE_init = false;
+static bool is_init_bmeF = false;
+static bool is_init_bmeE = false;
 
 DeviceAddress sensor_fresh_in = {0x28, 0xFF, 0x64, 0x01, 0xB9, 0xD9, 0x54, 0xAB};
 DeviceAddress sensor_exhaust_out = {0x28, 0xFF, 0x64, 0x01, 0xB9, 0xBB, 0x64, 0xDE};
@@ -98,7 +98,7 @@ void bme_setup()
   bmeE.parameter.tempOutsideFahrenheit = bmeF.parameter.tempOutsideFahrenheit;
 }
 
-void sensors_setup()
+void sensorsSetup()
 {
   dallas.begin();
   bme_setup();
@@ -127,11 +127,11 @@ void sensorsRead()
   IMSG(LM_SENSOR, "*** sensorsRead() ***");
 
   dallas.requestTemperatures();
-  fa_state_raw.temp.fresh_in = dallas.getTempC(sensor_fresh_in);
-  fa_state_raw.temp.exhaust_out = dallas.getTempC(sensor_exhaust_out);
+  state_raw.temp.fresh_in = dallas.getTempC(sensor_fresh_in);
+  state_raw.temp.exhaust_out = dallas.getTempC(sensor_exhaust_out);
 
-  read_bme("bme_fresh_out", bmeF, s_flag_bmeF_init, fa_state_raw.temp.fresh_out, fa_state_raw.humidity.rel_fresh_out);
-  read_bme("bme_exhaust_in", bmeE, s_flag_bmeE_init, fa_state_raw.temp.exhaust_in, fa_state_raw.humidity.rel_exaust_in);
+  read_bme("bme_fresh_out", bmeF, is_init_bmeF, state_raw.temp.fresh_out, state_raw.humidity.rel_fresh_out);
+  read_bme("bme_exhaust_in", bmeE, is_init_bmeE, state_raw.temp.exhaust_in, state_raw.humidity.rel_exaust_in);
 }
 
 void sensors_scan_intern()

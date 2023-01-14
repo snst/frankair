@@ -3,28 +3,56 @@
 #include "fa_log.h"
 #include "fa_calibration.h"
 #include "fa_controller.h"
+#include "fa_common.h"
 
-void fan_set_power_main(uint8_t gpio, uint8_t val)
+static uint8_t last_exhaust_level = 0xFF;
+static uint8_t last_fresh_level = 0xFF;
+static uint8_t last_frost_level = 0xFF;
+
+uint8_t adjustFanLevelToValidRange(uint8_t &level)
 {
-  val = toRange(val, 0U, 10U);
-  fan_set(gpio, 255U - fa_calibration_actuator.fan_power_main[val]);
+  level = toRange(level, FAN_LEVEL_MIN, FAN_LEVEL_MAX);
+  return level;
 }
 
-void fan_set_power_fresh(uint8_t val)
+void fanSetLevelMain(uint8_t gpio, uint8_t level)
 {
-  fan_set_power_main(GPIO_PWM1, val);
-  fa_state.actuator.power_fan_fresh = val;
+  level = toRange(level, 0U, 10U);
+  fanSetPWM(gpio, 255U - fa_calibration_actuator.fan_pwm_main[level]);
 }
 
-void fan_set_power_exhaust(uint8_t val)
+void fanSetLevelFresh(uint8_t level)
 {
-  fan_set_power_main(GPIO_PWM2, val);
-  fa_state.actuator.power_fan_exhaust = val;
+  level = adjustFanLevelToValidRange(level);
+  if (updateIfChanged(last_fresh_level, level))
+  {
+    fanSetLevelMain(GPIO_PWM1, level);
+  }
+  state.actuator.level_fan_fresh = level;
 }
 
-void fan_set_power_frost(uint8_t val)
+void fanSetLevelExhaust(uint8_t level)
 {
-  val = toRange(val, 0U, 10U);
-  fan_set(GPIO_PWM3, fa_calibration_actuator.fan_power_frost[val]);
-  fa_state.actuator.power_fan_frost = val;
+  level = adjustFanLevelToValidRange(level);
+  if (updateIfChanged(last_exhaust_level, level))
+  {
+    fanSetLevelMain(GPIO_PWM2, level);
+  }
+  state.actuator.level_fan_exhaust = level;
+}
+
+void fanSetLevelFrost(uint8_t level)
+{
+  level = adjustFanLevelToValidRange(level);
+  if (updateIfChanged(last_frost_level, level))
+  {
+    fanSetPWM(GPIO_PWM3, fa_calibration_actuator.fan_pwm_frost[level]);
+  }
+  state.actuator.level_fan_frost = level;
+}
+
+void fanSetLevelFreshAndExhaust(uint8_t level)
+{
+  fanSetLevelFresh(level);
+  fanSetLevelExhaust(level);
 }

@@ -5,11 +5,11 @@
 #include "fa_calibration.h"
 #include <stdio.h>
 
-void flap_setup()
+void flapSetup()
 {
 }
 
-void flap_set(uint8_t val)
+void flapSetOpen(uint8_t val)
 {
-    printf("flap_set to %u\n", val);
+    printf("flapSetOpen to %u\n", val);
 }

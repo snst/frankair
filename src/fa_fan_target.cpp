@@ -6,14 +6,14 @@
 
 Pwm pwm = Pwm();
 
-void fan_setup()
+void fanSetup()
 {
   pwm.attach(GPIO_PWM1, 2);
   pwm.attach(GPIO_PWM2, 3);
   pwm.attach(GPIO_PWM3, 4);
 }
 
-void fan_set(uint8_t gpio, uint8_t val)
+void fanSetPWM(uint8_t gpio, uint8_t val)
 {
   pwm.write(gpio, val, 20U);
 }

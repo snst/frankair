@@ -14,22 +14,22 @@
 
 void setup()
 {
-  logging_setup();
+  loggingSetup();
   IMSG(LM_COMMON, "Welcome to frankair!");
-  calibration_load();
-  settings_load();
-  led_setup();
-  fan_setup();
-  sensors_setup();
-  flap_setup();
-  thing_setup();
+  calibrationLoad();
+  settingsLoad();
+  ledSetup();
+  fanSetup();
+  sensorsSetup();
+  flapSetup();
+  thingSetup();
 }
 
 void loop()
 {
-  interval_update();
-  thing_update();
-  sensors_update();
-  controller_update();
-  led_update();
+  intervalUpdate();
+  thingUpdate();
+  sensorsUpdate();
+  controllerUpdate();
+  ledUpdate();
 }
