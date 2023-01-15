@@ -15,6 +15,8 @@ void settingsLoad();
 void settingsWrite();
 void settingsClear();
 
+void settingsSanitize();
+
 void format();
 
 #endif // FA_SETTINGS_H

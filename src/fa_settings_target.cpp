@@ -28,23 +28,24 @@ void settingsLoad()
     settings.sniff.fan_level = 5U;
     settings.ctrl.fan_level_max = FAN_LEVEL_MAX;
     settings.ctrl.fan_level_min = FAN_LEVEL_MIN;
-    settings.ctrl.humidity_fan_off.abs_min_start = 1.0f;
-    settings.ctrl.humidity_fan_off.abs_min_stop = 0.5;
-    settings.ctrl.humidity_fan_off.rel_min_start = 50U;
-    settings.ctrl.temp_fan_level.item[0].val = 5.0f;
-    settings.ctrl.temp_fan_level.item[0].level = 3U;
-    settings.ctrl.temp_fan_level.item[1].val = 10.0f;
-    settings.ctrl.temp_fan_level.item[1].level = 5U;
-    settings.ctrl.temp_fan_level.item[2].val = 15.0f;
-    settings.ctrl.temp_fan_level.item[2].level = 8U;
-    settings.ctrl.humidity_fan_level.item[0].val = 1.0f;
-    settings.ctrl.humidity_fan_level.item[0].level = 4U;
-    settings.ctrl.humidity_fan_level.item[1].val = 2.0f;
-    settings.ctrl.humidity_fan_level.item[1].level = 6U;
-    settings.ctrl.humidity_fan_level.item[2].val = 3.0f;
-    settings.ctrl.humidity_fan_level.item[2].level = 8;
+    settings.ctrl.humidity_fan_ctrl.abs_min_start = 1.0f;
+    settings.ctrl.humidity_fan_ctrl.abs_min_stop = 0.5;
+    settings.ctrl.humidity_fan_ctrl.rel_min_start = 50U;
+    settings.ctrl.temp_fan_curve.item[0].val = 5.0f;
+    settings.ctrl.temp_fan_curve.item[0].level = 3U;
+    settings.ctrl.temp_fan_curve.item[1].val = 10.0f;
+    settings.ctrl.temp_fan_curve.item[1].level = 5U;
+    settings.ctrl.temp_fan_curve.item[2].val = 15.0f;
+    settings.ctrl.temp_fan_curve.item[2].level = 8U;
+    settings.ctrl.humidity_fan_curve.item[0].val = 1.0f;
+    settings.ctrl.humidity_fan_curve.item[0].level = 4U;
+    settings.ctrl.humidity_fan_curve.item[1].val = 2.0f;
+    settings.ctrl.humidity_fan_curve.item[1].level = 6U;
+    settings.ctrl.humidity_fan_curve.item[2].val = 3.0f;
+    settings.ctrl.humidity_fan_curve.item[2].level = 8;
   }
   preferences.end();
+  settingsSanitize();
 }
 
 void settingsWrite()

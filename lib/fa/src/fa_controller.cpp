@@ -49,13 +49,35 @@ bool reduceFanLevel(uint8_t &dest, uint8_t val)
   return false;
 }
 
+bool increaseFanLevel(uint8_t &dest, uint8_t val)
+{
+  if (val > dest)
+  {
+    dest = val;
+    return true;
+  }
+  return false;
+}
+
+bool updateFanLevel(uint8_t &dest, uint8_t val, bool reduce)
+{
+  if (reduce)
+  {
+    return reduceFanLevel(dest, val);
+  }
+  else
+  {
+    return increaseFanLevel(dest, val);
+  }
+}
+
 bool calcFanOffHumidity(uint8_t &fan_level)
 {
   bool active = false;
-  if (settings.ctrl.humidity_fan_off.enabled)
+  if (settings.ctrl.humidity_fan_ctrl.enabled)
   {
     // Stop fan if rel humidity in room is lower than minimum e.g. 50%
-    if (state.humidity.rel_exaust_in < settings.ctrl.humidity_fan_off.rel_min_start)
+    if (state.humidity.rel_exaust_in < settings.ctrl.humidity_fan_ctrl.rel_min_start)
     {
       active = reduceFanLevel(fan_level, settings.ctrl.fan_level_min) || active;
       IMSG(LM_FAN, "calcFanOffHumidity: Relative humidity too low. Fan", fan_level);
@@ -65,7 +87,7 @@ bool calcFanOffHumidity(uint8_t &fan_level)
     {
     case controller_submode_auto_t::kOn:
       // Stop fan if abs humidity delta is lower than minimum delta e.g. 0.5g/m³
-      if (state.humidity.abs_delta < settings.ctrl.humidity_fan_off.abs_min_stop)
+      if (state.humidity.abs_delta < settings.ctrl.humidity_fan_ctrl.abs_min_stop)
       {
         active = reduceFanLevel(fan_level, settings.ctrl.fan_level_min) || active;
         IMSG(LM_FAN, "calcFanOffHumidity: Absolute humidity delta too low. Fan", fan_level);
@@ -73,7 +95,7 @@ bool calcFanOffHumidity(uint8_t &fan_level)
       break;
     case controller_submode_auto_t::kSniff:
       // Don't start fan if currently sniffing and abs humidity delta is lower than minimum delta e.g. 1g/m³
-      if (state.humidity.abs_delta < settings.ctrl.humidity_fan_off.abs_min_start)
+      if (state.humidity.abs_delta < settings.ctrl.humidity_fan_ctrl.abs_min_start)
       {
         active = reduceFanLevel(fan_level, settings.ctrl.fan_level_min) || active;
         IMSG(LM_FAN, "calcFanOffHumidity: Currently sniffing and absolute humidity delta too low to start. Fan", fan_level);
@@ -85,40 +107,80 @@ bool calcFanOffHumidity(uint8_t &fan_level)
   return active;
 }
 
-bool calcFanLevelHumidityAbs(uint8_t &fan_level)
+bool calcFanLevelCurve(float input, fa_fan_curve_t &curve, uint8_t &level)
 {
-  bool active = false;
-  if (settings.ctrl.humidity_fan_level.enabled)
+  uint8_t n = curve.enabled_points;
+  if (!curve.enabled || (n < 2U))
   {
-    for (uint8_t i = 0U; i < MAX_FAN_CONSTRAINTS; i++)
+    return false;
+  }
+
+  for (uint8_t i = 1U; i < n; i++)
+  {
+    if (((input > curve.item[i - 1].val) && (input <= curve.item[i].val)) || ((input < curve.item[i - 1].val) && (input >= curve.item[i].val)))
     {
-      if (state.humidity.abs_delta < settings.ctrl.humidity_fan_level.item[i].val)
-      {
-        active = reduceFanLevel(fan_level, settings.ctrl.humidity_fan_level.item[i].level) | active;
-        IMSG(LM_FAN, "calcFanLevelHumidityAbs. Fan", fan_level);
-      }
+      level = mapValue(input,
+                       curve.item[i - 1U].val,
+                       curve.item[i].val,
+                       curve.item[i - 1U].level,
+                       curve.item[i].level);
+      return true;
     }
   }
-  state.ctrl_active.humidity_fan_level = active;
+  if (curve.item[0].val < curve.item[n - 1U].val)
+  {
+    if (input > curve.item[n - 1U].val)
+    {
+      level = curve.item[n - 1U].level;
+    }
+    else
+    {
+      level = curve.item[0].level;
+    }
+  }
+  else
+  {
+    if (input < curve.item[n - 1U].val)
+    {
+      level = curve.item[n - 1U].level;
+    }
+    else
+    {
+      level = curve.item[0].level;
+    }
+  }
+  return true;
+}
+
+bool calcFanLevelByHumidityCurve(uint8_t &fan_level)
+{
+  uint8_t new_level = fan_level;
+  calcFanLevelCurve(state.humidity.abs_delta, settings.ctrl.humidity_fan_curve, new_level);
+  bool active = reduceFanLevel(fan_level, new_level);
+  state.ctrl_active.humidity_fan_curve = active;
   return active;
 }
 
-bool calcFanLevelTemp(uint8_t &fan_level)
+bool calcFanLevelByTempCurve(uint8_t &fan_level)
 {
-  bool active = false;
-  if (settings.ctrl.temp_fan_level.enabled)
-  {
-    for (uint8_t i = 0U; i < MAX_FAN_CONSTRAINTS; i++)
-    {
-      if (state.temp.exhaust_in < settings.ctrl.temp_fan_level.item[i].val)
-      {
-        active = reduceFanLevel(fan_level, settings.ctrl.temp_fan_level.item[i].level) | active;
-        IMSG(LM_FAN, "calcFanLevelTemp. Fan", fan_level);
-      }
-    }
-  }
-  state.ctrl_active.temp_fan_level = active;
+  uint8_t new_level = fan_level;
+  calcFanLevelCurve(state.temp.exhaust_in, settings.ctrl.temp_fan_curve, new_level);
+  bool active = reduceFanLevel(fan_level, new_level);
+  state.ctrl_active.temp_fan_curve = active;
   return active;
+}
+
+uint8_t calcFanFrostLevel()
+{
+  uint8_t fan_level = FAN_LEVEL_MIN;
+  if (settings.ctrl.frost_flap_ctrl.enabled && (state.actuator.open_flap_frost > FLAP_LEVEL_MIN))
+  {
+    uint8_t new_level = FAN_LEVEL_MIN;
+    calcFanLevelCurve(state.temp.fresh_in, settings.ctrl.frost_fan_curve, new_level);
+    bool active = increaseFanLevel(fan_level, new_level);
+    state.ctrl_active.frost_fan_curve = active;
+  }
+  return fan_level;
 }
 
 void controllerModeAutoChangeSubMode(controller_submode_auto_t submode)
@@ -143,21 +205,44 @@ void controllerStartWait()
   IMSG(LM_MODE, "controllerStartWait()");
   controllerModeAutoChangeSubMode(controller_submode_auto_t::kWait);
   fanSetLevelFreshAndExhaust(settings.ctrl.fan_level_min);
+  fanSetLevelFrost(0U);
   intervalReset(wait_now);
+}
+
+void controllerModeAutoUpdateFlap()
+{
+  IMSG(LM_MODE, "controllerModeAutoUpdateFlap()");
+  uint8_t level = FLAP_LEVEL_MIN;
+  if (settings.ctrl.frost_flap_ctrl.enabled)
+  {
+    float temp = state.temp.fresh_in;
+    if (temp < settings.ctrl.frost_flap_ctrl.temp_min_open)
+    {
+      level = FLAP_LEVEL_MAX;
+      IMSG(LM_MODE, "=> open flap");
+    }
+    if (temp > settings.ctrl.frost_flap_ctrl.temp_min_close)
+    {
+      level = FLAP_LEVEL_MIN;
+      IMSG(LM_MODE, "=> close flap");
+    }
+  }
+  flapSetOpen(level);
 }
 
 void controllerModeAutoUpdateFan()
 {
   IMSG(LM_MODE, "controllerModeAutoUpdateFan()");
   uint8_t fan_level = settings.ctrl.fan_level_max;
+
   if (calcFanOffHumidity(fan_level))
   {
     controllerStartWait();
   }
   else
   {
-    calcFanLevelHumidityAbs(fan_level);
-    calcFanLevelTemp(fan_level);
+    calcFanLevelByHumidityCurve(fan_level);
+    calcFanLevelByTempCurve(fan_level);
     if (FAN_LEVEL_MIN == fan_level)
     {
       controllerStartWait();
@@ -166,6 +251,7 @@ void controllerModeAutoUpdateFan()
     {
       controllerModeAutoChangeSubMode(controller_submode_auto_t::kOn);
       fanSetLevelFreshAndExhaust(fan_level);
+      fanSetLevelFrost(calcFanFrostLevel());
     }
   }
 }
@@ -185,6 +271,7 @@ void controllerModeAutoUpdate()
     break;
   case controller_submode_auto_t::kOn:
     controllerModeAutoUpdateFan();
+    controllerModeAutoUpdateFlap();
     break;
   case controller_submode_auto_t::kSniff:
     if (intervalCheckSec(sniff_now, settings.sniff.duration_sec))
@@ -192,6 +279,7 @@ void controllerModeAutoUpdate()
       IMSG(LM_MODE, "kSniff finished => controllerModeAutoUpdateFan()");
       controllerModeAutoUpdateFan();
     }
+    controllerModeAutoUpdateFlap();
     break;
   default:
   case controller_submode_auto_t::kUndefined:
@@ -208,9 +296,9 @@ void controllerModeChanged()
   switch ((controller_mode_t)state.mode)
   {
   case controller_mode_t::kOff:
-    fanSetLevelFreshAndExhaust(0U);
-    fanSetLevelFrost(0U);
-    flapSetOpen(0U);
+    fanSetLevelFreshAndExhaust(FAN_LEVEL_MIN);
+    fanSetLevelFrost(FAN_LEVEL_MIN);
+    flapSetOpen(FLAP_LEVEL_MIN);
     break;
   }
 }

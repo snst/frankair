@@ -35,3 +35,9 @@ void IMSG(uint8_t mask, const char *txt, const char *val)
     CHECK_LOG_MASK(mask);
     printf("%s: %s\n", txt, val);
 }
+
+void IMSG(uint8_t mask, const char *txt1, const char *txt2, const char *txt3, const char *txt4)
+{
+    CHECK_LOG_MASK(mask);
+    printf("%s %s %s %s\n", txt1, txt2, txt3, txt4);
+}

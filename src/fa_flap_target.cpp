@@ -6,6 +6,8 @@
 #include "fa_flap.h"
 #include "fa_settings.h"
 #include "fa_calibration.h"
+#include "fa_common.h"
+#include "fa_controller.h"
 
 extern Pwm pwm;
 
@@ -14,7 +16,14 @@ void flapSetup()
     pwm.attach(GPIO_SERVO, 0U);
 }
 
-void flapSetOpen(uint8_t val)
+void flapSetOpen(uint8_t level)
 {
-    pwm.writeServo(GPIO_SERVO, map(toRange(val, 0U, 10U), 0U, 10U, fa_calibration_actuator.flap_pos.min, fa_calibration_actuator.flap_pos.max));
+    uint8_t new_level = toRange(level, FLAP_LEVEL_MIN, FLAP_LEVEL_MAX);
+    pwm.writeServo(GPIO_SERVO,
+                   mapValue(new_level,
+                            FLAP_LEVEL_MIN, FLAP_LEVEL_MAX,
+                            fa_calibration_actuator.flap_pos.min,
+                            fa_calibration_actuator.flap_pos.max));
+
+    state.actuator.open_flap_frost = new_level;
 }

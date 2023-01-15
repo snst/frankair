@@ -36,6 +36,9 @@ void test_correctTempWithCalibrationData(void);
 void test_correctHumidityWithCalibrationData(void);
 void test_sensorsProcessValues(void);
 void test_controller_auto_update(void);
+void test_controller_humidity_curve(void);
+void test_controller_start_from_sniffing(void);
+void test_controller_frost_curve(void);
 
 int main(int argc, char **argv)
 {
@@ -49,6 +52,9 @@ int main(int argc, char **argv)
   RUN_TEST(test_correctHumidityWithCalibrationData);
   RUN_TEST(test_sensorsProcessValues);
   RUN_TEST(test_controller_auto_update);
+  RUN_TEST(test_controller_humidity_curve);
+  RUN_TEST(test_controller_start_from_sniffing);
+  RUN_TEST(test_controller_frost_curve);
 
   UNITY_END();
   return 0;

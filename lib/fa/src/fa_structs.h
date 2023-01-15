@@ -47,9 +47,10 @@ struct fa_humidity_t
 
 struct fa_ctrl_active_t
 {
-  bool humidity_fan_level;
-  bool temp_fan_level;
+  bool humidity_fan_curve;
+  bool temp_fan_curve;
   bool humidity_fan_off;
+  bool frost_fan_curve;
 };
 
 struct fa_state_t
@@ -81,9 +82,10 @@ struct fa_val_level_pair_t
   uint8_t level;
 };
 
-struct fa_fan_level_ctrl_t
+struct fa_fan_curve_t
 {
-  fa_val_level_pair_t item[MAX_FAN_CONSTRAINTS];
+  fa_val_level_pair_t item[FAN_CURVE_POINTS_MAX];
+  uint8_t enabled_points;
   bool enabled;
 };
 
@@ -95,11 +97,20 @@ struct fa_humidity_ctrl_t
   bool enabled;
 };
 
+struct fa_frost_flap_ctrl_t
+{
+  float temp_min_open;
+  float temp_min_close;
+  bool enabled;
+};
+
 struct fa_ctrl_t
 {
-  fa_fan_level_ctrl_t temp_fan_level;
-  fa_fan_level_ctrl_t humidity_fan_level;
-  fa_humidity_ctrl_t humidity_fan_off;
+  fa_fan_curve_t temp_fan_curve;
+  fa_fan_curve_t humidity_fan_curve;
+  fa_fan_curve_t frost_fan_curve;
+  fa_humidity_ctrl_t humidity_fan_ctrl;
+  fa_frost_flap_ctrl_t frost_flap_ctrl;
   uint8_t fan_level_max;
   uint8_t fan_level_min;
   uint8_t fan_frost_level_max;

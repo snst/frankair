@@ -34,3 +34,13 @@ bool intervalCheckMS(uint32_t &last, uint32_t ms)
   }
   return false;
 }
+
+float mapValue(float x, float in_min, float in_max, float out_min, float out_max) {
+    const long run = in_max - in_min;
+    if(run == 0){
+        return 0;
+    }
+    const float rise = out_max - out_min;
+    const float delta = x - in_min;
+    return (delta * rise) / run + out_min;
+}
