@@ -11,11 +11,13 @@
 #include "fa_fan.h"
 #include "fa_flap.h"
 #include "fa_led.h"
+#include "fa_ota.h"
+#include "fa_version.h"
 
 void setup()
 {
   loggingSetup();
-  IMSG(LM_COMMON, "Welcome to frankair!");
+  IMSG(LM_COMMON, "Welcome to frankair! Version:", FA_VERSION);
   calibrationLoad();
   settingsLoad();
   ledSetup();
@@ -32,4 +34,5 @@ void loop()
   sensorsUpdate();
   controllerUpdate();
   ledUpdate();
+  otaUpdate();
 }

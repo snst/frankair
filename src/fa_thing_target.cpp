@@ -11,6 +11,7 @@
 #include "fa_sensors.h"
 #include "fa_calibration.h"
 #include "fa_version.h"
+#include "fa_ota.h"
 
 ThingerESP32 thing(FA_USERNAME, FA_DEVICE_ID, FA_DEVICE_CREDENTIAL);
 
@@ -67,7 +68,6 @@ void thingSetup()
 
     force_update = !isEmpty;
   };
-
 
   thing["Controller"] << [](pson &in)
   {
@@ -225,16 +225,32 @@ void thingSetup()
     out["build"] = __DATE__ "  " __TIME__;
   };
 
-  ADD_CMD("1.1 Settings save", settingsWrite)
-  ADD_CMD("1.2 Settings load", settingsLoad)
-  ADD_CMD("1.3 Settings clear", settingsClear)
-  ADD_CMD("2.1 Calibration save", calibrationWrite)
-  ADD_CMD("2.2 Calibration load", calibrationLoad)
-  ADD_CMD("2.3 Calibration clear", calibrationClear)
-  ADD_CMD("3.1 Calibrate temp min", sensorsCalibrateTempLow)
-  ADD_CMD("3.2 Calibrate temp max", sensorsCalibrateTempHigh)
-  ADD_CMD("3.3 Calibrate humidity min", sensorsCalibrateHumidityLow)
-  ADD_CMD("3.4 Calibrate humidity max", sensorsCalibrateHumidityHigh)  
-  ADD_CMD("4.1 Scan sensors", sensorsScan)
-  ADD_CMD("4.2 Reboot", ESP.restart)
+  thing["OTA"] >> [](pson &out)
+  {
+    out["firmware_size"] = fa_ota.firmware_size;
+    out["transferred_size"] = fa_ota.transferred_size;
+    out["checksum"] = fa_ota.checksum;
+    out["downloading"] = fa_ota.downloading;
+    out["abort"] = fa_ota.abort;
+    out["error"] = fa_ota.error;
+    out["success"] = fa_ota.success;
+    out["http_response"] = fa_ota.http_response;
+    out["simulate"] = fa_ota.simulate;
+  };
+
+  ADD_CMD("a Settings save", settingsWrite)
+  ADD_CMD("b Settings load", settingsLoad)
+  ADD_CMD("c Settings clear", settingsClear)
+  ADD_CMD("d Calibration save", calibrationWrite)
+  ADD_CMD("e Calibration load", calibrationLoad)
+  ADD_CMD("f Calibration clear", calibrationClear)
+  ADD_CMD("g Calibrate temp min", sensorsCalibrateTempLow)
+  ADD_CMD("h Calibrate temp max", sensorsCalibrateTempHigh)
+  ADD_CMD("i Calibrate humidity min", sensorsCalibrateHumidityLow)
+  ADD_CMD("j Calibrate humidity max", sensorsCalibrateHumidityHigh)
+  ADD_CMD("k Scan sensors", sensorsScan)
+  ADD_CMD("l Reboot", ESP.restart)
+  ADD_CMD("n Start OTA simulation", otaStartSim)
+  ADD_CMD("o Start OTA update", otaStart)
+  ADD_CMD("p Abort OTA", otaAbort)
 }

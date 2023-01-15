@@ -859,9 +859,6 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
-								"resource": "State",
-								"update": "interval",
-								"user": "olavwaldherr",
 								"mapping": [
 									"ctrl_active_frost_fan_curve",
 									"ctrl_active_humidity_fan_curve",
@@ -869,7 +866,10 @@
 									"ctrl_active_temp_fan_curve",
 									"mode",
 									"submode"
-								]
+								],
+								"resource": "State",
+								"update": "interval",
+								"user": "olavwaldherr"
 							},
 							"name": "Default",
 							"skipCurrent": 1,
@@ -1411,6 +1411,419 @@
 								"interval": 5,
 								"mapping": "temp_fresh_out",
 								"resource": "StateRAW",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
+				}
+			]
+		},
+		{
+			"icon": "fas fa-atom",
+			"name": "OTA",
+			"widgets": [
+				{
+					"layout": {
+						"col": 1,
+						"row": 2,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Transferred size"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 0,
+						"icon": "",
+						"size": "35px",
+						"unit_size": "20px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "transferted_size",
+								"resource": "OTA",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 1,
+						"row": 6,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Error"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 0,
+						"icon": "",
+						"size": "35px",
+						"unit_size": "20px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "error",
+								"resource": "OTA",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 0,
+						"row": 2,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Firmware size"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 0,
+						"icon": "",
+						"size": "35px",
+						"unit_size": "20px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "firmware_size",
+								"resource": "OTA",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 0,
+						"row": 4,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "HTTP response"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 0,
+						"icon": "",
+						"size": "35px",
+						"unit_size": "20px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "http_response",
+								"resource": "OTA",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 2,
+						"row": 4,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Simulate"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 0,
+						"icon": "",
+						"size": "35px",
+						"unit_size": "20px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "simulate",
+								"resource": "OTA",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 0,
+						"row": 6,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Success"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 0,
+						"icon": "",
+						"size": "35px",
+						"unit_size": "20px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "success",
+								"resource": "OTA",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 2,
+						"row": 2,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Checksum"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 0,
+						"icon": "",
+						"size": "35px",
+						"unit_size": "20px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "checksum",
+								"resource": "OTA",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 0,
+						"row": 0,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Version"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 0,
+						"icon": "",
+						"size": "35px",
+						"unit_size": "20px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "version",
+								"resource": "Info",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 2,
+						"row": 6,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Abort"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 0,
+						"icon": "",
+						"size": "35px",
+						"unit_size": "20px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "abort",
+								"resource": "OTA",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 1,
+						"row": 4,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Downloading"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 0,
+						"icon": "",
+						"size": "35px",
+						"unit_size": "20px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "downloading",
+								"resource": "OTA",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 1,
+						"row": 0,
+						"sizeX": 2,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Build"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 0,
+						"icon": "",
+						"size": "35px",
+						"unit_size": "20px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "build",
+								"resource": "Info",
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
