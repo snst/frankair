@@ -1,6 +1,15 @@
 // Copyright (c) 2023 by Stefan Schmidt
 #include "fa_log.h"
 
+const char *modeToStr(uint8_t mode)
+{
+    return modeToStr((controller_mode_t)mode);
+}
+const char *submodeToStr(uint8_t mode)
+{
+    return submodeToStr((controller_submode_auto_t)mode);
+}
+
 const char *modeToStr(controller_mode_t mode)
 {
     switch (mode)

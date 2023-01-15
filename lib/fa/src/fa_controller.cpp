@@ -14,8 +14,8 @@ fa_state_raw_t state_raw;
 
 void controllerSetup()
 {
-  state.mode = controller_mode_t::kUndefined;
-  state.submode_auto = controller_submode_auto_t::kUndefined;
+  state.mode = (uint8_t)controller_mode_t::kUndefined;
+  state.submode_auto = (uint8_t)controller_submode_auto_t::kUndefined;
 }
 
 void controllerModeManualUpdate()
@@ -61,7 +61,7 @@ bool calcFanOffHumidity(uint8_t &fan_level)
       IMSG(LM_FAN, "calcFanOffHumidity: Relative humidity too low. Fan", fan_level);
     }
 
-    switch (state.submode_auto)
+    switch ((controller_submode_auto_t)state.submode_auto)
     {
     case controller_submode_auto_t::kOn:
       // Stop fan if abs humidity delta is lower than minimum delta e.g. 0.5g/m³
@@ -123,8 +123,8 @@ bool calcFanLevelTemp(uint8_t &fan_level)
 
 void controllerModeAutoChangeSubMode(controller_submode_auto_t submode)
 {
-  controller_submode_auto_t old = state.submode_auto;
-  if (updateIfChanged(state.submode_auto, submode))
+  uint8_t old = state.submode_auto;
+  if (updateIfChanged(state.submode_auto, (uint8_t)submode))
   {
     IMSG(LM_MODE, "controllerModeAutoChangeSubMode: ", submodeToStr(old), " => ", submodeToStr(submode));
   }
@@ -174,7 +174,7 @@ void controllerModeAutoUpdate()
 {
   IMSG(LM_MODE, "controllerModeAutoUpdate() Submode: ", submodeToStr(state.submode_auto));
 
-  switch (state.submode_auto)
+  switch ((controller_submode_auto_t)state.submode_auto)
   {
   case controller_submode_auto_t::kWait:
     if (intervalCheckSec(wait_now, settings.sniff.interval_sec))
@@ -204,8 +204,8 @@ void controllerModeAutoUpdate()
 void controllerModeChanged()
 {
   IMSG(LM_MODE, "controllerMode changed to: ", modeToStr(state.mode));
-  state.submode_auto = controller_submode_auto_t::kUndefined;
-  switch (state.mode)
+  state.submode_auto = (uint8_t)controller_submode_auto_t::kUndefined;
+  switch ((controller_mode_t)state.mode)
   {
   case controller_mode_t::kOff:
     fanSetLevelFreshAndExhaust(0U);
@@ -224,7 +224,7 @@ void controllerUpdate()
       controllerModeChanged();
     }
 
-    switch (state.mode)
+    switch ((controller_mode_t)state.mode)
     {
     case controller_mode_t::kAuto:
       controllerModeAutoUpdate();

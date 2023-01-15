@@ -128,7 +128,8 @@ void test_sensorsProcessValues(void)
   state_raw.humidity.rel_exaust_in = 15.0f;
   state_raw.humidity.rel_fresh_out = 16.0f;
 
-  settings.use_calibration = false;
+  settings.use_calibration_temp = false;
+  settings.use_calibration_humidity = false;
   settings.measurement_alpha = 0.5f;
   sensorsProcessValues();
   TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.temp.exhaust_in, state.temp.exhaust_in);
@@ -138,7 +139,8 @@ void test_sensorsProcessValues(void)
   TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.humidity.rel_exaust_in, state.humidity.rel_exaust_in);
   TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.humidity.rel_fresh_out, state.humidity.rel_fresh_out);
 
-  settings.use_calibration = true;
+  settings.use_calibration_temp = true;
+  settings.use_calibration_humidity = true;
   settings.measurement_alpha = 1.0f;
   sensorsProcessValues();
   float offset = fa_calibration_sensor.ref_temp.min - fa_calibration_sensor.exhaust_in_temp.min;

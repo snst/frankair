@@ -11,69 +11,6 @@
 #include "fa_sensors.h"
 #include "fa_calibration.h"
 
-const char *CMD_REBOOT = "cmd_reboot";
-const char *CMD_SAVE_SETTINGS = "cmd_save_settings";
-const char *CMD_LOAD_SETTINGS = "cmd_load_settings";
-const char *CMD_CLEAR_SETTINGS = "cmd_clear_settings";
-const char *CMD_SAVE_CALIBRATION = "cmd_save_calibration";
-const char *CMD_LOAD_CALIBRATION = "cmd_load_calibration";
-const char *CMD_CLEAR_CALIBRATION = "cmd_clear_calibration";
-const char *CMD_SCAN_SENSORS = "cmd_scan_sensors";
-const char *CMD_CALIBRATE_TEMP_LOW = "cmd_calibrate_temp_low";
-const char *CMD_CALIBRATE_TEMP_HIGH = "cmd_calibrate_temp_high";
-const char *CMD_CALIBRATE_HUMIDITY_LOW = "cmd_calibrate_humidity_low";
-const char *CMD_CALIBRATE_HUMIDIRY_HIGH = "cmd_calibrate_humidity_high";
-
-const char *CFG_TEMP_SENSOR_READ_INTERVAL = "cfg_temp_sensor_read_interval_sec";
-const char *CFG_CONTROLLER_INTERVAL = "cfg_controller_interval_sec";
-const char *CFG_MEASUREMENT_ALPHA = "cfg_measurement_alpha";
-const char *MANUAL_LEVEL_FAN_FRESH = "manual_level_fan_fresh";
-const char *MANUAL_LEVEL_FAN_EXHAUST = "manual_level_fan_exhaust";
-const char *MANUAL_LEVEL_FAN_FROST = "manual_level_fan_frost";
-const char *MANUAL_FLAP_OPEN_FROST = "manual_flap_open_frost";
-const char *CFG_CONTROLLER_MODE = "cfg_controller_mode";
-const char *CFG_USE_CALIBRATION = "cfg_use_calibration";
-const char *CFG_LOG_MASK = "cfg_log_mask";
-const char *CAL_FLAP_POS_MIN = "cal_flap_pos_min";
-const char *CAL_FLAP_POS_MAX = "cal_flap_pos_max";
-const char *CAL_TEMP_EXHAST_IN_MIN = "cal_temp_exhaust_in_min";
-const char *CAL_TEMP_EXHAST_IN_MAX = "cal_temp_exhaust_in_max";
-const char *CAL_TEMP_EXHAST_OUT_MIN = "cal_temp_exhaust_out_min";
-const char *CAL_TEMP_EXHAST_OUT_MAX = "cal_temp_exhaust_out_max";
-const char *CAL_TEMP_FRESH_IN_MIN = "cal_temp_fresh_in_min";
-const char *CAL_TEMP_FRESH_IN_MAX = "cal_temp_fresh_in_max";
-const char *CAL_TEMP_FRESH_OUT_MIN = "cal_temp_fresh_out_min";
-const char *CAL_TEMP_FRESH_OUT_MAX = "cal_temp_fresh_out_max";
-const char *CAL_HUMIDITY_EXHAST_IN_MIN = "cal_humidity_exhaust_in_min";
-const char *CAL_HUMIDITY_EXHAST_IN_MAX = "cal_humidity_exhaust_in_max";
-const char *CAL_HUMIDITY_FRESH_OUT_MIN = "cal_humidity_fresh_out_min";
-const char *CAL_HUMIDITY_FRESH_OUT_MAX = "cal_humidity_fresh_out_max";
-
-const char *CFG_FAN_LEVEL_MAX = "cfg_fan_level_max";
-const char *CFG_FAN_LEVEL_MIN = "cfg_fan_level_min";
-const char *CFG_TEMP_FAN_LEVEL_ENABLED = "cfg_temp_fan_level_enabled";
-const char *CFG_HUMIDITY_FAN_LEVEL_ENABLED = "cfg_humidity_fan_level_enabled";
-const char *CFG_HUMIDITY_FAN_OFF_ENABLED = "cfg_humidity_fan_off_enabled";
-const char *CFG_HUMIDITY_FAN_OFF_ABS_MIN_START = "cfg_humidity_off_abs_min_start";
-const char *CFG_HUMIDITY_FAN_OFF_ABS_MIN_STOP = "cfg_humidity_off_abs_min_stop";
-const char *CFG_HUMIDITY_FAN_OFF_REL_MIN_STOP = "cfg_humidity_off_rel_min_stop";
-const char *CFG_SNIFF_INTERVAL_SEC = "cfg_sniff_interval_sec";
-const char *CFG_SNIFF_DURATION_SEC = "cfg_sniff_duration_sec";
-const char *CFG_SNIFF_FAN_LEVEL = "cfg_sniff_fan_level";
-const char *CFG_SNIFF_ENABLED = "cfg_sniff_enabled";
-const char *CFG_TEMP_0_VAL = "cfg_temp_0_val";
-const char *CFG_TEMP_0_FAN = "cfg_temp_0_fan";
-const char *CFG_TEMP_1_VAL = "cfg_temp_1_val";
-const char *CFG_TEMP_1_FAN = "cfg_temp_1_fan";
-const char *CFG_TEMP_2_VAL = "cfg_temp_2_val";
-const char *CFG_TEMP_2_FAN = "cfg_temp_2_fan";
-const char *CFG_HUMIDITY_0_VAL = "cfg_humidity_0_val";
-const char *CFG_HUMIDITY_0_FAN = "cfg_humidity_0_fan";
-const char *CFG_HUMIDITY_1_VAL = "cfg_humidity_1_val";
-const char *CFG_HUMIDITY_1_FAN = "cfg_humidity_1_fan";
-const char *CFG_HUMIDITY_2_VAL = "cfg_humidity_2_val";
-const char *CFG_HUMIDITY_2_FAN = "cfg_humidity_2_fan";
-
 ThingerESP32 thing(FA_USERNAME, FA_DEVICE_ID, FA_DEVICE_CREDENTIAL);
 
 void thingUpdate()
@@ -82,186 +19,144 @@ void thingUpdate()
   state.is_online = thing.is_connected();
 }
 
+template <typename T>
+void valUpdate(protoson::pson &in, const char *name, T &val, bool isEmpty)
+{
+  auto &remote = in[name];
+  if (isEmpty) // remote.is_empty())
+  {
+    remote = val;
+  }
+  else
+  {
+    val = remote;
+  }
+}
+
 void thingSetup()
 {
   thing.add_wifi(FA_SSID, FA_SSID_PASSWORD);
 
-  ADD_CMD(CMD_REBOOT, ESP.restart)
-  ADD_CMD(CMD_SAVE_SETTINGS, settingsWrite)
-  ADD_CMD(CMD_LOAD_SETTINGS, settingsLoad)
-  ADD_CMD(CMD_CLEAR_SETTINGS, settingsClear)
-  ADD_CMD(CMD_SAVE_CALIBRATION, calibrationWrite)
-  ADD_CMD(CMD_LOAD_CALIBRATION, calibrationLoad)
-  ADD_CMD(CMD_CLEAR_CALIBRATION, calibrationClear)
-  ADD_CMD(CMD_SCAN_SENSORS, sensorsScan)
-  ADD_CMD(CMD_CALIBRATE_TEMP_LOW, sensorsCalibrateTempLow)
-  ADD_CMD(CMD_CALIBRATE_TEMP_HIGH, sensorsCalibrateTempHigh)
-  ADD_CMD(CMD_CALIBRATE_HUMIDITY_LOW, sensorsCalibrateHumidityLow)
-  ADD_CMD(CMD_CALIBRATE_HUMIDIRY_HIGH, sensorsCalibrateHumidityHigh)
+  ADD_CMD("_Reboot", ESP.restart)
+  ADD_CMD("_Settings save", settingsWrite)
+  ADD_CMD("_Settings load", settingsLoad)
+  ADD_CMD("_Settings clear", settingsClear)
+  ADD_CMD("_Calibration save", calibrationWrite)
+  ADD_CMD("_Calibration load", calibrationLoad)
+  ADD_CMD("_Calibration clear", calibrationClear)
+  ADD_CMD("_Scan sensors", sensorsScan)
+  ADD_CMD("_Calibrate temp min", sensorsCalibrateTempLow)
+  ADD_CMD("_Calibrate temp max", sensorsCalibrateTempHigh)
+  ADD_CMD("_Calibrate humidity min", sensorsCalibrateHumidityLow)
+  ADD_CMD("_Calibrate humidity max", sensorsCalibrateHumidityHigh)
 
-  thing["settings"] << [](pson &in)
+  thing["Settings"] << [](pson &in)
   {
-    if (in.is_empty())
-    {
-      IMSG(LM_THING, "Dashboard reads settings..");
-      in[CFG_TEMP_SENSOR_READ_INTERVAL] = settings.temp_sensor_read_interval_sec;
-      in[CFG_CONTROLLER_INTERVAL] = settings.controller_interval_sec;
-      in[CFG_MEASUREMENT_ALPHA] = settings.measurement_alpha;
-      in[CFG_CONTROLLER_MODE] = (uint8_t)settings.mode;
-      in[CFG_USE_CALIBRATION] = settings.use_calibration;
-      in[CFG_LOG_MASK] = settings.log_mask;
-      in[CFG_SNIFF_INTERVAL_SEC] = settings.sniff.interval_sec;
-      in[CFG_SNIFF_DURATION_SEC] = settings.sniff.duration_sec;
-      in[CFG_SNIFF_FAN_LEVEL] = settings.sniff.fan_level;
-      in[CFG_SNIFF_ENABLED] = settings.sniff.enabled;
-      in[MANUAL_LEVEL_FAN_FRESH] = settings.manual.level_fan_fresh;
-      in[MANUAL_LEVEL_FAN_EXHAUST] = settings.manual.level_fan_exhaust;
-      in[MANUAL_LEVEL_FAN_FROST] = settings.manual.level_fan_frost;
-      in[MANUAL_FLAP_OPEN_FROST] = settings.manual.open_flap_frost;
-      in[CFG_FAN_LEVEL_MAX] = settings.ctrl.fan_level_max;
-      in[CFG_FAN_LEVEL_MIN] = settings.ctrl.fan_level_min;
+    bool isEmpty = in.is_empty();
 
-    }
-    else
-    {
-      IMSG(LM_THING, "Dashboard writes settings..");
-      settings.temp_sensor_read_interval_sec = in[CFG_TEMP_SENSOR_READ_INTERVAL];
-      settings.controller_interval_sec = in[CFG_CONTROLLER_INTERVAL];
-      settings.measurement_alpha = in[CFG_MEASUREMENT_ALPHA];
-      settings.mode = (controller_mode_t)(uint8_t)in[CFG_CONTROLLER_MODE];
-      settings.use_calibration = in[CFG_USE_CALIBRATION];
-      //settings.log_mask = in[CFG_LOG_MASK];
-      settings.sniff.interval_sec = in[CFG_SNIFF_INTERVAL_SEC];
-      settings.sniff.duration_sec = in[CFG_SNIFF_DURATION_SEC];
-      settings.sniff.fan_level = in[CFG_SNIFF_FAN_LEVEL];
-      settings.sniff.enabled = in[CFG_SNIFF_ENABLED];
-      settings.manual.level_fan_fresh = in[MANUAL_LEVEL_FAN_FRESH];
-      settings.manual.level_fan_exhaust = in[MANUAL_LEVEL_FAN_EXHAUST];
-      settings.manual.level_fan_frost = in[MANUAL_LEVEL_FAN_FROST];
-      settings.manual.open_flap_frost = in[MANUAL_FLAP_OPEN_FROST];
-      settings.ctrl.fan_level_max = in[CFG_FAN_LEVEL_MAX];
-      settings.ctrl.fan_level_min = in[CFG_FAN_LEVEL_MIN];
-      force_update = true;
-    }
+    valUpdate(in, "1.1 Controller mode", settings.mode, isEmpty);
+    valUpdate(in, "1.2 Controller intervall sec", settings.controller_interval_sec, isEmpty);
+    valUpdate(in, "1.3 Sensor read intervall sec", settings.temp_sensor_read_interval_sec, isEmpty);
+    valUpdate(in, "1.4 Sensor alpha filter", settings.measurement_alpha, isEmpty);
+    valUpdate(in, "1.5 Enable sensor calibration temp", settings.use_calibration_temp, isEmpty);
+    valUpdate(in, "1.6 Enable sensor calibration humidity", settings.use_calibration_humidity, isEmpty);
+    valUpdate(in, "1.7 Log mask", settings.log_mask, isEmpty);
+
+    valUpdate(in, "2.1 Sniffing enabled", settings.sniff.enabled, isEmpty);
+    valUpdate(in, "2.2 Sniffing fan level", settings.sniff.fan_level, isEmpty);
+    valUpdate(in, "2.3 Sniffing duration sec", settings.sniff.duration_sec, isEmpty);
+    valUpdate(in, "2.4 Sniffing intervall sec", settings.sniff.interval_sec, isEmpty);
+
+    valUpdate(in, "3.1 Manual fan level fresh", settings.manual.level_fan_fresh, isEmpty);
+    valUpdate(in, "3.2 Manual fan level exhaust", settings.manual.level_fan_exhaust, isEmpty);
+    valUpdate(in, "3.3 Manual fan level frost", settings.manual.level_fan_frost, isEmpty);
+    valUpdate(in, "3.4 Manual frost flap open", settings.manual.open_flap_frost, isEmpty);
+
+    valUpdate(in, "4.1 Fan level main min", settings.ctrl.fan_level_min, isEmpty);
+    valUpdate(in, "4.2 Fan level main max", settings.ctrl.fan_level_max, isEmpty);
+    valUpdate(in, "4.3 Fan level frost min", settings.ctrl.fan_frost_level_min, isEmpty);
+    valUpdate(in, "4.4 Fan level frost max", settings.ctrl.fan_frost_level_max, isEmpty);
+
+    force_update = !isEmpty;
   };
 
-  thing["calibration_sensor"] << [](pson &in)
+  thing["Calibration sensor"] << [](pson &in)
   {
-    if (in.is_empty())
-    {
-      IMSG(LM_THING, "Dashboard reads sensor calibration..");
-      in[CAL_TEMP_EXHAST_IN_MIN] = fa_calibration_sensor.exhaust_in_temp.min;
-      in[CAL_TEMP_EXHAST_IN_MAX] = fa_calibration_sensor.exhaust_in_temp.max;
-      in[CAL_TEMP_EXHAST_OUT_MIN] = fa_calibration_sensor.exhaust_out_temp.min;
-      in[CAL_TEMP_EXHAST_OUT_MAX] = fa_calibration_sensor.exhaust_out_temp.max;
-      in[CAL_TEMP_FRESH_IN_MIN] = fa_calibration_sensor.fresh_in_temp.min;
-      in[CAL_TEMP_FRESH_IN_MAX] = fa_calibration_sensor.fresh_in_temp.max;
-      in[CAL_TEMP_FRESH_OUT_MIN] = fa_calibration_sensor.fresh_out_temp.min;
-      in[CAL_TEMP_FRESH_OUT_MAX] = fa_calibration_sensor.fresh_out_temp.max;
-      in[CAL_HUMIDITY_EXHAST_IN_MIN] = fa_calibration_sensor.exhaust_in_humidity.min;
-      in[CAL_HUMIDITY_EXHAST_IN_MAX] = fa_calibration_sensor.exhaust_in_humidity.max;
-      in[CAL_HUMIDITY_FRESH_OUT_MIN] = fa_calibration_sensor.fresh_out_humidity.min;
-      in[CAL_HUMIDITY_FRESH_OUT_MAX] = fa_calibration_sensor.fresh_out_humidity.max;
-    }
-    else
-    {
-      IMSG(LM_THING, "Dashboard writes sensor calibration..");
-      fa_calibration_sensor.exhaust_in_temp.min = in[CAL_TEMP_EXHAST_IN_MIN];
-      fa_calibration_sensor.exhaust_in_temp.max = in[CAL_TEMP_EXHAST_IN_MAX];
-      fa_calibration_sensor.exhaust_out_temp.min = in[CAL_TEMP_EXHAST_OUT_MIN];
-      fa_calibration_sensor.exhaust_out_temp.max = in[CAL_TEMP_EXHAST_OUT_MAX];
-      fa_calibration_sensor.fresh_in_temp.min = in[CAL_TEMP_FRESH_IN_MIN];
-      fa_calibration_sensor.fresh_in_temp.max = in[CAL_TEMP_FRESH_IN_MAX];
-      fa_calibration_sensor.fresh_out_temp.min = in[CAL_TEMP_FRESH_OUT_MIN];
-      fa_calibration_sensor.fresh_out_temp.max = in[CAL_TEMP_FRESH_OUT_MAX];
-      fa_calibration_sensor.exhaust_in_humidity.min = in[CAL_HUMIDITY_EXHAST_IN_MIN];
-      fa_calibration_sensor.exhaust_in_humidity.max = in[CAL_HUMIDITY_EXHAST_IN_MAX];
-      fa_calibration_sensor.fresh_out_humidity.min = in[CAL_HUMIDITY_FRESH_OUT_MIN];
-      fa_calibration_sensor.fresh_out_humidity.max = in[CAL_HUMIDITY_FRESH_OUT_MAX];
-      force_update = true;
-    }
+    bool isEmpty = in.is_empty();
+    valUpdate(in, "1.1 Temp exhaust in min", fa_calibration_sensor.exhaust_in_temp.min, isEmpty);
+    valUpdate(in, "1.2 Temp exhaust in max", fa_calibration_sensor.exhaust_in_temp.max, isEmpty);
+    valUpdate(in, "1.3 Temp exhaust out min", fa_calibration_sensor.exhaust_out_temp.min, isEmpty);
+    valUpdate(in, "1.4 Temp exhaust out max", fa_calibration_sensor.exhaust_out_temp.max, isEmpty);
+    valUpdate(in, "2.1 Temp fresh in min", fa_calibration_sensor.fresh_in_temp.min, isEmpty);
+    valUpdate(in, "2.2 Temp fresh in max", fa_calibration_sensor.fresh_in_temp.max, isEmpty);
+    valUpdate(in, "2.3 Temp fresh out min", fa_calibration_sensor.fresh_out_temp.min, isEmpty);
+    valUpdate(in, "2.4 Temp fresh out max", fa_calibration_sensor.fresh_out_temp.max, isEmpty);
+    valUpdate(in, "3.1 Humidity exhaust in min", fa_calibration_sensor.exhaust_in_humidity.min, isEmpty);
+    valUpdate(in, "3.2 Humidity exhaust in max", fa_calibration_sensor.exhaust_in_humidity.max, isEmpty);
+    valUpdate(in, "3.3 Humidity fresh out min", fa_calibration_sensor.fresh_out_humidity.min, isEmpty);
+    valUpdate(in, "3.4 Humidity fresh out max", fa_calibration_sensor.fresh_out_humidity.max, isEmpty);
+
+    force_update = !isEmpty;
   };
 
-  thing["calibration_actuator"] << [](pson &in)
+  thing["Calibration actuator"] << [](pson &in)
   {
-    if (in.is_empty())
+    bool isEmpty = in.is_empty();
+    valUpdate(in, "1.1 Frost flap pos min", fa_calibration_actuator.flap_pos.min, isEmpty);
+    valUpdate(in, "1.2 Frost flap pos max", fa_calibration_actuator.flap_pos.max, isEmpty);
+
+    protoson::pson_array &array_fan_main = in["1.3 Fan main level-pwm"];
+    protoson::pson_array &array_fan_frost = in["1.4 Fan frost level-pwm"];
+
+    for (uint8_t i = 0U; i < FAN_LEVEL_STEPS; i++)
     {
-      IMSG(LM_THING, "Dashboard reads actuator calibration..");
-      in[CAL_FLAP_POS_MIN] = fa_calibration_actuator.flap_pos.min;
-      in[CAL_FLAP_POS_MAX] = fa_calibration_actuator.flap_pos.max;
-      for (uint8_t i = 0U; i < FAN_LEVEL_STEPS; i++)
+      if (isEmpty)
       {
-        char str[20];
-        sprintf(str, "cal_fan_main_%u", i);
-        in[(const char *)str] = fa_calibration_actuator.fan_pwm_main[i];
-        sprintf(str, "cal_fan_frost_%u", i);
-        in[(const char *)str] = fa_calibration_actuator.fan_pwm_frost[i];
+        array_fan_main.add(fa_calibration_actuator.fan_pwm_main[i]);
+        array_fan_frost.add(fa_calibration_actuator.fan_pwm_frost[i]);
+      }
+      else
+      {
+        fa_calibration_actuator.fan_pwm_main[i] = *array_fan_main[i];
+        fa_calibration_actuator.fan_pwm_frost[i] = *array_fan_frost[i];
       }
     }
-    else
-    {
-      IMSG(LM_THING, "Dashboard writes actuator calibration..");
-      fa_calibration_actuator.flap_pos.min = in[CAL_FLAP_POS_MIN];
-      fa_calibration_actuator.flap_pos.max = in[CAL_FLAP_POS_MAX];
-      for (uint8_t i = 0U; i < FAN_LEVEL_STEPS; i++)
-      {
-        char str[20];
-        sprintf(str, "cal_fan_main_%u", i);
-        fa_calibration_actuator.fan_pwm_main[i] = in[(const char *)str];
-        sprintf(str, "cal_fan_frost_%u", i);
-        fa_calibration_actuator.fan_pwm_frost[i] = in[(const char *)str];
-      }
-      force_update = true;
-    }
+    force_update = !isEmpty;
   };
 
   thing["ctrl"] << [](pson &in)
   {
-    if (in.is_empty())
+    bool isEmpty = in.is_empty();
+    valUpdate(in, "1.1 Enable fan run conditions", settings.ctrl.humidity_fan_off.enabled, isEmpty);
+    valUpdate(in, "1.2 Start fan if abs humidity delta greater than g/m³", settings.ctrl.humidity_fan_off.abs_min_start, isEmpty);
+    valUpdate(in, "1.3 Stop fan if abs humidity delta less than g/m³", settings.ctrl.humidity_fan_off.abs_min_stop, isEmpty);
+    valUpdate(in, "1.4 Stop fan if rel humidity less than %", settings.ctrl.humidity_fan_off.rel_min_start, isEmpty);
+    valUpdate(in, "2.1 Enable temp-fan throttle", settings.ctrl.temp_fan_level.enabled, isEmpty);
+    valUpdate(in, "3.1 Enable humidity-fan throttle", settings.ctrl.humidity_fan_level.enabled, isEmpty);
+
+    protoson::pson_array &array_temp_temp = in["2.2 Temp less than °C"];
+    protoson::pson_array &array_temp_level = in["2.3 Fan level"];
+    protoson::pson_array &array_hum_hum = in["3.2 Abs humidity delta less than g/m³"];
+    protoson::pson_array &array_hum_level = in["3.3 Fan level"];
+
+    for (uint8_t i = 0U; i < MAX_FAN_CONSTRAINTS; i++)
     {
-      IMSG(LM_THING, "Dashboard reads ctrl..");
-      in[CFG_TEMP_FAN_LEVEL_ENABLED] = settings.ctrl.temp_fan_level.enabled;
-      in[CFG_HUMIDITY_FAN_LEVEL_ENABLED] = settings.ctrl.humidity_fan_level.enabled;
-      in[CFG_HUMIDITY_FAN_OFF_ENABLED] = settings.ctrl.humidity_fan_off.enabled;
-      in[CFG_HUMIDITY_FAN_OFF_ABS_MIN_START] = settings.ctrl.humidity_fan_off.abs_min_start;
-      in[CFG_HUMIDITY_FAN_OFF_ABS_MIN_STOP] = settings.ctrl.humidity_fan_off.abs_min_stop;
-      in[CFG_HUMIDITY_FAN_OFF_REL_MIN_STOP] = settings.ctrl.humidity_fan_off.rel_min_start;
-      in[CFG_TEMP_0_VAL] = settings.ctrl.temp_fan_level.item[0].val;
-      in[CFG_TEMP_0_FAN] = settings.ctrl.temp_fan_level.item[0].level;
-      in[CFG_TEMP_1_VAL] = settings.ctrl.temp_fan_level.item[1].val;
-      in[CFG_TEMP_1_FAN] = settings.ctrl.temp_fan_level.item[1].level;
-      in[CFG_TEMP_2_VAL] = settings.ctrl.temp_fan_level.item[2].val;
-      in[CFG_TEMP_2_FAN] = settings.ctrl.temp_fan_level.item[2].level;
-      in[CFG_HUMIDITY_0_VAL] = settings.ctrl.humidity_fan_level.item[0].val;
-      in[CFG_HUMIDITY_0_FAN] = settings.ctrl.humidity_fan_level.item[0].level;
-      in[CFG_HUMIDITY_1_VAL] = settings.ctrl.humidity_fan_level.item[1].val;
-      in[CFG_HUMIDITY_1_FAN] = settings.ctrl.humidity_fan_level.item[1].level;
-      in[CFG_HUMIDITY_2_VAL] = settings.ctrl.humidity_fan_level.item[2].val;
-      in[CFG_HUMIDITY_2_FAN] = settings.ctrl.humidity_fan_level.item[2].level;
+      if (isEmpty)
+      {
+        array_temp_temp.add(settings.ctrl.temp_fan_level.item[i].val);
+        array_temp_level.add(settings.ctrl.temp_fan_level.item[i].level);
+        array_hum_hum.add(settings.ctrl.humidity_fan_level.item[i].val);
+        array_hum_level.add(settings.ctrl.humidity_fan_level.item[i].level);
+      }
+      else
+      {
+        settings.ctrl.temp_fan_level.item[i].val = *array_temp_temp[i];
+        settings.ctrl.temp_fan_level.item[i].level = *array_temp_level[i];
+        settings.ctrl.humidity_fan_level.item[i].val = *array_hum_hum[i];
+        settings.ctrl.humidity_fan_level.item[i].level = *array_hum_level[i];
+      }
     }
-    else
-    {
-      IMSG(LM_THING, "Dashboard writes ctrl..");
-      settings.ctrl.temp_fan_level.enabled = in[CFG_TEMP_FAN_LEVEL_ENABLED];
-      settings.ctrl.humidity_fan_level.enabled = in[CFG_HUMIDITY_FAN_LEVEL_ENABLED];
-      settings.ctrl.humidity_fan_off.enabled = in[CFG_HUMIDITY_FAN_OFF_ENABLED];
-      settings.ctrl.humidity_fan_off.abs_min_start = in[CFG_HUMIDITY_FAN_OFF_ABS_MIN_START];
-      settings.ctrl.humidity_fan_off.abs_min_stop = in[CFG_HUMIDITY_FAN_OFF_ABS_MIN_STOP];
-      settings.ctrl.humidity_fan_off.rel_min_start = in[CFG_HUMIDITY_FAN_OFF_REL_MIN_STOP];
-      settings.ctrl.temp_fan_level.item[0].val = in[CFG_TEMP_0_VAL];
-      settings.ctrl.temp_fan_level.item[0].level = in[CFG_TEMP_0_FAN];
-      settings.ctrl.temp_fan_level.item[1].val = in[CFG_TEMP_1_VAL];
-      settings.ctrl.temp_fan_level.item[1].level = in[CFG_TEMP_1_FAN];
-      settings.ctrl.temp_fan_level.item[2].val = in[CFG_TEMP_2_VAL];
-      settings.ctrl.temp_fan_level.item[2].level = in[CFG_TEMP_2_FAN];
-      settings.ctrl.humidity_fan_level.item[0].val = in[CFG_HUMIDITY_0_VAL];
-      settings.ctrl.humidity_fan_level.item[0].level = in[CFG_HUMIDITY_0_FAN];
-      settings.ctrl.humidity_fan_level.item[1].val = in[CFG_HUMIDITY_1_VAL];
-      settings.ctrl.humidity_fan_level.item[1].level = in[CFG_HUMIDITY_1_FAN];
-      settings.ctrl.humidity_fan_level.item[2].val = in[CFG_HUMIDITY_2_VAL];
-      settings.ctrl.humidity_fan_level.item[2].level = in[CFG_HUMIDITY_2_FAN];
-      force_update = true;
-    }
+    force_update = !isEmpty;
   };
 
   thing["state"] >> [](pson &out)
@@ -286,7 +181,6 @@ void thingSetup()
     out["volume_fresh"] = state.volume_fresh;
     out["volume_exhaust"] = state.volume_exhaust;
     out["liter"] = state.liter;
-    out["use_calibration"] = settings.use_calibration;
     out["ctrl_active_humidity_fan_off"] = state.ctrl_active.humidity_fan_off;
     out["ctrl_active_humidity_fan_level"] = state.ctrl_active.humidity_fan_level;
     out["ctrl_active_temp_fan_level"] = state.ctrl_active.temp_fan_level;

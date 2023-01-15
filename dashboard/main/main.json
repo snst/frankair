@@ -19,7 +19,7 @@
 	"tabs": [
 		{
 			"icon": "fas fa-tachometer-alt",
-			"name": "frankair",
+			"name": "Main",
 			"widgets": [
 				{
 					"layout": {
@@ -30,7 +30,8 @@
 					},
 					"panel": {
 						"color": "#ffffff",
-						"title": "temperature [°C]"
+						"colors": [],
+						"title": "Temperature [°C]"
 					},
 					"properties": {
 						"axis": true,
@@ -47,7 +48,7 @@
 								"tags": {},
 								"user": "olavwaldherr"
 							},
-							"color": "#4e028d",
+							"color": "#008a02",
 							"device": {
 								"id": "devid1",
 								"interval": 5,
@@ -56,7 +57,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "exhaust_in",
+							"name": "Inside IN",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -75,7 +76,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "fresh_out",
+							"name": "Inside OUT",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -84,7 +85,7 @@
 							}
 						},
 						{
-							"color": "#116f39",
+							"color": "#0300b3",
 							"device": {
 								"id": "devid1",
 								"interval": 5,
@@ -93,7 +94,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "fresh_in",
+							"name": "Outside IN",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -102,7 +103,7 @@
 							}
 						},
 						{
-							"color": "#7b64af",
+							"color": "#8c8aff",
 							"device": {
 								"id": "devid1",
 								"interval": 5,
@@ -111,7 +112,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "exhaust_out",
+							"name": "Outside OUT",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -125,13 +126,13 @@
 				{
 					"layout": {
 						"col": 2,
-						"row": 5,
+						"row": 10,
 						"sizeX": 4,
 						"sizeY": 5
 					},
 					"panel": {
 						"color": "#ffffff",
-						"title": "humidity absolute [g / mᵌ]"
+						"title": "Abs humidity [g / mᵌ]"
 					},
 					"properties": {
 						"axis": true,
@@ -153,7 +154,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "exhaust_in",
+							"name": "Inside IN",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -171,25 +172,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "fresh_out",
-							"skipCurrent": 1,
-							"source": "device",
-							"timespan": {
-								"magnitude": "minute",
-								"value": 10
-							}
-						},
-						{
-							"color": "#c91c08",
-							"device": {
-								"id": "devid1",
-								"interval": 5,
-								"mapping": "humidity_abs_delta",
-								"resource": "state",
-								"update": "interval",
-								"user": "olavwaldherr"
-							},
-							"name": "delta",
+							"name": "Inside OUT",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -203,13 +186,13 @@
 				{
 					"layout": {
 						"col": 2,
-						"row": 15,
+						"row": 20,
 						"sizeX": 4,
 						"sizeY": 6
 					},
 					"panel": {
 						"color": "#ffffff",
-						"title": "Percent"
+						"title": "Rel humidity [%]"
 					},
 					"properties": {
 						"axis": true,
@@ -232,7 +215,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "humidity rel exhaust_in",
+							"name": "Inside IN",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -250,26 +233,8 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "humidity rel  fresh_out",
+							"name": "Inside OUT",
 							"skipCurrent": 1,
-							"source": "device",
-							"timespan": {
-								"magnitude": "minute",
-								"value": 10
-							}
-						},
-						{
-							"color": "#d91102",
-							"device": {
-								"id": "devid1",
-								"interval": 300,
-								"mapping": "effectiveness",
-								"resource": "state",
-								"update": "interval",
-								"user": "olavwaldherr"
-							},
-							"name": "effectiveness heat exchange",
-							"skipCurrent": 60,
 							"source": "device",
 							"timespan": {
 								"magnitude": "minute",
@@ -282,13 +247,13 @@
 				{
 					"layout": {
 						"col": 2,
-						"row": 10,
+						"row": 15,
 						"sizeX": 4,
 						"sizeY": 5
 					},
 					"panel": {
 						"color": "#ffffff",
-						"title": "actuator"
+						"title": "Actuator"
 					},
 					"properties": {
 						"axis": true,
@@ -306,12 +271,12 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
+								"mapping": "fan_level_exhaust",
 								"resource": "state",
 								"update": "interval",
-								"user": "olavwaldherr",
-								"mapping": "fan_level_exhaust"
+								"user": "olavwaldherr"
 							},
-							"name": "fan exhaust air",
+							"name": "Fan exhaust",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -324,12 +289,12 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
+								"mapping": "fan_level_fresh",
 								"resource": "state",
 								"update": "interval",
-								"user": "olavwaldherr",
-								"mapping": "fan_level_fresh"
+								"user": "olavwaldherr"
 							},
-							"name": "fan fresh air",
+							"name": "Fan fresh",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -342,12 +307,12 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
+								"mapping": "fan_level_frost",
 								"resource": "state",
 								"update": "interval",
-								"user": "olavwaldherr",
-								"mapping": "fan_level_frost"
+								"user": "olavwaldherr"
 							},
-							"name": "fan frost",
+							"name": "Fan frost",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -360,12 +325,12 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
+								"mapping": "open_flap_frost",
 								"resource": "state",
 								"update": "interval",
-								"user": "olavwaldherr",
-								"mapping": "open_flap_frost"
+								"user": "olavwaldherr"
 							},
-							"name": "flap frost open",
+							"name": "Flap frost open",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -379,12 +344,12 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
+								"mapping": "mode",
 								"resource": "state",
 								"update": "interval",
-								"user": "olavwaldherr",
-								"mapping": "mode"
+								"user": "olavwaldherr"
 							},
-							"name": "mode",
+							"name": "Mode",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -397,12 +362,12 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
+								"mapping": "submode",
 								"resource": "state",
 								"update": "interval",
-								"user": "olavwaldherr",
-								"mapping": "mode"
+								"user": "olavwaldherr"
 							},
-							"name": "submode",
+							"name": "AutoMode",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -415,57 +380,15 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 13,
-						"sizeX": 1,
-						"sizeY": 2
-					},
-					"panel": {
-						"color": "#ffffff",
-						"title": "state"
-					},
-					"properties": {
-						"color": "#1E313E",
-						"decimal_places": 0,
-						"icon": "",
-						"options": "var options = {\n    series: series,\n    chart: {\n        type: 'line',\n        zoom: {\n            enabled: true\n        }\n    },\n    zoom: {\n        type: 'x',\n        enabled: true,\n        autoScaleYaxis: true\n    },\n    toolbar: {\n        autoSelected: 'zoom'\n    },\n    stroke: {\n        curve: 'straight',\n        width: 4\n    },\n    grid: {\n        row: {\n            colors: ['#f3f3f3', 'transparent'],\n            opacity: 0.5\n        },\n    },\n    xaxis: {\n        type: 'datetime',\n        tooltip: {\n            enabled: false\n        },\n        labels: {\n            datetimeUTC: false\n        }\n    },\n    yaxis: {\n        labels: {\n            \"formatter\": function (val) {\n                return val.toFixed(2);\n            }\n        }\n    },\n    tooltip: {\n        x: {\n            format: 'dd/MM/yyyy HH:mm:ss'\n        }\n    }\n};",
-						"refresh_interval": 0,
-						"size": "35px",
-						"unit_size": "20px",
-						"weight": "font-thin"
-					},
-					"sources": [
-						{
-							"color": "#1E313E",
-							"device": {
-								"id": "devid1",
-								"interval": 5,
-								"mapping": "mode",
-								"resource": "state",
-								"update": "interval",
-								"user": "olavwaldherr"
-							},
-							"name": "Default",
-							"skipCurrent": 1,
-							"source": "device",
-							"timespan": {
-								"magnitude": "minute",
-								"value": 30
-							}
-						}
-					],
-					"type": "text"
-				},
-				{
-					"layout": {
 						"col": 1,
-						"row": 2,
+						"row": 10,
 						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#75a3ff",
-						"title": "fresh air in D1"
+						"color": "#ffdca0",
+						"subtitle": "",
+						"title": "Outside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -500,13 +423,13 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 4,
+						"row": 12,
 						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#e1effe",
-						"title": "fresh air out B2"
+						"color": "#ffdca0",
+						"title": "Inside OUT"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -538,13 +461,13 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 2,
+						"row": 10,
 						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#feb571",
-						"title": "exhaust air in B1"
+						"color": "#ffdca0",
+						"title": "Inside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -576,13 +499,13 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 4,
+						"row": 12,
 						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#ffd2a8",
-						"title": "exhaust air out D2"
+						"color": "#ffdca0",
+						"title": "Outside OUT"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -614,9 +537,9 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 8,
+						"row": 19,
 						"sizeX": 1,
-						"sizeY": 3
+						"sizeY": 2
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -652,7 +575,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 11,
+						"row": 21,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -690,7 +613,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 11,
+						"row": 19,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -727,8 +650,8 @@
 				},
 				{
 					"layout": {
-						"col": 1,
-						"row": 13,
+						"col": 0,
+						"row": 21,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -766,13 +689,13 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 0,
+						"row": 6,
 						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#feb571",
-						"title": "humidity abs exhaust in"
+						"color": "#94dfff",
+						"title": "Abs humidity inside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -803,14 +726,14 @@
 				},
 				{
 					"layout": {
-						"col": 0,
+						"col": 1,
 						"row": 6,
 						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#e1effe",
-						"title": "humidity abs fresh out"
+						"color": "#94dfff",
+						"title": "Abs humidity outside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -844,50 +767,11 @@
 						"col": 0,
 						"row": 8,
 						"sizeX": 1,
-						"sizeY": 3
-					},
-					"panel": {
-						"color": "#ffffff",
-						"subtitle": "exhaust - fresh",
-						"title": "humidity abs delta"
-					},
-					"properties": {
-						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
-						"size": "35px",
-						"unit": "g / mᵌ",
-						"unit_size": "20px",
-						"weight": "font-thin"
-					},
-					"sources": [
-						{
-							"color": "#1E313E",
-							"device": {
-								"id": "devid1",
-								"interval": 5,
-								"mapping": "humidity_abs_delta",
-								"resource": "state",
-								"update": "interval",
-								"user": "olavwaldherr"
-							},
-							"name": "Default",
-							"skipCurrent": 1,
-							"source": "device"
-						}
-					],
-					"type": "text"
-				},
-				{
-					"layout": {
-						"col": 1,
-						"row": 0,
-						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#feb571",
-						"title": "humidity rel exhaust in"
+						"color": "#e1effe",
+						"title": "Rel humidity inside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -919,13 +803,13 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 6,
+						"row": 8,
 						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
 						"color": "#e1effe",
-						"title": "humidity rel fresh out"
+						"title": "Rel humidity inside OUT"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -957,21 +841,17 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 15,
-						"sizeX": 1,
-						"sizeY": 3
+						"row": 14,
+						"sizeX": 2,
+						"sizeY": 5
 					},
 					"panel": {
 						"color": "#ffffff",
-						"title": "use calibration"
+						"title": "Status"
 					},
 					"properties": {
-						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
-						"size": "35px",
-						"unit_size": "20px",
-						"weight": "font-thin"
+						"source": "code",
+						"template": "<div ng-app=\"\" ng-init=\"submode=['waiting','on','sniffing', 'undefined']; mode=['off','auto','manual', 'undefined']\">\n\n    <p>Mode : {{mode[value.mode] }}</p>\n    <p>AutoMode: {{submode[value.submode] }}</p>\n    <p>Fan off conditions active: {{value.ctrl_active_humidity_fan_off}}</p>\n    <p>Humidity fan throttle active: {{value.ctrl_active_humidity_fan_level}}</p>\n    <p>Temp fan throttle active: {{value.ctrl_active_temp_fan_level}}</p>\n\n</div>"
 					},
 					"sources": [
 						{
@@ -979,7 +859,13 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
-								"mapping": "use_calibration",
+								"mapping": [
+									"ctrl_active_humidity_fan_level",
+									"ctrl_active_humidity_fan_off",
+									"ctrl_active_temp_fan_level",
+									"mode",
+									"submode"
+								],
 								"resource": "state",
 								"update": "interval",
 								"user": "olavwaldherr"
@@ -989,13 +875,166 @@
 							"source": "device"
 						}
 					],
-					"type": "text"
+					"type": "html"
+				},
+				{
+					"layout": {
+						"col": 1,
+						"row": 0,
+						"sizeX": 1,
+						"sizeY": 6
+					},
+					"panel": {
+						"color": "#ffffff",
+						"subtitle": "inside - outside",
+						"title": "Abs humidity delta"
+					},
+					"properties": {
+						"colors": [
+							{
+								"color": "#809fff",
+								"max": 0,
+								"min": -10
+							},
+							{
+								"color": "#a2ff70",
+								"max": 10,
+								"min": 0
+							}
+						],
+						"majorTicks": 2,
+						"max": 10,
+						"min": -10,
+						"plateColor": "#ffffff",
+						"showValue": true,
+						"textColor": "#1E313E",
+						"tickColor": "#000000",
+						"unit": "g/m³"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "humidity_abs_delta",
+								"resource": "state",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "tachometer"
+				},
+				{
+					"layout": {
+						"col": 0,
+						"row": 0,
+						"sizeX": 1,
+						"sizeY": 6
+					},
+					"panel": {
+						"color": "#ffffff",
+						"subtitle": "",
+						"title": "Rel humidity inside IN"
+					},
+					"properties": {
+						"colors": [
+							{
+								"color": "#ffc8c8",
+								"max": 40,
+								"min": 0
+							},
+							{
+								"color": "#86fe86",
+								"max": 70,
+								"min": 40
+							},
+							{
+								"color": "#809fff",
+								"max": 100,
+								"min": 70
+							}
+						],
+						"majorTicks": 10,
+						"max": 100,
+						"min": 0,
+						"plateColor": "#ffffff",
+						"showValue": true,
+						"textColor": "#1E313E",
+						"tickColor": "#000000",
+						"unit": "%"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "humidity_rel_exaust_in",
+								"resource": "state",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "tachometer"
+				},
+				{
+					"layout": {
+						"col": 2,
+						"row": 5,
+						"sizeX": 4,
+						"sizeY": 5
+					},
+					"panel": {
+						"color": "#ffffff",
+						"subtitle": "",
+						"title": "Abs humidity delta [g / mᵌ]"
+					},
+					"properties": {
+						"axis": true,
+						"fill": false,
+						"legend": true,
+						"multiple_axes": false,
+						"yaxis": {
+							"max": 10,
+							"min": -10
+						}
+					},
+					"sources": [
+						{
+							"color": "#180cc0",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "humidity_abs_delta",
+								"resource": "state",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "inside - outside",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"value": 10
+							}
+						}
+					],
+					"type": "chart"
 				}
 			]
 		},
 		{
 			"icon": "fas fa-atom",
-			"name": "raw",
+			"name": "Raw",
 			"widgets": [
 				{
 					"layout": {
@@ -1006,7 +1045,7 @@
 					},
 					"panel": {
 						"color": "#ffffff",
-						"title": "temperature"
+						"title": "Temperature [°C]"
 					},
 					"properties": {
 						"axis": true,
@@ -1025,7 +1064,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "exhaust in",
+							"name": "Inside IN",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -1043,7 +1082,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "exhaust out",
+							"name": "Outside OUT",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -1061,7 +1100,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "fresh in",
+							"name": "Outside IN",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -1079,7 +1118,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "fresh out",
+							"name": "Inside OUT",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -1099,7 +1138,7 @@
 					},
 					"panel": {
 						"color": "#ffffff",
-						"title": "humidity relative"
+						"title": "Relative humidity [%]"
 					},
 					"properties": {
 						"axis": true,
@@ -1118,7 +1157,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "fresh out",
+							"name": "Inside OUT",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -1136,7 +1175,7 @@
 								"update": "interval",
 								"user": "olavwaldherr"
 							},
-							"name": "exhaust in",
+							"name": "Inside IN",
 							"skipCurrent": 1,
 							"source": "device",
 							"timespan": {
@@ -1156,8 +1195,8 @@
 					},
 					"panel": {
 						"color": "#ffffff",
-						"subtitle": "temp",
-						"title": "exhaust in"
+						"subtitle": "",
+						"title": "Temperature inside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -1195,8 +1234,8 @@
 					},
 					"panel": {
 						"color": "#ffffff",
-						"subtitle": "temp",
-						"title": "exhaust out"
+						"subtitle": "",
+						"title": "Temperature outside OUT"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -1234,8 +1273,8 @@
 					},
 					"panel": {
 						"color": "#ffffff",
-						"subtitle": "rel humidity",
-						"title": "fresh out"
+						"subtitle": "",
+						"title": "Rel humidity inside OUT"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -1273,8 +1312,8 @@
 					},
 					"panel": {
 						"color": "#ffffff",
-						"subtitle": "rel humidity",
-						"title": "exhaust in"
+						"subtitle": "",
+						"title": "Rel humidity inside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -1312,8 +1351,8 @@
 					},
 					"panel": {
 						"color": "#ffffff",
-						"subtitle": "temp",
-						"title": "fresh in"
+						"subtitle": "",
+						"title": "Temperature outside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -1351,8 +1390,8 @@
 					},
 					"panel": {
 						"color": "#ffffff",
-						"subtitle": "temp",
-						"title": "fresh out"
+						"subtitle": "",
+						"title": "Temperature inside OUT"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -1380,136 +1419,6 @@
 						}
 					],
 					"type": "text"
-				}
-			]
-		},
-		{
-			"icon": "fas fa-atom",
-			"name": "manual",
-			"widgets": [
-				{
-					"layout": {
-						"col": 2,
-						"row": 0,
-						"sizeX": 2,
-						"sizeY": 3
-					},
-					"panel": {
-						"color": "#ffffff",
-						"title": "fan fresh"
-					},
-					"properties": {
-						"max": 10,
-						"min": 0,
-						"step": 1
-					},
-					"sources": [
-						{
-							"color": "#1E313E",
-							"device": {
-								"id": "devid1",
-								"mapping": "manual_power_fan_fresh",
-								"resource": "settings",
-								"user": "olavwaldherr"
-							},
-							"name": "Default",
-							"source": "device"
-						}
-					],
-					"type": "slider"
-				},
-				{
-					"layout": {
-						"col": 2,
-						"row": 3,
-						"sizeX": 2,
-						"sizeY": 3
-					},
-					"panel": {
-						"color": "#ffffff",
-						"title": "flap frost"
-					},
-					"properties": {
-						"max": 10,
-						"min": 0,
-						"step": 1
-					},
-					"sources": [
-						{
-							"color": "#1E313E",
-							"device": {
-								"id": "devid1",
-								"mapping": "manual_flap_open_frost",
-								"resource": "settings",
-								"user": "olavwaldherr"
-							},
-							"name": "Default",
-							"source": "device"
-						}
-					],
-					"type": "slider"
-				},
-				{
-					"layout": {
-						"col": 0,
-						"row": 3,
-						"sizeX": 2,
-						"sizeY": 3
-					},
-					"panel": {
-						"color": "#ffffff",
-						"title": "fan frost"
-					},
-					"properties": {
-						"max": 10,
-						"min": 0,
-						"step": 1
-					},
-					"sources": [
-						{
-							"color": "#1E313E",
-							"device": {
-								"id": "devid1",
-								"mapping": "manual_power_fan_frost",
-								"resource": "settings",
-								"user": "olavwaldherr"
-							},
-							"name": "Default",
-							"source": "device"
-						}
-					],
-					"type": "slider"
-				},
-				{
-					"layout": {
-						"col": 0,
-						"row": 0,
-						"sizeX": 2,
-						"sizeY": 3
-					},
-					"panel": {
-						"color": "#ffffff",
-						"title": "fan exhaust"
-					},
-					"properties": {
-						"max": 10,
-						"min": 0,
-						"step": 1
-					},
-					"sources": [
-						{
-							"color": "#1E313E",
-							"device": {
-								"id": "devid1",
-								"mapping": "manual_power_fan_exhaust",
-								"resource": "settings",
-								"user": "olavwaldherr"
-							},
-							"name": "Default",
-							"source": "device"
-						}
-					],
-					"type": "slider"
 				}
 			]
 		}

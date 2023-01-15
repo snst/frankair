@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "fa_defines.h"
-enum class controller_mode_t
+enum class controller_mode_t : uint8_t
 {
   kOff = 0,
   kAuto,
@@ -12,7 +12,7 @@ enum class controller_mode_t
   kUndefined
 };
 
-enum class controller_submode_auto_t
+enum class controller_submode_auto_t : uint8_t
 {
   kWait = 0,
   kOn,
@@ -55,8 +55,8 @@ struct fa_ctrl_active_t
 struct fa_state_t
 {
   fa_actuator_t actuator;
-  controller_mode_t mode;
-  controller_submode_auto_t submode_auto;
+  uint8_t mode;         // controller_mode_t
+  uint8_t submode_auto; // controller_submode_auto_t
 
   fa_temp_t temp;
   fa_humidity_t humidity;
@@ -102,6 +102,8 @@ struct fa_ctrl_t
   fa_humidity_ctrl_t humidity_fan_off;
   uint8_t fan_level_max;
   uint8_t fan_level_min;
+  uint8_t fan_frost_level_max;
+  uint8_t fan_frost_level_min;
 };
 
 struct fa_sniff_t
@@ -116,13 +118,14 @@ struct fa_settings_t
 {
   uint8_t temp_sensor_read_interval_sec;
   uint8_t controller_interval_sec;
-  controller_mode_t mode;
+  uint8_t mode; // controller_mode_t
   float measurement_alpha;
-  bool use_calibration;
+  bool use_calibration_temp;
   fa_actuator_t manual;
   uint8_t log_mask;
   fa_ctrl_t ctrl;
   fa_sniff_t sniff;
+  bool use_calibration_humidity;
 };
 
 #endif // FA_STRUCTS_H

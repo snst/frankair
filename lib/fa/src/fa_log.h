@@ -24,7 +24,8 @@ void IMSG(uint8_t mask, const char *txt, float val);
 void IMSG(uint8_t mask, const char *txt, const char *val);
 void IMSGHEX(uint8_t mask, uint8_t val);
 
+const char* modeToStr(uint8_t mode);
+const char* submodeToStr(uint8_t mode);
 const char* modeToStr(controller_mode_t mode);
 const char* submodeToStr(controller_submode_auto_t mode);
-
 #endif // FA_LOG_H

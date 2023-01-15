@@ -22,7 +22,7 @@ void settingsLoad()
     settings.temp_sensor_read_interval_sec = 1U;
     settings.controller_interval_sec = 5U;
     settings.measurement_alpha = 1.0f;
-    settings.mode = controller_mode_t::kManual;
+    settings.mode = (uint8_t)controller_mode_t::kManual;
     settings.sniff.duration_sec = 60U;
     settings.sniff.interval_sec = (30U * 60U);
     settings.sniff.fan_level = 5U;

@@ -61,22 +61,27 @@ void sensorsProcessValues()
     fa_temp_t temp;
     fa_humidity_t humidity;
 
-    if (settings.use_calibration)
+    if (settings.use_calibration_temp)
     {
-        IMSG(LM_SENSOR, "*** sensorsProcessValues(CALIBRATION) ***");
         correctTempWithCalibrationData(temp, state_raw.temp);
-        correctHumidityWithCalibrationData(humidity, state_raw.humidity);
     }
     else
     {
-        IMSG(LM_SENSOR, "*** sensorsProcessValues(RAW) ***");
         temp.exhaust_in = state_raw.temp.exhaust_in;
         temp.exhaust_out = state_raw.temp.exhaust_out;
         temp.fresh_in = state_raw.temp.fresh_in;
         temp.fresh_out = state_raw.temp.fresh_out;
+    }
+
+    if (settings.use_calibration_humidity)
+    {
+        correctHumidityWithCalibrationData(humidity, state_raw.humidity);
+    }
+    else
+    {
         humidity.rel_exaust_in = state_raw.humidity.rel_exaust_in;
         humidity.rel_fresh_out = state_raw.humidity.rel_fresh_out;
-    }
+    }    
 
     filterValue("temp_exhaust_in", state.temp.exhaust_in, temp.exhaust_in);
     filterValue("temp_exhaust_out", state.temp.exhaust_out, temp.exhaust_out);
