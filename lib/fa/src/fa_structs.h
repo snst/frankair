@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include "fa_defines.h"
+
 enum class controller_mode_t : uint8_t
 {
   kOff = 0,
@@ -18,6 +19,12 @@ enum class controller_submode_auto_t : uint8_t
   kOn,
   kSniff,
   kUndefined
+};
+
+struct fa_duration_t
+{
+  uint32_t sec;
+  uint32_t ms;
 };
 
 struct fa_actuator_t
@@ -53,21 +60,25 @@ struct fa_ctrl_active_t
   bool frost_fan_curve;
 };
 
+struct fa_statistic_t
+{
+  float volume_m3_sum;
+  float liter_sum;
+  float volume_m3_per_hour;
+  float liter_per_hour;
+  fa_duration_t running;
+};
+
 struct fa_state_t
 {
   fa_actuator_t actuator;
   uint8_t mode;         // controller_mode_t
   uint8_t submode_auto; // controller_submode_auto_t
-
   fa_temp_t temp;
   fa_humidity_t humidity;
   fa_ctrl_active_t ctrl_active;
-
-  float effectiveness;
-  float volume_fresh;
-  float volume_exhaust;
-  float liter;
   bool is_online;
+  fa_duration_t running;
 };
 
 struct fa_state_raw_t

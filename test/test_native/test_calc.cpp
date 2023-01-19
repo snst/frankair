@@ -6,6 +6,7 @@
 #include "fa_calc.h"
 #include "fa_calibration.h"
 #include "fa_settings.h"
+#include "fa_common.h"
 
 extern fa_state_t state;
 extern fa_state_raw_t state_raw;
@@ -151,4 +152,24 @@ void test_sensorsProcessValues(void)
   offset = fa_calibration_sensor.ref_humidity.min - fa_calibration_sensor.exhaust_in_humidity.min;
   TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.humidity.rel_exaust_in, state.humidity.rel_exaust_in);
   TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.humidity.rel_fresh_out, state.humidity.rel_fresh_out);
+}
+
+void test_volumeCalibration()
+{
+  fa_calibration_actuator.calibration_volume_liter = 60;
+  fa_calibration_actuator.fan_cal_time_main[0] = 12;
+  fa_calibration_actuator.fan_cal_time_main[5] = 27;
+  TEST_ASSERT_EQUAL_FLOAT(18, getMainVolume(0));
+  TEST_ASSERT_EQUAL_FLOAT(8, getMainVolume(5));
+}
+
+void test_duration(void)
+{
+  fa_duration_t d;
+  resetDuration(d);
+  addDurationMS(d, 500U);
+  TEST_ASSERT_EQUAL(500U, d.ms);
+  addDurationMS(d, 600U);
+  TEST_ASSERT_EQUAL(100U, d.ms);
+  TEST_ASSERT_EQUAL(1, d.sec);
 }

@@ -5,6 +5,7 @@
 #include "fa_fan.h"
 #include "fa_flap.h"
 #include "fa_log.h"
+#include "fa_statistic.h"
 
 static uint32_t controller_now = 0U;
 static uint32_t sniff_now = 0U;
@@ -173,7 +174,7 @@ bool calcFanLevelByTempCurve(uint8_t &fan_level)
 uint8_t calcFanFrostLevel()
 {
   uint8_t fan_level = FAN_LEVEL_MIN;
-  if (settings.ctrl.frost_flap_ctrl.enabled && (state.actuator.open_flap_frost > FLAP_LEVEL_MIN))
+  if (state.actuator.open_flap_frost > FLAP_LEVEL_MIN)
   {
     uint8_t new_level = FAN_LEVEL_MIN;
     calcFanLevelCurve(state.temp.fresh_in, settings.ctrl.frost_fan_curve, new_level);
@@ -211,7 +212,7 @@ void controllerStartWait()
 
 void controllerModeAutoUpdateFlap()
 {
-  IMSG(LM_MODE, "controllerModeAutoUpdateFlap()");
+  //IMSG(LM_MODE, "controllerModeAutoUpdateFlap()");
   uint8_t level = FLAP_LEVEL_MIN;
   if (settings.ctrl.frost_flap_ctrl.enabled)
   {
@@ -219,20 +220,24 @@ void controllerModeAutoUpdateFlap()
     if (temp < settings.ctrl.frost_flap_ctrl.temp_min_open)
     {
       level = FLAP_LEVEL_MAX;
-      IMSG(LM_MODE, "=> open flap");
+      //IMSG(LM_MODE, "=> open flap");
     }
     if (temp > settings.ctrl.frost_flap_ctrl.temp_min_close)
     {
       level = FLAP_LEVEL_MIN;
-      IMSG(LM_MODE, "=> close flap");
+      //IMSG(LM_MODE, "=> close flap");
     }
+  }
+  else
+  {
+    level = settings.manual.open_flap_frost;
   }
   flapSetOpen(level);
 }
 
 void controllerModeAutoUpdateFan()
 {
-  IMSG(LM_MODE, "controllerModeAutoUpdateFan()");
+  //IMSG(LM_MODE, "controllerModeAutoUpdateFan()");
   uint8_t fan_level = settings.ctrl.fan_level_max;
 
   if (calcFanOffHumidity(fan_level))
@@ -305,8 +310,11 @@ void controllerModeChanged()
 
 void controllerUpdate()
 {
-  if (intervalCheckSec(controller_now, settings.controller_interval_sec) || force_update)
+  uint32_t controller_ms = intervalCheckSec(controller_now, settings.controller_interval_sec);
+  if ((0U < controller_ms) || force_update)
   {
+    statisticUpdate(controller_ms);
+
     if (updateIfChanged(state.mode, settings.mode))
     {
       controllerModeChanged();

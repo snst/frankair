@@ -36,6 +36,8 @@ struct fa_calibration_actuator_t
   fa_minMaxUint8_t flap_pos;
   uint8_t fan_pwm_main[FAN_LEVEL_STEPS];
   uint8_t fan_pwm_frost[FAN_LEVEL_STEPS];
+  uint8_t fan_cal_time_main[FAN_LEVEL_STEPS];
+  uint8_t calibration_volume_liter;
 };
 
 void sensorsCalibrateTempLow();
@@ -45,6 +47,7 @@ void sensorsCalibrateHumidityHigh();
 
 void correctTempWithCalibrationData(fa_temp_t &dest, fa_temp_t &in);
 void correctHumidityWithCalibrationData(fa_humidity_t &dest, fa_humidity_t &in);
+float getMainVolume(uint8_t level);
 
 extern fa_calibration_sensor_t fa_calibration_sensor;
 extern fa_calibration_actuator_t fa_calibration_actuator;

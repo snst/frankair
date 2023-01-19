@@ -9,15 +9,10 @@ static uint8_t last_exhaust_level = 0xFF;
 static uint8_t last_fresh_level = 0xFF;
 static uint8_t last_frost_level = 0xFF;
 
-uint8_t adjustFanLevelToValidRange(uint8_t &level)
-{
-  level = toRange(level, FAN_LEVEL_MIN, FAN_LEVEL_MAX);
-  return level;
-}
 
 void fanSetLevelMain(uint8_t gpio, uint8_t level)
 {
-  level = toRange(level, 0U, 10U);
+  //level = toRange(level, FAN_LEVEL_MIN, FAN_LEVEL_MAX);
   fanSetPWM(gpio, 255U - fa_calibration_actuator.fan_pwm_main[level]);
 }
 

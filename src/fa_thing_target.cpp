@@ -12,13 +12,25 @@
 #include "fa_calibration.h"
 #include "fa_version.h"
 #include "fa_ota.h"
+#include "fa_statistic.h"
 
-ThingerESP32 thing(FA_USERNAME, FA_DEVICE_ID, FA_DEVICE_CREDENTIAL);
+FAThingerESP32 thing(FA_USERNAME, FA_DEVICE_ID, FA_DEVICE_CREDENTIAL);
 
 void thingUpdate()
 {
-  thing.handle();
   state.is_online = thing.is_connected();
+
+  if (!state.is_online)
+  {
+    if (thing.connect_network())
+    {
+      thing.handle();
+    }
+  }
+  else
+  {
+    thing.handle();
+  }
 }
 
 template <typename T>
@@ -37,7 +49,9 @@ void valUpdate(protoson::pson &in, const char *name, T &val, bool isEmpty)
 
 void thingSetup()
 {
-  thing.add_wifi(FA_SSID, FA_SSID_PASSWORD);
+  // thing.add_wifi(FA_SSID, FA_SSID_PASSWORD);
+  thing.add_wifi2(FA_SSID_1, FA_SSID_PASSWORD_1);
+  thing.add_wifi2(FA_SSID_2, FA_SSID_PASSWORD_2);
 
   thing["Settings"] << [](pson &in)
   {
@@ -180,20 +194,23 @@ void thingSetup()
     bool isEmpty = in.is_empty();
     valUpdate(in, "1.1 Frost flap pos min", fa_calibration_actuator.flap_pos.min, isEmpty);
     valUpdate(in, "1.2 Frost flap pos max", fa_calibration_actuator.flap_pos.max, isEmpty);
-
-    protoson::pson_array &array_fan_main = in["1.3 Fan main level-pwm"];
-    protoson::pson_array &array_fan_frost = in["1.4 Fan frost level-pwm"];
+    valUpdate(in, "1.3 Calibration volume liter", fa_calibration_actuator.calibration_volume_liter, isEmpty);
+    protoson::pson_array &array_fan_main = in["1.4 Fan main level-pwm"];
+    protoson::pson_array &array_fan_main_sec = in["1.5 Fan main calibration volume sec"];
+    protoson::pson_array &array_fan_frost = in["1.6 Fan frost level-pwm"];
 
     for (uint8_t i = 0U; i < FAN_LEVEL_STEPS; i++)
     {
       if (isEmpty)
       {
         array_fan_main.add(fa_calibration_actuator.fan_pwm_main[i]);
+        array_fan_main_sec.add(fa_calibration_actuator.fan_cal_time_main[i]);
         array_fan_frost.add(fa_calibration_actuator.fan_pwm_frost[i]);
       }
       else
       {
         fa_calibration_actuator.fan_pwm_main[i] = *array_fan_main[i];
+        fa_calibration_actuator.fan_cal_time_main[i] = *array_fan_main_sec[i];
         fa_calibration_actuator.fan_pwm_frost[i] = *array_fan_frost[i];
       }
     }
@@ -213,22 +230,29 @@ void thingSetup()
     out["humidity_abs_exaust_in"] = state.humidity.abs_exaust_in;
     out["humidity_abs_fresh_out"] = state.humidity.abs_fresh_out;
     out["humidity_abs_delta"] = state.humidity.abs_delta;
-    out["effectiveness"] = state.effectiveness;
     out["fan_level_fresh"] = state.actuator.level_fan_fresh;
     out["fan_level_exhaust"] = state.actuator.level_fan_exhaust;
     out["fan_level_frost"] = state.actuator.level_fan_frost;
     out["open_flap_frost"] = state.actuator.open_flap_frost;
-    out["hours"] = now() / (1000.0 * 60 * 60);
-    out["volume_fresh"] = state.volume_fresh;
-    out["volume_exhaust"] = state.volume_exhaust;
-    out["liter"] = state.liter;
+    out["running_sec"] = state.running.sec;
+
     out["ctrl_active_humidity_fan_off"] = state.ctrl_active.humidity_fan_off;
     out["ctrl_active_humidity_fan_curve"] = state.ctrl_active.humidity_fan_curve;
     out["ctrl_active_temp_fan_curve"] = state.ctrl_active.temp_fan_curve;
     out["ctrl_active_frost_fan_curve"] = state.ctrl_active.frost_fan_curve;
   };
 
-  thing["StateRAW"] >> [](pson &out)
+  thing["Statistics"] >> [](pson &out)
+  {
+    out["liter_per_hour"] = statistic.liter_per_hour;
+    out["liter_sum"] = statistic.liter_sum;
+    out["volume_m3_per_hour"] = statistic.volume_m3_per_hour;
+    out["volume_m3_sum"] = statistic.volume_m3_sum;
+    out["running_sec"] = statistic.running.sec;
+  };
+
+  thing["StateRAW"] >>
+      [](pson &out)
   {
     out["temp_fresh_in"] = state_raw.temp.fresh_in;
     out["temp_fresh_out"] = state_raw.temp.fresh_out;
@@ -257,7 +281,6 @@ void thingSetup()
     out["simulate"] = fa_ota.simulate;
   };
 
-
   ADD_CMD("a Start sniffing", controllerStartSniff)
   ADD_CMD("b Settings save", settingsWrite)
   ADD_CMD("c Settings load", settingsLoad)
@@ -274,4 +297,5 @@ void thingSetup()
   ADD_CMD("n Start OTA simulation", otaStartSim)
   ADD_CMD("o Start OTA update", otaStart)
   ADD_CMD("p Abort OTA", otaAbort)
+  ADD_CMD("q Reset statistic", statisticReset)
 }

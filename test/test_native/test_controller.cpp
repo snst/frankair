@@ -48,14 +48,14 @@ void test_controller_auto_update(void)
 void test_controller_start_from_sniffing(void)
 {
   resetData();
-  state.submode_auto = (uint8_t)controller_submode_auto_t::kSniff;
+  state.submode_auto = (uint8_t)controller_submode_auto_t::kOn;
   fanSetLevelFresh(settings.ctrl.fan_level_min);
   settings.ctrl.humidity_fan_ctrl.abs_min_start = 1.0f;
   state.humidity.abs_delta = 0.9f;
   controllerModeAutoUpdate();
   TEST_ASSERT_EQUAL_FLOAT(settings.ctrl.fan_level_min, state.actuator.level_fan_fresh);
   state.humidity.abs_delta = 1.0f;
-  state.submode_auto = (uint8_t)controller_submode_auto_t::kSniff;
+  state.submode_auto = (uint8_t)controller_submode_auto_t::kOn;
   controllerModeAutoUpdate();
   TEST_ASSERT_EQUAL_FLOAT(settings.ctrl.fan_level_max, state.actuator.level_fan_fresh);
 }

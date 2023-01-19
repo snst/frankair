@@ -13,6 +13,7 @@
 #include "fa_led.h"
 #include "fa_ota.h"
 #include "fa_version.h"
+#include "fa_statistic.h"
 
 void setup()
 {
@@ -24,6 +25,7 @@ void setup()
   fanSetup();
   sensorsSetup();
   flapSetup();
+  statisticSetup();
   thingSetup();
 }
 

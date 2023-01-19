@@ -2,6 +2,7 @@
 #include "fa_calibration.h"
 #include "fa_structs.h"
 #include "fa_calc.h"
+#include "fa_common.h"
 
 fa_calibration_sensor_t fa_calibration_sensor;
 fa_calibration_actuator_t fa_calibration_actuator;
@@ -86,4 +87,16 @@ void correctHumidityWithCalibrationData(fa_humidity_t &dest, fa_humidity_t &in)
                                             fa_calibration_sensor.fresh_out_humidity.max,
                                             fa_calibration_sensor.ref_humidity.min,
                                             fa_calibration_sensor.ref_humidity.max);
+}
+
+float getMainVolume(uint8_t level)
+{
+    level = adjustFanLevelToValidRange(level);
+    uint8_t sec = fa_calibration_actuator.fan_cal_time_main[level];
+    float m3perHour = 0.0f;
+    if (sec > 0U)
+    {
+        m3perHour = ((float)fa_calibration_actuator.calibration_volume_liter) * 3.6f / sec;
+    }
+    return m3perHour;
 }
