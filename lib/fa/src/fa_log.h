@@ -5,12 +5,27 @@
 #include <stdint.h>
 #include "fa_settings.h"
 
-#define LM_COMMON 1U
-#define LM_SENSOR 2U
-#define LM_THING 4U
-#define LM_SETTING 8U
-#define LM_FAN 16U
-#define LM_MODE 32U
+struct fa_log_mask_t
+{
+  bool error;
+  bool info;
+  bool debug;
+  bool sensor;
+  bool controller;
+  bool iot;
+  bool actuator;
+};
+
+extern fa_log_mask_t log_mask;
+
+#define LERROR 1U
+#define LINFO 2U
+#define LDEBUG 4U
+#define LSENSOR 8U
+#define LCONTROLLER 16U
+#define LIOT 32U
+#define LACTUATOR 64U
+
 
 #define CHECK_LOG_MASK(x)       \
   if (!(x & settings.log_mask)) \
@@ -28,4 +43,6 @@ const char* modeToStr(uint8_t mode);
 const char* submodeToStr(uint8_t mode);
 const char* modeToStr(controller_mode_t mode);
 const char* submodeToStr(controller_submode_auto_t mode);
+uint8_t getMask();
+void setMask(uint8_t mask);
 #endif // FA_LOG_H

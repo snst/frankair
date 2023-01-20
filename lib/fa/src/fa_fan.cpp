@@ -22,6 +22,7 @@ void fanSetLevelFresh(uint8_t level)
   if (updateIfChanged(last_fresh_level, level))
   {
     fanSetLevelMain(GPIO_PWM1, level);
+    IMSG(LACTUATOR, "fanSetLevelFresh", level);
   }
   state.actuator.level_fan_fresh = level;
 }
@@ -32,6 +33,7 @@ void fanSetLevelExhaust(uint8_t level)
   if (updateIfChanged(last_exhaust_level, level))
   {
     fanSetLevelMain(GPIO_PWM2, level);
+    IMSG(LACTUATOR, "fanSetLevelExhaust", level);
   }
   state.actuator.level_fan_exhaust = level;
 }
@@ -42,6 +44,7 @@ void fanSetLevelFrost(uint8_t level)
   if (updateIfChanged(last_frost_level, level))
   {
     fanSetPWM(GPIO_PWM3, fa_calibration_actuator.fan_pwm_frost[level]);
+    IMSG(LACTUATOR, "fanSetLevelFrost", level);
   }
   state.actuator.level_fan_frost = level;
 }

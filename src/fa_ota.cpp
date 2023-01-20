@@ -17,7 +17,7 @@ void otaStartIntern(bool simulate)
 
     client.begin(OTA_HOST);
     fa_ota.http_response = client.GET();
-    IMSG(LM_COMMON, "OTA: HTTP Response: ", fa_ota.http_response);
+    IMSG(LIOT, "OTA: HTTP Response: ", fa_ota.http_response);
 
     if (fa_ota.http_response == 200)
     {
@@ -26,15 +26,15 @@ void otaStartIntern(bool simulate)
         {
             Update.begin(UPDATE_SIZE_UNKNOWN);
         }
-        IMSG(LM_COMMON, "OTA: FW Size: ", fa_ota.firmware_size);
+        IMSG(LIOT, "OTA: FW Size: ", fa_ota.firmware_size);
         stream = client.getStreamPtr();
-        IMSG(LM_COMMON, "OTA: Updating firmware...");
+        IMSG(LIOT, "OTA: Updating firmware...");
         fa_ota.downloading = true;
     }
     else
     {
         fa_ota.error = true;
-        IMSG(LM_COMMON, "OTA: Failed to connect server");
+        IMSG(LERROR, "OTA: Failed to connect server");
         stream = NULL;
         client.end();
     }
@@ -64,13 +64,13 @@ void otaUpdate()
                         n_tmp += n;
                         if (n_tmp > (10U * 1024U))
                         {
-                            IMSG(LM_COMMON, "OTA: transferred_size", fa_ota.transferred_size);
+                            IMSG(LIOT, "OTA: transferred_size", fa_ota.transferred_size);
                             n_tmp = 0U;
                         }
                     }
                     else
                     {
-                        IMSG(LM_COMMON, "OTA: Error still data");
+                        IMSG(LERROR, "OTA: Error still data");
                         fa_ota.error = true;
                     }
                 }
@@ -80,13 +80,13 @@ void otaUpdate()
                     {
                         Update.end(true);
                     }
-                    IMSG(LM_COMMON, "OTA: Finished!");
+                    IMSG(LIOT, "OTA: Finished!");
                     fa_ota.success = true;
                 }
             }
             else
             {
-                IMSG(LM_COMMON, "OTA: Connection lost.");
+                IMSG(LERROR, "OTA: Connection lost.");
                 fa_ota.error = true;
             }
         }
@@ -107,12 +107,12 @@ void otaAbort()
 
 void otaStart()
 {
-    IMSG(LM_COMMON, "otaStart()");
+    IMSG(LIOT, "otaStart()");
     otaStartIntern(false);
 }
 
 void otaStartSim()
 {
-    IMSG(LM_COMMON, "otaStartSim()");
+    IMSG(LIOT, "otaStartSim()");
     otaStartIntern(true);
 }

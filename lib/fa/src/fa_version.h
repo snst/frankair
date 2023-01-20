@@ -2,6 +2,6 @@
 #ifndef FA_VERSION_H
 #define FA_VERSION_H
 
-#define FA_VERSION "0.1.6"
+#define FA_VERSION "0.1.7"
 
 #endif // FA_VERSION_H

@@ -53,6 +53,20 @@ void thingSetup()
   thing.add_wifi2(FA_SSID_1, FA_SSID_PASSWORD_1);
   thing.add_wifi2(FA_SSID_2, FA_SSID_PASSWORD_2);
 
+  thing["Logging"] << [](pson &in)
+  {
+    bool isEmpty = in.is_empty();
+    setMask(settings.log_mask);
+    valUpdate(in, "1 Error", log_mask.error, isEmpty);
+    valUpdate(in, "2 Info", log_mask.info, isEmpty);
+    valUpdate(in, "3 Debug", log_mask.debug, isEmpty);
+    valUpdate(in, "4 Sensor", log_mask.sensor, isEmpty);
+    valUpdate(in, "5 Actuator", log_mask.actuator, isEmpty);
+    valUpdate(in, "6 IOT", log_mask.iot, isEmpty);
+    valUpdate(in, "7 Controller", log_mask.controller, isEmpty);
+    settings.log_mask = getMask();
+  };
+
   thing["Settings"] << [](pson &in)
   {
     bool isEmpty = in.is_empty();
@@ -62,7 +76,6 @@ void thingSetup()
     valUpdate(in, "1.4 Sensor alpha filter", settings.measurement_alpha, isEmpty);
     valUpdate(in, "1.5 Enable sensor calibration temp", settings.use_calibration_temp, isEmpty);
     valUpdate(in, "1.6 Enable sensor calibration humidity", settings.use_calibration_humidity, isEmpty);
-    valUpdate(in, "1.7 Log mask", settings.log_mask, isEmpty);
     valUpdate(in, "2.1 Sniffing enabled", settings.sniff.enabled, isEmpty);
     valUpdate(in, "2.2 Sniffing fan level", settings.sniff.fan_level, isEmpty);
     valUpdate(in, "2.3 Sniffing duration sec", settings.sniff.duration_sec, isEmpty);

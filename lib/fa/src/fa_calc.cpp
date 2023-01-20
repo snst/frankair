@@ -38,10 +38,9 @@ float calcAverage(float x1, float x2, float x3, float x4)
     return (x1 + x2 + x3 + x4) / 4.0f;
 }
 
-void filterValue(const char *txt, float &val, float measurement)
+void filterValue(float &val, float measurement)
 {
     val = (settings.measurement_alpha * measurement) + ((1.0f - settings.measurement_alpha) * val);
-    IMSG(LM_SENSOR, txt, measurement);
 }
 
 float calcCorrectedValue(float rawV, float rawMin, float rawMax, float refMin, float refMax)
@@ -81,15 +80,25 @@ void sensorsProcessValues()
     {
         humidity.rel_exaust_in = state_raw.humidity.rel_exaust_in;
         humidity.rel_fresh_out = state_raw.humidity.rel_fresh_out;
-    }    
+    }
 
-    filterValue("temp_exhaust_in", state.temp.exhaust_in, temp.exhaust_in);
-    filterValue("temp_exhaust_out", state.temp.exhaust_out, temp.exhaust_out);
-    filterValue("temp_fresh_in", state.temp.fresh_in, temp.fresh_in);
-    filterValue("temp_fresh_out", state.temp.fresh_out, temp.fresh_out);
-    filterValue("hum_rel_exaust_in", state.humidity.rel_exaust_in, humidity.rel_exaust_in);
-    filterValue("hum_rel_fresh_out", state.humidity.rel_fresh_out, humidity.rel_fresh_out);
+    filterValue(state.temp.exhaust_in, temp.exhaust_in);
+    filterValue(state.temp.exhaust_out, temp.exhaust_out);
+    filterValue(state.temp.fresh_in, temp.fresh_in);
+    filterValue(state.temp.fresh_out, temp.fresh_out);
+    filterValue(state.humidity.rel_exaust_in, humidity.rel_exaust_in);
+    filterValue(state.humidity.rel_fresh_out, humidity.rel_fresh_out);
     state.humidity.abs_exaust_in = convertRelativeToAbsoluteHumidity(state.temp.exhaust_in, state.humidity.rel_exaust_in);
     state.humidity.abs_fresh_out = convertRelativeToAbsoluteHumidity(state.temp.fresh_out, state.humidity.rel_fresh_out);
     state.humidity.abs_delta = state.humidity.abs_exaust_in - state.humidity.abs_fresh_out;
+
+    char buf[128];
+    sprintf(buf, "FIL ei %f, fo %f, fi %f, eo %f, hi %f, ho %f",
+            state.temp.exhaust_in,
+            state.temp.fresh_out,
+            state.temp.fresh_in,
+            state.temp.exhaust_out,
+            state.humidity.rel_exaust_in,
+            state.humidity.rel_fresh_out);
+    IMSG(LSENSOR, buf);
 }

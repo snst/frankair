@@ -10,6 +10,6 @@ void sensorsSetup();
 void sensorsRead();
 void sensorsUpdate();
 void sensorsScan();
-void sensors_scan_intern();
+void sensorsScanIntern();
 
 #endif // FA_SENSORS_H

@@ -27,9 +27,6 @@ void statisticUpdate(uint32_t delta_ms)
     }
     addDurationMS(statistic.running, delta_ms);
     addDurationMS(state.running, delta_ms);
-    //IMSG(LM_COMMON, "delta_ms", delta_ms);
-    //IMSG(LM_COMMON, "ms", statistic.running.ms);
-    //IMSG(LM_COMMON, "sec", statistic.running.sec);
 }
 
 void statisticReset()

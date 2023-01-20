@@ -81,7 +81,7 @@ bool calcFanOffHumidity(uint8_t &fan_level)
     if (state.humidity.rel_exaust_in < settings.ctrl.humidity_fan_ctrl.rel_min_start)
     {
       active = reduceFanLevel(fan_level, settings.ctrl.fan_level_min) || active;
-      IMSG(LM_FAN, "calcFanOffHumidity: Relative humidity too low. Fan", fan_level);
+      IMSG(LCONTROLLER, "calcFanOffHumidity: Relative humidity too low. Fan", fan_level);
     }
 
     switch ((controller_submode_auto_t)state.submode_auto)
@@ -91,7 +91,7 @@ bool calcFanOffHumidity(uint8_t &fan_level)
       if (state.humidity.abs_delta < settings.ctrl.humidity_fan_ctrl.abs_min_stop)
       {
         active = reduceFanLevel(fan_level, settings.ctrl.fan_level_min) || active;
-        IMSG(LM_FAN, "calcFanOffHumidity: Absolute humidity delta too low. Fan", fan_level);
+        IMSG(LCONTROLLER, "calcFanOffHumidity: Absolute humidity delta too low. Fan", fan_level);
       }
       break;
     case controller_submode_auto_t::kSniff:
@@ -99,7 +99,7 @@ bool calcFanOffHumidity(uint8_t &fan_level)
       if (state.humidity.abs_delta < settings.ctrl.humidity_fan_ctrl.abs_min_start)
       {
         active = reduceFanLevel(fan_level, settings.ctrl.fan_level_min) || active;
-        IMSG(LM_FAN, "calcFanOffHumidity: Currently sniffing and absolute humidity delta too low to start. Fan", fan_level);
+        IMSG(LCONTROLLER, "calcFanOffHumidity: Currently sniffing and absolute humidity delta too low to start. Fan", fan_level);
       }
       break;
     }
@@ -189,13 +189,13 @@ void controllerModeAutoChangeSubMode(controller_submode_auto_t submode)
   uint8_t old = state.submode_auto;
   if (updateIfChanged(state.submode_auto, (uint8_t)submode))
   {
-    IMSG(LM_MODE, "controllerModeAutoChangeSubMode: ", submodeToStr(old), " => ", submodeToStr(submode));
+    IMSG(LCONTROLLER, "change auto submode: ", submodeToStr(old), " => ", submodeToStr(submode));
   }
 }
 
 void controllerStartSniff()
 {
-  IMSG(LM_MODE, "controllerStartSniff()");
+  IMSG(LCONTROLLER, "controllerStartSniff()");
   controllerModeAutoChangeSubMode(controller_submode_auto_t::kSniff);
   fanSetLevelFreshAndExhaust(settings.sniff.fan_level);
   intervalReset(sniff_now);
@@ -203,16 +203,16 @@ void controllerStartSniff()
 
 void controllerStartWait()
 {
-  IMSG(LM_MODE, "controllerStartWait()");
+  IMSG(LCONTROLLER, "controllerStartWait()");
   controllerModeAutoChangeSubMode(controller_submode_auto_t::kWait);
   fanSetLevelFreshAndExhaust(settings.ctrl.fan_level_min);
-  fanSetLevelFrost(0U);
+  fanSetLevelFrost(FAN_LEVEL_MIN);
   intervalReset(wait_now);
 }
 
 void controllerModeAutoUpdateFlap()
 {
-  //IMSG(LM_MODE, "controllerModeAutoUpdateFlap()");
+  IMSG(LDEBUG, "controllerModeAutoUpdateFlap()");
   uint8_t level = FLAP_LEVEL_MIN;
   if (settings.ctrl.frost_flap_ctrl.enabled)
   {
@@ -220,12 +220,12 @@ void controllerModeAutoUpdateFlap()
     if (temp < settings.ctrl.frost_flap_ctrl.temp_min_open)
     {
       level = FLAP_LEVEL_MAX;
-      //IMSG(LM_MODE, "=> open flap");
+      IMSG(LCONTROLLER, "Fresh in below => open flap");
     }
     if (temp > settings.ctrl.frost_flap_ctrl.temp_min_close)
     {
       level = FLAP_LEVEL_MIN;
-      //IMSG(LM_MODE, "=> close flap");
+      IMSG(LCONTROLLER, "Fresh in higher => close flap");
     }
   }
   else
@@ -237,7 +237,7 @@ void controllerModeAutoUpdateFlap()
 
 void controllerModeAutoUpdateFan()
 {
-  //IMSG(LM_MODE, "controllerModeAutoUpdateFan()");
+  IMSG(LDEBUG, "controllerModeAutoUpdateFan()");
   uint8_t fan_level = settings.ctrl.fan_level_max;
 
   if (calcFanOffHumidity(fan_level))
@@ -250,10 +250,12 @@ void controllerModeAutoUpdateFan()
     calcFanLevelByTempCurve(fan_level);
     if (FAN_LEVEL_MIN == fan_level)
     {
+      IMSG(LCONTROLLER, "Fan completely reduced => kWait");
       controllerStartWait();
     }
     else
     {
+      // Fans are running
       controllerModeAutoChangeSubMode(controller_submode_auto_t::kOn);
       fanSetLevelFreshAndExhaust(fan_level);
       fanSetLevelFrost(calcFanFrostLevel());
@@ -263,14 +265,14 @@ void controllerModeAutoUpdateFan()
 
 void controllerModeAutoUpdate()
 {
-  IMSG(LM_MODE, "controllerModeAutoUpdate() Submode: ", submodeToStr(state.submode_auto));
+  IMSG(LDEBUG, "controllerModeAutoUpdate() ", submodeToStr(state.submode_auto));
 
   switch ((controller_submode_auto_t)state.submode_auto)
   {
   case controller_submode_auto_t::kWait:
     if (intervalCheckSec(wait_now, settings.sniff.interval_sec))
     {
-      IMSG(LM_MODE, "kWait finished => controllerStartSniff()");
+      IMSG(LCONTROLLER, "kWait finished => controllerStartSniff()");
       controllerStartSniff();
     }
     break;
@@ -281,14 +283,14 @@ void controllerModeAutoUpdate()
   case controller_submode_auto_t::kSniff:
     if (intervalCheckSec(sniff_now, settings.sniff.duration_sec))
     {
-      IMSG(LM_MODE, "kSniff finished => controllerModeAutoUpdateFan()");
+      IMSG(LCONTROLLER, "kSniff finished => controllerModeAutoUpdateFan()");
       controllerModeAutoUpdateFan();
     }
     controllerModeAutoUpdateFlap();
     break;
   default:
   case controller_submode_auto_t::kUndefined:
-    IMSG(LM_MODE, "kUndefined => controllerStartSniff()");
+    IMSG(LCONTROLLER, "kUndefined => controllerStartSniff()");
     controllerStartSniff();
     break;
   }
@@ -296,7 +298,7 @@ void controllerModeAutoUpdate()
 
 void controllerModeChanged()
 {
-  IMSG(LM_MODE, "controllerMode changed to: ", modeToStr(state.mode));
+  IMSG(LCONTROLLER, "controllerMode changed to: ", modeToStr(state.mode));
   state.submode_auto = (uint8_t)controller_submode_auto_t::kUndefined;
   switch ((controller_mode_t)state.mode)
   {

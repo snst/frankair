@@ -11,7 +11,7 @@
 #define ADD_CMD(name, action) \
   thing[name] = []()          \
   {                           \
-    IMSG(LM_THING, name);     \
+    IMSG(LIOT, name);     \
     action();                 \
   };
 
@@ -65,20 +65,20 @@ public:
     case 0:
       if (get_wifi_ssid() != nullptr)
       {
-        IMSG(LM_THING, "Connecting to network: ", get_wifi_ssid());
+        IMSG(LIOT, "Connecting to network: ", get_wifi_ssid());
         WiFi.begin((char *)get_wifi_ssid(), (char *)get_wifi_password());
         wifi_timeout = millis();
         state++;
       }
       else
       {
-        IMSG(LM_THING, "Missing network config\n");
+        IMSG(LERROR, "Missing network config\n");
       }
       break;
     case 1:
       if (WiFi.status() == WL_CONNECTED)
       {
-        IMSG(LM_THING, "WL_CONNECTED");
+        IMSG(LIOT, "WL_CONNECTED");
         wifi_timeout = millis();
         state++;
       }
@@ -87,7 +87,7 @@ public:
         if (millis() - wifi_timeout > WIFI_TIMEOUT)
         {
           next_wifi();
-          IMSG(LM_THING, "WIFI Timeout 1, next ssid: ", get_wifi_ssid());
+          IMSG(LERROR, "WIFI Timeout 1, next ssid: ", get_wifi_ssid());
           state = 0U;
         }
       }
@@ -95,7 +95,7 @@ public:
     case 2:
       if ((WiFi.localIP() != (IPAddress)INADDR_NONE))
       {
-        IMSG(LM_THING, "Got IP Address: ");
+        IMSG(LIOT, "Got IP Address");
         wifi_timeout = millis();
         state++;
         return true;
@@ -104,7 +104,7 @@ public:
       {
         if (millis() - wifi_timeout > WIFI_TIMEOUT)
         {
-          IMSG(LM_THING, "WIFI Timeout 2");
+          IMSG(LERROR, "WIFI Timeout 2");
           WiFi.disconnect();
           state = 0U;
         }
@@ -113,7 +113,7 @@ public:
     case 3:
       if (millis() - wifi_timeout > WIFI_TIMEOUT)
       {
-        IMSG(LM_THING, "WIFI Timeout 3");
+        IMSG(LERROR, "WIFI Timeout 3");
         WiFi.disconnect();
         state = 0U;
         return false;

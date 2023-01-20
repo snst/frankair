@@ -13,7 +13,7 @@ void sensorsUpdate()
 {
   if (s_flag_scan_sensors)
   {
-    sensors_scan_intern();
+    sensorsScanIntern();
   }
   else if (intervalCheckSec(sensors_now, settings.temp_sensor_read_interval_sec))
   {

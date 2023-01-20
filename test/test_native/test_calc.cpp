@@ -43,12 +43,12 @@ void test_filterValue(void)
   cleanData();
   settings.measurement_alpha = 1.0f;
   float val = 10.0f;
-  filterValue("", val, 5.0f);
+  filterValue(val, 5.0f);
   TEST_ASSERT_EQUAL_FLOAT(5.0f, val);
 
   settings.measurement_alpha = 0.5f;
   val = 10.0f;
-  filterValue("", val, 5.0f);
+  filterValue(val, 5.0f);
   TEST_ASSERT_EQUAL_FLOAT(7.5f, val);
 }
 
