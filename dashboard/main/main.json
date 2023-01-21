@@ -918,8 +918,8 @@
 					},
 					"panel": {
 						"color": "#ffffff",
-						"subtitle": "inside - outside",
-						"title": "Abs humidity delta"
+						"subtitle": "",
+						"title": "Abs humidity delta (IN - OUT)"
 					},
 					"properties": {
 						"colors": [
@@ -1773,8 +1773,12 @@
 					"properties": {
 						"axis": true,
 						"fill": false,
-						"legend": false,
-						"multiple_axes": false
+						"legend": true,
+						"multiple_axes": false,
+						"yaxis": {
+							"min": 0,
+							"max": 10
+						}
 					},
 					"sources": [
 						{
