@@ -22,7 +22,7 @@ void tearDown(void)
 
 void cleanData()
 {
-  memset(&fa_calibration_sensor, 0U, sizeof(fa_calibration_sensor));
+  memset(&calibration_sensor, 0U, sizeof(calibration_sensor));
   memset(&state_raw, 0U, sizeof(state_raw));
   memset(&state, 0U, sizeof(state));
   memset(&settings, 0U, sizeof(settings));
@@ -42,6 +42,8 @@ void test_controller_frost_curve(void);
 void test_volumeCalibration(void);
 void test_duration(void);
 void test_calcInterpolate(void);
+void test_common(void);
+
 
 
 int main(int argc, char **argv)
@@ -57,11 +59,12 @@ int main(int argc, char **argv)
   RUN_TEST(test_sensorsProcessValues);
   RUN_TEST(test_controller_auto_update);
   RUN_TEST(test_controller_humidity_curve);
-  //RUN_TEST(test_controller_start_from_sniffing);
+  RUN_TEST(test_controller_start_from_sniffing);
   RUN_TEST(test_controller_frost_curve);
   RUN_TEST(test_volumeCalibration);
   RUN_TEST(test_duration);
   RUN_TEST(test_calcInterpolate);
+  RUN_TEST(test_common);
 
   UNITY_END();
   return 0;

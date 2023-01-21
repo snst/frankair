@@ -4,8 +4,7 @@
 
 #include <stdint.h>
 #include "fa_structs.h"
-
-#define FAN_LEVEL_STEPS 11
+#include "fa_defines.h"
 
 struct fa_minMaxFloat_t
 {
@@ -49,7 +48,7 @@ void correctTempWithCalibrationData(fa_temp_t &dest, fa_temp_t &in);
 void correctHumidityWithCalibrationData(fa_humidity_t &dest, fa_humidity_t &in);
 float getMainVolume(uint8_t level);
 
-extern fa_calibration_sensor_t fa_calibration_sensor;
-extern fa_calibration_actuator_t fa_calibration_actuator;
+extern fa_calibration_sensor_t calibration_sensor;
+extern fa_calibration_actuator_t calibration_actuator;
 
 #endif // FA_CALIBRATION_H

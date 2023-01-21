@@ -4,7 +4,7 @@
 
 #include "fa_common.h"
 
-extern fa_override_t fa_override_sensors;
+extern fa_override_t override;
 
 void sensorsSetup();
 void sensorsTargetSetup();

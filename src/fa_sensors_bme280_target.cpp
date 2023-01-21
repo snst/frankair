@@ -13,8 +13,8 @@ void sensorsBME280Setup()
 {
     Wire.begin();
 
-    bmeE.setI2CAddress(0x76);
-    bmeF.setI2CAddress(0x77);
+    bmeE.setI2CAddress(0x76U);
+    bmeF.setI2CAddress(0x77U);
 
     if (!bmeE.beginI2C())
     {
@@ -34,8 +34,8 @@ void sensorsBME280Read()
 {
     bmeE.setMode(MODE_FORCED);
     bmeF.setMode(MODE_FORCED);
-    BME280_SensorMeasurements me = {0};
-    BME280_SensorMeasurements mf = {0};
+    BME280_SensorMeasurements me = {0U};
+    BME280_SensorMeasurements mf = {0U};
     bmeE.readAllMeasurements(&me);
     bmeF.readAllMeasurements(&mf);
     state_raw.temp.exhaust_in = me.temperature;

@@ -22,7 +22,6 @@ void controllerSetup()
 
 void controllerModeManualUpdate()
 {
-  // IMSG("MANUAL\n");
   if (updateIfChanged(state.actuator.level_fan_fresh, settings.manual.level_fan_fresh))
   {
     fanSetLevelFresh(state.actuator.level_fan_fresh);
@@ -79,10 +78,10 @@ bool calcFanOffHumidity(uint8_t &fan_level)
   if (settings.ctrl.humidity_fan_ctrl.enabled)
   {
     // Stop fan if rel humidity in room is lower than minimum e.g. 50%
-    if (state.humidity.rel_exhaust_in < settings.ctrl.humidity_fan_ctrl.rel_min_start)
+    if (state.humidity.rel_exhaust_in < settings.ctrl.humidity_fan_ctrl.rel_min_off)
     {
       reduceFanLevel(fan_level, settings.ctrl.fan_level_min);
-      IMSG(LCONTROLLER, "Relative humidity too low. Set fan minimum. Hum", settings.ctrl.humidity_fan_ctrl.rel_min_start);
+      IMSG(LCONTROLLER, "Relative humidity too low. Set fan minimum. Hum", settings.ctrl.humidity_fan_ctrl.rel_min_off);
       off |= 1U;
     }
     else
@@ -91,19 +90,19 @@ bool calcFanOffHumidity(uint8_t &fan_level)
       {
       case controller_submode_auto_t::kOn:
         // Stop fan if abs humidity delta is lower than minimum delta e.g. 0.5g/m³
-        if (state.humidity.abs_delta < settings.ctrl.humidity_fan_ctrl.abs_min_stop)
+        if (state.humidity.abs_delta < settings.ctrl.humidity_fan_ctrl.abs_min_off)
         {
           reduceFanLevel(fan_level, settings.ctrl.fan_level_min);
-          IMSG(LCONTROLLER, "kOn: Absolute humidity delta too low. Set fan minimum. Hum", settings.ctrl.humidity_fan_ctrl.abs_min_stop);
+          IMSG(LCONTROLLER, "kOn: Absolute humidity delta too low. Set fan minimum. Hum", settings.ctrl.humidity_fan_ctrl.abs_min_off);
           off |= 2U;
         }
         break;
       case controller_submode_auto_t::kSniff:
         // Don't start fan if currently sniffing and abs humidity delta is lower than minimum delta e.g. 1g/m³
-        if (state.humidity.abs_delta < settings.ctrl.humidity_fan_ctrl.abs_min_start)
+        if (state.humidity.abs_delta < settings.ctrl.humidity_fan_ctrl.abs_min_on)
         {
           reduceFanLevel(fan_level, settings.ctrl.fan_level_min);
-          IMSG(LCONTROLLER, "kSniff: Absolute humidity delta too low to start Fan. Hum", settings.ctrl.humidity_fan_ctrl.abs_min_start);
+          IMSG(LCONTROLLER, "kSniff: Absolute humidity delta too low to start Fan. Hum", settings.ctrl.humidity_fan_ctrl.abs_min_on);
           off |= 4U;
         }
         break;
@@ -111,7 +110,7 @@ bool calcFanOffHumidity(uint8_t &fan_level)
     }
   }
   state.ctrl_active.humidity_fan_off = off;
-  return 0 != off;
+  return 0U != off;
 }
 
 bool calcFanLevelCurve(float input, fa_fan_curve_t &curve, uint8_t &level)

@@ -27,7 +27,7 @@ void resetData()
 void test_controller_auto_update(void)
 {
   resetData();
-  settings.ctrl.humidity_fan_ctrl.rel_min_start = 50;
+  settings.ctrl.humidity_fan_ctrl.rel_min_off = 50;
   state.humidity.rel_exhaust_in = 50;
   controllerModeAutoUpdate();
   TEST_ASSERT_EQUAL_FLOAT(settings.ctrl.fan_level_max, state.actuator.level_fan_fresh);
@@ -36,7 +36,7 @@ void test_controller_auto_update(void)
   TEST_ASSERT_EQUAL_FLOAT(settings.ctrl.fan_level_min, state.actuator.level_fan_fresh);
 
   resetData();
-  settings.ctrl.humidity_fan_ctrl.abs_min_stop = 0.5f;
+  settings.ctrl.humidity_fan_ctrl.abs_min_off = 0.5f;
   state.humidity.abs_delta = 0.5f;
   controllerModeAutoUpdate();
   TEST_ASSERT_EQUAL_FLOAT(settings.ctrl.fan_level_max, state.actuator.level_fan_fresh);
@@ -50,8 +50,9 @@ void test_controller_start_from_sniffing(void)
   resetData();
   state.submode_auto = (uint8_t)controller_submode_auto_t::kOn;
   fanSetLevelFresh(settings.ctrl.fan_level_min);
-  settings.ctrl.humidity_fan_ctrl.abs_min_start = 1.0f;
-  state.humidity.abs_delta = 0.9f;
+  settings.ctrl.humidity_fan_ctrl.abs_min_on = 1.0f;
+  settings.ctrl.humidity_fan_ctrl.abs_min_off = 0.5f;
+  state.humidity.abs_delta = 0.4f;
   controllerModeAutoUpdate();
   TEST_ASSERT_EQUAL_FLOAT(settings.ctrl.fan_level_min, state.actuator.level_fan_fresh);
   state.humidity.abs_delta = 1.0f;

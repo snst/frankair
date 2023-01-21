@@ -19,5 +19,4 @@ bool calcFanLevelByTempCurve(uint8_t &fan_level);
 void controllerModeAutoChangeSubMode(controller_submode_auto_t submode);
 uint8_t calcFanFrostLevel();
 
-
 #endif // FA_CONTROLLER_H

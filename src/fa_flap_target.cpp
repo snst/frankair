@@ -25,8 +25,8 @@ void flapSetOpen(uint8_t level)
         pwm.writeServo(GPIO_SERVO,
                        mapValue(new_level,
                                 FLAP_LEVEL_MIN, FLAP_LEVEL_MAX,
-                                fa_calibration_actuator.flap_pos.min,
-                                fa_calibration_actuator.flap_pos.max));
+                                calibration_actuator.flap_pos.min,
+                                calibration_actuator.flap_pos.max));
         IMSG(LACTUATOR, "flapSetOpen", new_level);
     }
     state.actuator.open_flap_frost = new_level;

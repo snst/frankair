@@ -5,7 +5,6 @@
 #include "fa_common.h"
 
 extern fa_state_t state;
-
 static uint32_t led_now = 0U;
 
 void ledUpdate()

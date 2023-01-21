@@ -26,7 +26,6 @@ extern fa_log_mask_t log_mask;
 #define LIOT 32U
 #define LACTUATOR 64U
 
-
 #define CHECK_LOG_MASK(x)       \
   if (!(x & settings.log_mask)) \
     return;
@@ -39,13 +38,13 @@ void IMSG(uint8_t mask, const char *txt, float val);
 void IMSG(uint8_t mask, const char *txt, const char *val);
 void IMSGHEX(uint8_t mask, uint8_t val);
 
-const char* modeToStr(uint8_t mode);
-const char* submodeToStr(uint8_t mode);
-const char* modeToStr(controller_mode_t mode);
-const char* submodeToStr(controller_submode_auto_t mode);
+const char *modeToStr(uint8_t mode);
+const char *submodeToStr(uint8_t mode);
+const char *modeToStr(controller_mode_t mode);
+const char *submodeToStr(controller_submode_auto_t mode);
 uint8_t getMask();
 void setMask(uint8_t mask);
 void logTempHumidity(uint8_t level, const char *info, fa_temp_t &temp,
                      fa_humidity_t &humidity);
-                     
+
 #endif // FA_LOG_H

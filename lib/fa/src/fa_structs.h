@@ -79,15 +79,15 @@ struct fa_override_t
 
 struct fa_state_t
 {
-  fa_actuator_t actuator;
   uint8_t mode;         // controller_mode_t
   uint8_t submode_auto; // controller_submode_auto_t
+  bool is_online;
+  float efficiency;
+  fa_actuator_t actuator;
   fa_temp_t temp;
   fa_humidity_t humidity;
   fa_ctrl_active_t ctrl_active;
-  bool is_online;
   fa_duration_t running;
-  float efficiency;
 };
 
 struct fa_state_raw_t
@@ -111,9 +111,9 @@ struct fa_fan_curve_t
 
 struct fa_humidity_ctrl_t
 {
-  float abs_min_start;
-  float abs_min_stop;
-  uint8_t rel_min_start;
+  float abs_min_on;
+  float abs_min_off;
+  uint8_t rel_min_off;
   bool enabled;
 };
 
@@ -126,15 +126,15 @@ struct fa_frost_flap_ctrl_t
 
 struct fa_ctrl_t
 {
+  uint8_t fan_level_max;
+  uint8_t fan_level_min;
+  uint8_t fan_frost_level_max;
+  uint8_t fan_frost_level_min;
   fa_fan_curve_t temp_fan_curve;
   fa_fan_curve_t humidity_fan_curve;
   fa_fan_curve_t frost_fan_curve;
   fa_humidity_ctrl_t humidity_fan_ctrl;
   fa_frost_flap_ctrl_t frost_flap_ctrl;
-  uint8_t fan_level_max;
-  uint8_t fan_level_min;
-  uint8_t fan_frost_level_max;
-  uint8_t fan_frost_level_min;
 };
 
 struct fa_sniff_t
@@ -150,13 +150,13 @@ struct fa_settings_t
   uint8_t temp_sensor_read_interval_sec;
   uint8_t controller_interval_sec;
   uint8_t mode; // controller_mode_t
+  uint8_t log_mask;
   float measurement_alpha;
   bool use_calibration_temp;
+  bool use_calibration_humidity;
   fa_actuator_t manual;
-  uint8_t log_mask;
   fa_ctrl_t ctrl;
   fa_sniff_t sniff;
-  bool use_calibration_humidity;
 };
 
 #endif // FA_STRUCTS_H

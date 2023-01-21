@@ -5,35 +5,35 @@
 #include "fa_log.h"
 #include "fa_secrets.h"
 
-fa_ota_t fa_ota;
+fa_ota_t ota;
 
 static HTTPClient client;
 static WiFiClient *stream = NULL;
 
 void otaStartIntern(bool simulate)
 {
-    memset(&fa_ota, 0U, sizeof(fa_ota));
-    fa_ota.simulate = simulate;
+    memset(&ota, 0U, sizeof(ota));
+    ota.simulate = simulate;
 
     client.begin(OTA_HOST);
-    fa_ota.http_response = client.GET();
-    IMSG(LIOT, "OTA: HTTP Response: ", fa_ota.http_response);
+    ota.http_response = client.GET();
+    IMSG(LIOT, "OTA: HTTP Response: ", ota.http_response);
 
-    if (fa_ota.http_response == 200)
+    if (ota.http_response == 200U)
     {
-        fa_ota.firmware_size = client.getSize();
-        if (!fa_ota.simulate)
+        ota.firmware_size = client.getSize();
+        if (!ota.simulate)
         {
             Update.begin(UPDATE_SIZE_UNKNOWN);
         }
-        IMSG(LIOT, "OTA: FW Size: ", fa_ota.firmware_size);
+        IMSG(LIOT, "OTA: FW Size: ", ota.firmware_size);
         stream = client.getStreamPtr();
         IMSG(LIOT, "OTA: Updating firmware...");
-        fa_ota.downloading = true;
+        ota.downloading = true;
     }
     else
     {
-        fa_ota.error = true;
+        ota.error = true;
         IMSG(LERROR, "OTA: Failed to connect server");
         stream = NULL;
         client.end();
@@ -42,58 +42,58 @@ void otaStartIntern(bool simulate)
 
 void otaUpdate()
 {
-    if (fa_ota.downloading)
+    if (ota.downloading)
     {
-        if (fa_ota.transferred_size < fa_ota.firmware_size)
+        if (ota.transferred_size < ota.firmware_size)
         {
             if (client.connected())
             {
-                uint8_t buf[128] = {0};
+                uint8_t buf[128] = {0U};
                 size_t size = stream->available();
                 int n = stream->readBytes(buf, ((size > sizeof(buf)) ? sizeof(buf) : size));
                 if (n > 0)
                 {
-                    if (n <= (fa_ota.firmware_size - fa_ota.transferred_size))
+                    if (n <= (ota.firmware_size - ota.transferred_size))
                     {
-                        if (!fa_ota.simulate)
+                        if (!ota.simulate)
                         {
                             Update.write(buf, n);
                         }
                         static uint16_t n_tmp = 0U;
-                        fa_ota.transferred_size += n;
+                        ota.transferred_size += n;
                         n_tmp += n;
                         if (n_tmp > (10U * 1024U))
                         {
-                            IMSG(LIOT, "OTA: transferred_size", fa_ota.transferred_size);
+                            IMSG(LIOT, "OTA: transferred_size", ota.transferred_size);
                             n_tmp = 0U;
                         }
                     }
                     else
                     {
                         IMSG(LERROR, "OTA: Error still data");
-                        fa_ota.error = true;
+                        ota.error = true;
                     }
                 }
-                if (fa_ota.transferred_size == fa_ota.firmware_size)
+                if (ota.transferred_size == ota.firmware_size)
                 {
-                    if (!fa_ota.simulate)
+                    if (!ota.simulate)
                     {
                         Update.end(true);
                     }
                     IMSG(LIOT, "OTA: Finished!");
-                    fa_ota.success = true;
+                    ota.success = true;
                 }
             }
             else
             {
                 IMSG(LERROR, "OTA: Connection lost.");
-                fa_ota.error = true;
+                ota.error = true;
             }
         }
 
-        if (fa_ota.success || fa_ota.error || fa_ota.abort)
+        if (ota.success || ota.error || ota.abort)
         {
-            fa_ota.downloading = false;
+            ota.downloading = false;
             stream = NULL;
             client.end();
         }
@@ -102,7 +102,7 @@ void otaUpdate()
 
 void otaAbort()
 {
-    fa_ota.abort = true;
+    ota.abort = true;
 }
 
 void otaStart()

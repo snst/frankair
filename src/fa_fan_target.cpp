@@ -8,9 +8,9 @@ Pwm pwm = Pwm();
 
 void fanSetup()
 {
-  pwm.attach(GPIO_PWM1, 2);
-  pwm.attach(GPIO_PWM2, 3);
-  pwm.attach(GPIO_PWM3, 4);
+  pwm.attach(GPIO_PWM1, 2U);
+  pwm.attach(GPIO_PWM2, 3U);
+  pwm.attach(GPIO_PWM3, 4U);
 }
 
 void fanSetPWM(uint8_t gpio, uint8_t val)

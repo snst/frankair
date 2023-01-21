@@ -6,6 +6,16 @@
 bool force_update = true;
 static uint32_t now_ms = 0U;
 
+void intervalNowSet(uint32_t ms)
+{
+  now_ms = ms;
+}
+
+void intervalNowAdd(uint32_t ms)
+{
+  now_ms += ms;
+}
+
 void intervalUpdate()
 {
   now_ms = getMillis();

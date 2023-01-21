@@ -11,7 +11,7 @@
 #define ADD_CMD(name, action) \
   thing[name] = []()          \
   {                           \
-    IMSG(LIOT, name);     \
+    IMSG(LIOT, name);         \
     action();                 \
   };
 
@@ -22,8 +22,8 @@ public:
                  const char *device,            //
                  const char *device_credential) //
       : ThingerESP32(user, device, device_credential),
-        wifi_cnt(0),
-        wifi_current(0),
+        wifi_cnt(0U),
+        wifi_current(0U),
         state(0)
   {
   }
@@ -55,11 +55,6 @@ public:
 
   virtual bool connect_network()
   {
-    /*
-    if (WiFi.status() == WL_CONNECTED) {
-      return true;
-    }*/
-
     switch (state)
     {
     case 0:

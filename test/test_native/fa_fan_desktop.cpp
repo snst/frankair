@@ -5,10 +5,8 @@
 
 void fanSetup()
 {
-
 }
 
 void fanSetPWM(uint8_t gpio, uint8_t val)
 {
-  //printf("fanSetPWM(%u) to %u\n", gpio, val);
 }

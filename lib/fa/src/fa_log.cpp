@@ -8,6 +8,7 @@ const char *modeToStr(uint8_t mode)
 {
     return modeToStr((controller_mode_t)mode);
 }
+
 const char *submodeToStr(uint8_t mode)
 {
     return submodeToStr((controller_submode_auto_t)mode);

@@ -29,4 +29,6 @@
 #define FLAP_LEVEL_MAX 10U
 #define FLAP_LEVEL_MIN 0U
 
+#define FAN_LEVEL_STEPS 11U
+
 #endif // FA_DEFINES_H

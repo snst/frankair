@@ -1,8 +1,6 @@
 // Copyright (c) 2023 by Stefan Schmidt
-
 #include "fa_thing.h"
 #include "fa_thing_priv.h"
-
 #include "fa_secrets.h"
 #include "fa_log.h"
 #include "fa_settings.h"
@@ -70,13 +68,13 @@ void thingSetup()
   thing["Override"] << [](pson &in)
   {
     bool isEmpty = in.is_empty();
-    valUpdate(in, "1 Enabled", fa_override_sensors.enabled, isEmpty);
-    valUpdate(in, "2 Temp exhaust IN", fa_override_sensors.temp.exhaust_in, isEmpty);
-    valUpdate(in, "3 Temp fresh IN", fa_override_sensors.temp.fresh_in, isEmpty);
-    valUpdate(in, "4 Temp exhaust OUT", fa_override_sensors.temp.exhaust_out, isEmpty);
-    valUpdate(in, "5 Temp fresh OUT", fa_override_sensors.temp.fresh_out, isEmpty);
-    valUpdate(in, "6 Humidity exhaust IN", fa_override_sensors.humidity_rel_exhaust_in, isEmpty);
-    valUpdate(in, "7 Humidity fresh OUT", fa_override_sensors.humidity_rel_fresh_out, isEmpty);
+    valUpdate(in, "1 Enabled", override.enabled, isEmpty);
+    valUpdate(in, "2 Temp exhaust IN", override.temp.exhaust_in, isEmpty);
+    valUpdate(in, "3 Temp fresh IN", override.temp.fresh_in, isEmpty);
+    valUpdate(in, "4 Temp exhaust OUT", override.temp.exhaust_out, isEmpty);
+    valUpdate(in, "5 Temp fresh OUT", override.temp.fresh_out, isEmpty);
+    valUpdate(in, "6 Humidity exhaust IN", override.humidity_rel_exhaust_in, isEmpty);
+    valUpdate(in, "7 Humidity fresh OUT", override.humidity_rel_fresh_out, isEmpty);
   };
 
   thing["Manual"] << [](pson &in)
@@ -103,9 +101,9 @@ void thingSetup()
     valUpdate(in, "3.1 Fan level main min", settings.ctrl.fan_level_min, isEmpty);
     valUpdate(in, "3.2 Fan level main max", settings.ctrl.fan_level_max, isEmpty);
     valUpdate(in, "4.1 Enable general humidity conditions for fan", settings.ctrl.humidity_fan_ctrl.enabled, isEmpty);
-    valUpdate(in, "4.2 Start fan if abs humidity delta greater than g/m³", settings.ctrl.humidity_fan_ctrl.abs_min_start, isEmpty);
-    valUpdate(in, "4.3 Stop fan if abs humidity delta less than g/m³", settings.ctrl.humidity_fan_ctrl.abs_min_stop, isEmpty);
-    valUpdate(in, "4.3 Stop fan if rel humidity less than %", settings.ctrl.humidity_fan_ctrl.rel_min_start, isEmpty);
+    valUpdate(in, "4.2 Start fan if abs humidity delta greater than g/m³", settings.ctrl.humidity_fan_ctrl.abs_min_on, isEmpty);
+    valUpdate(in, "4.3 Stop fan if abs humidity delta less than g/m³", settings.ctrl.humidity_fan_ctrl.abs_min_off, isEmpty);
+    valUpdate(in, "4.3 Stop fan if rel humidity less than %", settings.ctrl.humidity_fan_ctrl.rel_min_off, isEmpty);
     settingsSanitize();
     force_update = !isEmpty;
   };
@@ -210,18 +208,18 @@ void thingSetup()
     bool isEmpty = in.is_empty();
     valUpdate(in, "1.1 Enable sensor calibration temp", settings.use_calibration_temp, isEmpty);
     valUpdate(in, "1.2 Enable sensor calibration humidity", settings.use_calibration_humidity, isEmpty);
-    valUpdate(in, "2.1 Temp exhaust in min", fa_calibration_sensor.exhaust_in_temp.min, isEmpty);
-    valUpdate(in, "2.2 Temp exhaust in max", fa_calibration_sensor.exhaust_in_temp.max, isEmpty);
-    valUpdate(in, "2.3 Temp exhaust out min", fa_calibration_sensor.exhaust_out_temp.min, isEmpty);
-    valUpdate(in, "2.4 Temp exhaust out max", fa_calibration_sensor.exhaust_out_temp.max, isEmpty);
-    valUpdate(in, "3.1 Temp fresh in min", fa_calibration_sensor.fresh_in_temp.min, isEmpty);
-    valUpdate(in, "3.2 Temp fresh in max", fa_calibration_sensor.fresh_in_temp.max, isEmpty);
-    valUpdate(in, "3.3 Temp fresh out min", fa_calibration_sensor.fresh_out_temp.min, isEmpty);
-    valUpdate(in, "3.4 Temp fresh out max", fa_calibration_sensor.fresh_out_temp.max, isEmpty);
-    valUpdate(in, "4.1 Humidity exhaust in min", fa_calibration_sensor.exhaust_in_humidity.min, isEmpty);
-    valUpdate(in, "4.2 Humidity exhaust in max", fa_calibration_sensor.exhaust_in_humidity.max, isEmpty);
-    valUpdate(in, "4.3 Humidity fresh out min", fa_calibration_sensor.fresh_out_humidity.min, isEmpty);
-    valUpdate(in, "4.4 Humidity fresh out max", fa_calibration_sensor.fresh_out_humidity.max, isEmpty);
+    valUpdate(in, "2.1 Temp exhaust in min", calibration_sensor.exhaust_in_temp.min, isEmpty);
+    valUpdate(in, "2.2 Temp exhaust in max", calibration_sensor.exhaust_in_temp.max, isEmpty);
+    valUpdate(in, "2.3 Temp exhaust out min", calibration_sensor.exhaust_out_temp.min, isEmpty);
+    valUpdate(in, "2.4 Temp exhaust out max", calibration_sensor.exhaust_out_temp.max, isEmpty);
+    valUpdate(in, "3.1 Temp fresh in min", calibration_sensor.fresh_in_temp.min, isEmpty);
+    valUpdate(in, "3.2 Temp fresh in max", calibration_sensor.fresh_in_temp.max, isEmpty);
+    valUpdate(in, "3.3 Temp fresh out min", calibration_sensor.fresh_out_temp.min, isEmpty);
+    valUpdate(in, "3.4 Temp fresh out max", calibration_sensor.fresh_out_temp.max, isEmpty);
+    valUpdate(in, "4.1 Humidity exhaust in min", calibration_sensor.exhaust_in_humidity.min, isEmpty);
+    valUpdate(in, "4.2 Humidity exhaust in max", calibration_sensor.exhaust_in_humidity.max, isEmpty);
+    valUpdate(in, "4.3 Humidity fresh out min", calibration_sensor.fresh_out_humidity.min, isEmpty);
+    valUpdate(in, "4.4 Humidity fresh out max", calibration_sensor.fresh_out_humidity.max, isEmpty);
 
     force_update = !isEmpty;
   };
@@ -229,9 +227,9 @@ void thingSetup()
   thing["Calibration actuator"] << [](pson &in)
   {
     bool isEmpty = in.is_empty();
-    valUpdate(in, "1 Frost flap pos min", fa_calibration_actuator.flap_pos.min, isEmpty);
-    valUpdate(in, "2 Frost flap pos max", fa_calibration_actuator.flap_pos.max, isEmpty);
-    valUpdate(in, "3 Calibration volume liter", fa_calibration_actuator.calibration_volume_liter, isEmpty);
+    valUpdate(in, "1 Frost flap pos min", calibration_actuator.flap_pos.min, isEmpty);
+    valUpdate(in, "2 Frost flap pos max", calibration_actuator.flap_pos.max, isEmpty);
+    valUpdate(in, "3 Calibration volume liter", calibration_actuator.calibration_volume_liter, isEmpty);
     protoson::pson_array &array_fan_main = in["4 Fan main level-pwm"];
     protoson::pson_array &array_fan_main_sec = in["5 Fan main calibration volume sec"];
     protoson::pson_array &array_fan_frost = in["6 Fan frost level-pwm"];
@@ -240,23 +238,23 @@ void thingSetup()
     {
       if (isEmpty)
       {
-        array_fan_main.add(fa_calibration_actuator.fan_pwm_main[i]);
-        array_fan_main_sec.add(fa_calibration_actuator.fan_cal_time_main[i]);
-        array_fan_frost.add(fa_calibration_actuator.fan_pwm_frost[i]);
+        array_fan_main.add(calibration_actuator.fan_pwm_main[i]);
+        array_fan_main_sec.add(calibration_actuator.fan_cal_time_main[i]);
+        array_fan_frost.add(calibration_actuator.fan_pwm_frost[i]);
       }
       else
       {
         if (array_fan_main[i])
         {
-          fa_calibration_actuator.fan_pwm_main[i] = *array_fan_main[i];
+          calibration_actuator.fan_pwm_main[i] = *array_fan_main[i];
         }
         if (array_fan_main_sec[i])
         {
-          fa_calibration_actuator.fan_cal_time_main[i] = *array_fan_main_sec[i];
+          calibration_actuator.fan_cal_time_main[i] = *array_fan_main_sec[i];
         }
         if (array_fan_frost[i])
         {
-          fa_calibration_actuator.fan_pwm_frost[i] = *array_fan_frost[i];
+          calibration_actuator.fan_pwm_frost[i] = *array_fan_frost[i];
         }
       }
     }
@@ -316,15 +314,15 @@ void thingSetup()
 
   thing["OTA"] >> [](pson &out)
   {
-    out["firmware_size"] = fa_ota.firmware_size;
-    out["transferred_size"] = fa_ota.transferred_size;
-    out["checksum"] = fa_ota.checksum;
-    out["downloading"] = fa_ota.downloading;
-    out["abort"] = fa_ota.abort;
-    out["error"] = fa_ota.error;
-    out["success"] = fa_ota.success;
-    out["http_response"] = fa_ota.http_response;
-    out["simulate"] = fa_ota.simulate;
+    out["firmware_size"] = ota.firmware_size;
+    out["transferred_size"] = ota.transferred_size;
+    out["checksum"] = ota.checksum;
+    out["downloading"] = ota.downloading;
+    out["abort"] = ota.abort;
+    out["error"] = ota.error;
+    out["success"] = ota.success;
+    out["http_response"] = ota.http_response;
+    out["simulate"] = ota.simulate;
   };
 
   ADD_CMD("a Start sniffing", controllerStartSniff)

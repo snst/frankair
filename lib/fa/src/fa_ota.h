@@ -18,7 +18,7 @@ struct fa_ota_t
   bool simulate;
 };
 
-extern fa_ota_t fa_ota;
+extern fa_ota_t ota;
 
 void otaStartSim();
 void otaStart();

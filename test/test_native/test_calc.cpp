@@ -10,6 +10,7 @@
 
 extern fa_state_t state;
 extern fa_state_raw_t state_raw;
+extern uint32_t desktop_ms;
 
 void cleanData();
 
@@ -55,16 +56,16 @@ void test_filterValue(void)
 void test_correctTempWithCalibrationData(void)
 {
   cleanData();
-  fa_calibration_sensor.exhaust_in_temp.min = 10.0f;
-  fa_calibration_sensor.exhaust_in_temp.max = 30.0f;
-  fa_calibration_sensor.exhaust_out_temp.min = 20.0f;
-  fa_calibration_sensor.exhaust_out_temp.max = 40.0f;
-  fa_calibration_sensor.fresh_in_temp.min = -10.0f;
-  fa_calibration_sensor.fresh_in_temp.max = 30.0f;
-  fa_calibration_sensor.fresh_out_temp.min = 10.0f;
-  fa_calibration_sensor.fresh_out_temp.max = 30.0f;
-  fa_calibration_sensor.ref_temp.min = 40.0f;
-  fa_calibration_sensor.ref_temp.max = 50.0f;
+  calibration_sensor.exhaust_in_temp.min = 10.0f;
+  calibration_sensor.exhaust_in_temp.max = 30.0f;
+  calibration_sensor.exhaust_out_temp.min = 20.0f;
+  calibration_sensor.exhaust_out_temp.max = 40.0f;
+  calibration_sensor.fresh_in_temp.min = -10.0f;
+  calibration_sensor.fresh_in_temp.max = 30.0f;
+  calibration_sensor.fresh_out_temp.min = 10.0f;
+  calibration_sensor.fresh_out_temp.max = 30.0f;
+  calibration_sensor.ref_temp.min = 40.0f;
+  calibration_sensor.ref_temp.max = 50.0f;
   fa_temp_t dest, in;
   in.exhaust_in = 20.0f;
   in.exhaust_out = 30.0f;
@@ -76,10 +77,10 @@ void test_correctTempWithCalibrationData(void)
   TEST_ASSERT_EQUAL_FLOAT(45.0f, dest.fresh_in);
   TEST_ASSERT_EQUAL_FLOAT(40.0f, dest.fresh_out);
 
-  fa_calibration_sensor.fresh_out_temp.min = 30.0f;
-  fa_calibration_sensor.fresh_out_temp.max = 10.0f;
-  fa_calibration_sensor.ref_temp.min = 50.0f;
-  fa_calibration_sensor.ref_temp.max = 40.0f;
+  calibration_sensor.fresh_out_temp.min = 30.0f;
+  calibration_sensor.fresh_out_temp.max = 10.0f;
+  calibration_sensor.ref_temp.min = 50.0f;
+  calibration_sensor.ref_temp.max = 40.0f;
   in.fresh_out = 15.0f;
   correctTempWithCalibrationData(dest, in);
   TEST_ASSERT_EQUAL_FLOAT(42.5f, dest.fresh_out);
@@ -88,12 +89,12 @@ void test_correctTempWithCalibrationData(void)
 void test_correctHumidityWithCalibrationData(void)
 {
   cleanData();
-  fa_calibration_sensor.fresh_out_humidity.min = 10.0f;
-  fa_calibration_sensor.fresh_out_humidity.max = 30.0f;
-  fa_calibration_sensor.exhaust_in_humidity.min = 20.0f;
-  fa_calibration_sensor.exhaust_in_humidity.max = 40.0f;
-  fa_calibration_sensor.ref_humidity.min = 40.0f;
-  fa_calibration_sensor.ref_humidity.max = 50.0f;
+  calibration_sensor.fresh_out_humidity.min = 10.0f;
+  calibration_sensor.fresh_out_humidity.max = 30.0f;
+  calibration_sensor.exhaust_in_humidity.min = 20.0f;
+  calibration_sensor.exhaust_in_humidity.max = 40.0f;
+  calibration_sensor.ref_humidity.min = 40.0f;
+  calibration_sensor.ref_humidity.max = 50.0f;
   fa_humidity_t dest, in;
   in.rel_fresh_out = 20.0f;
   in.rel_exhaust_in = 35.0f;
@@ -105,22 +106,22 @@ void test_correctHumidityWithCalibrationData(void)
 void test_sensorsProcessValues(void)
 {
   cleanData();
-  fa_calibration_sensor.exhaust_in_temp.min = 10.0f;
-  fa_calibration_sensor.exhaust_in_temp.max = 20.0f;
-  fa_calibration_sensor.exhaust_out_temp.min = 10.0f;
-  fa_calibration_sensor.exhaust_out_temp.max = 20.0f;
-  fa_calibration_sensor.fresh_in_temp.min = 10.0f;
-  fa_calibration_sensor.fresh_in_temp.max = 20.0f;
-  fa_calibration_sensor.fresh_out_temp.min = 10.0f;
-  fa_calibration_sensor.fresh_out_temp.max = 20.0f;
-  fa_calibration_sensor.fresh_out_humidity.min = 10.0f;
-  fa_calibration_sensor.fresh_out_humidity.max = 20.0f;
-  fa_calibration_sensor.exhaust_in_humidity.min = 10.0f;
-  fa_calibration_sensor.exhaust_in_humidity.max = 20.0f;
-  fa_calibration_sensor.ref_temp.min = 20.0f;
-  fa_calibration_sensor.ref_temp.max = 30.0f;
-  fa_calibration_sensor.ref_humidity.min = 30.0f;
-  fa_calibration_sensor.ref_humidity.max = 40.0f;
+  calibration_sensor.exhaust_in_temp.min = 10.0f;
+  calibration_sensor.exhaust_in_temp.max = 20.0f;
+  calibration_sensor.exhaust_out_temp.min = 10.0f;
+  calibration_sensor.exhaust_out_temp.max = 20.0f;
+  calibration_sensor.fresh_in_temp.min = 10.0f;
+  calibration_sensor.fresh_in_temp.max = 20.0f;
+  calibration_sensor.fresh_out_temp.min = 10.0f;
+  calibration_sensor.fresh_out_temp.max = 20.0f;
+  calibration_sensor.fresh_out_humidity.min = 10.0f;
+  calibration_sensor.fresh_out_humidity.max = 20.0f;
+  calibration_sensor.exhaust_in_humidity.min = 10.0f;
+  calibration_sensor.exhaust_in_humidity.max = 20.0f;
+  calibration_sensor.ref_temp.min = 20.0f;
+  calibration_sensor.ref_temp.max = 30.0f;
+  calibration_sensor.ref_humidity.min = 30.0f;
+  calibration_sensor.ref_humidity.max = 40.0f;
 
   state_raw.temp.exhaust_in = 11.0f;
   state_raw.temp.exhaust_out = 12.0f;
@@ -144,21 +145,21 @@ void test_sensorsProcessValues(void)
   settings.use_calibration_humidity = true;
   settings.measurement_alpha = 1.0f;
   sensorsProcessValues();
-  float offset = fa_calibration_sensor.ref_temp.min - fa_calibration_sensor.exhaust_in_temp.min;
+  float offset = calibration_sensor.ref_temp.min - calibration_sensor.exhaust_in_temp.min;
   TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.temp.exhaust_in, state.temp.exhaust_in);
   TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.temp.exhaust_out, state.temp.exhaust_out);
   TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.temp.fresh_in, state.temp.fresh_in);
   TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.temp.fresh_out, state.temp.fresh_out);
-  offset = fa_calibration_sensor.ref_humidity.min - fa_calibration_sensor.exhaust_in_humidity.min;
+  offset = calibration_sensor.ref_humidity.min - calibration_sensor.exhaust_in_humidity.min;
   TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.humidity.rel_exhaust_in, state.humidity.rel_exhaust_in);
   TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.humidity.rel_fresh_out, state.humidity.rel_fresh_out);
 }
 
 void test_volumeCalibration()
 {
-  fa_calibration_actuator.calibration_volume_liter = 60;
-  fa_calibration_actuator.fan_cal_time_main[0] = 12;
-  fa_calibration_actuator.fan_cal_time_main[5] = 27;
+  calibration_actuator.calibration_volume_liter = 60;
+  calibration_actuator.fan_cal_time_main[0] = 12;
+  calibration_actuator.fan_cal_time_main[5] = 27;
   TEST_ASSERT_EQUAL_FLOAT(18, getMainVolume(0));
   TEST_ASSERT_EQUAL_FLOAT(8, getMainVolume(5));
 }
@@ -203,5 +204,27 @@ void test_calcInterpolate(void)
   TEST_ASSERT_EQUAL_FLOAT(12, roundf(11.9));
   TEST_ASSERT_EQUAL_FLOAT(-12, roundf(-12.4));
   TEST_ASSERT_EQUAL_FLOAT(-12, roundf(-11.9));
+}
 
+void test_common(void)
+{
+  intervalNowAdd(1000U);
+  uint32_t v;
+  intervalReset(v);
+  TEST_ASSERT_EQUAL(0U, intervalCheckMS(v, 100));
+  intervalNowAdd(80U);
+  TEST_ASSERT_EQUAL(0U, intervalCheckMS(v, 100));
+  intervalNowAdd(20U);
+  TEST_ASSERT_EQUAL(100U, intervalCheckMS(v, 100));
+  intervalReset(v);
+  intervalNowAdd(120U);
+  TEST_ASSERT_EQUAL(120U, intervalCheckMS(v, 100));
+
+  intervalNowSet(((uint32_t)-1) - 100U);
+  intervalReset(v);
+  TEST_ASSERT_EQUAL(0U, intervalCheckMS(v, 120));
+  intervalNowAdd(50U);
+  TEST_ASSERT_EQUAL(0U, intervalCheckMS(v, 120));
+  intervalNowAdd(100U);
+  TEST_ASSERT_EQUAL(150U, intervalCheckMS(v, 120));
 }

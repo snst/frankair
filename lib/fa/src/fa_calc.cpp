@@ -56,7 +56,6 @@ float calcCorrectedValue(float rawV, float rawMin, float rawMax, float refMin, f
     return ret;
 }
 
-
 void sensorsProcessValues()
 {
     fa_temp_t temp;
@@ -94,6 +93,6 @@ void sensorsProcessValues()
     state.humidity.abs_fresh_out = convertRelativeToAbsoluteHumidity(state.temp.fresh_out, state.humidity.rel_fresh_out);
     state.humidity.abs_delta = state.humidity.abs_exhaust_in - state.humidity.abs_fresh_out;
 
-    logTempHumidity(LSENSOR, fa_override_sensors.enabled ? "SIM" : "RAW", state_raw.temp, state_raw.humidity);
+    logTempHumidity(LSENSOR, override.enabled ? "SIM" : "RAW", state_raw.temp, state_raw.humidity);
     logTempHumidity(LSENSOR, "FIL", state.temp, state.humidity);
 }

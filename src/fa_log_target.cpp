@@ -4,7 +4,7 @@
 
 void loggingSetup()
 {
-  Serial.begin(9600);
+  Serial.begin(9600U);
 }
 
 void IMSG(uint8_t mask, const char *txt)

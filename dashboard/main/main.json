@@ -484,7 +484,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 10,
+						"row": 11,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -526,7 +526,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 12,
+						"row": 13,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -564,7 +564,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 10,
+						"row": 11,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -602,7 +602,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 12,
+						"row": 13,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -640,7 +640,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 24,
+						"row": 25,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -682,7 +682,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 27,
+						"row": 28,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -720,7 +720,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 6,
+						"row": 7,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -758,7 +758,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 6,
+						"row": 7,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -796,7 +796,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 8,
+						"row": 9,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -834,7 +834,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 8,
+						"row": 9,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -872,7 +872,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 14,
+						"row": 15,
 						"sizeX": 1,
 						"sizeY": 6
 					},
@@ -914,7 +914,7 @@
 						"col": 1,
 						"row": 0,
 						"sizeX": 1,
-						"sizeY": 6
+						"sizeY": 7
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -966,7 +966,7 @@
 						"col": 0,
 						"row": 0,
 						"sizeX": 1,
-						"sizeY": 6
+						"sizeY": 7
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -1073,7 +1073,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 22,
+						"row": 23,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1111,7 +1111,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 20,
+						"row": 21,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1149,7 +1149,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 25,
+						"row": 26,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1187,7 +1187,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 20,
+						"row": 21,
 						"sizeX": 1,
 						"sizeY": 3
 					},
@@ -1222,7 +1222,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 23,
+						"row": 24,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1264,7 +1264,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 17,
+						"row": 18,
 						"sizeX": 1,
 						"sizeY": 3
 					},
@@ -1299,7 +1299,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 14,
+						"row": 15,
 						"sizeX": 1,
 						"sizeY": 3
 					},
@@ -1332,42 +1332,42 @@
 					"type": "gauge"
 				},
 				{
+					"layout": {
+						"col": 0,
+						"row": 27,
+						"sizeX": 1,
+						"sizeY": 3
+					},
 					"panel": {
 						"color": "#ffffff",
 						"title": "Efficiency"
 					},
-					"type": "text",
 					"properties": {
-						"decimal_places": 0,
 						"color": "#1E313E",
-						"size": "35px",
-						"weight": "font-thin",
-						"unit_size": "20px",
+						"decimal_places": 0,
 						"icon": "",
-						"unit": "%"
+						"size": "35px",
+						"unit": "%",
+						"unit_size": "20px",
+						"weight": "font-thin"
 					},
 					"sources": [
 						{
-							"name": "Default",
 							"color": "#1E313E",
-							"source": "device",
 							"device": {
 								"id": "devid1",
-								"user": "olavwaldherr",
+								"interval": 5,
+								"mapping": "efficiency",
 								"resource": "State",
 								"update": "interval",
-								"interval": 5,
-								"mapping": "efficiency"
+								"user": "olavwaldherr"
 							},
-							"skipCurrent": 1
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
 						}
 					],
-					"layout": {
-						"sizeX": 1,
-						"sizeY": 3,
-						"row": 26,
-						"col": 0
-					}
+					"type": "text"
 				}
 			]
 		},

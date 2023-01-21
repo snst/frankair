@@ -37,9 +37,9 @@ void settingsDefault()
     settings.ctrl.frost_flap_ctrl.temp_min_close = 2.0f;
     settings.ctrl.frost_flap_ctrl.temp_min_open = 0.0f;
     settings.ctrl.humidity_fan_ctrl.enabled = true;
-    settings.ctrl.humidity_fan_ctrl.abs_min_start = 1.0f;  // g/m³
-    settings.ctrl.humidity_fan_ctrl.abs_min_stop = 0.5f;   // g/m³
-    settings.ctrl.humidity_fan_ctrl.rel_min_start = 50.0f; // rel %
+    settings.ctrl.humidity_fan_ctrl.abs_min_on = 1.0f;  // g/m³
+    settings.ctrl.humidity_fan_ctrl.abs_min_off = 0.5f;   // g/m³
+    settings.ctrl.humidity_fan_ctrl.rel_min_off = 50.0f; // rel %
     settings.ctrl.humidity_fan_curve.enabled = true;
     settings.ctrl.humidity_fan_curve.enabled_points = 4U;
     settings.ctrl.humidity_fan_curve.item[0].val = 4.0f;
