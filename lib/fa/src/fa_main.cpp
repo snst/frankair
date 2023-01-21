@@ -14,6 +14,7 @@
 #include "fa_ota.h"
 #include "fa_version.h"
 #include "fa_statistic.h"
+#include "fa_delayed_task.h"
 
 void setup()
 {
@@ -27,6 +28,7 @@ void setup()
   flapSetup();
   statisticSetup();
   thingSetup();
+  delayedTaskSetup();
 }
 
 void loop()
@@ -37,4 +39,5 @@ void loop()
   controllerUpdate();
   ledUpdate();
   otaUpdate();
+  delayedTaskUpdate();
 }

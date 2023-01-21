@@ -32,9 +32,11 @@ bool updateIfChanged(T &dest, T src)
 }
 
 float mapValue(float x, float in_min, float in_max, float out_min, float out_max);
+bool isInRange(float i, float a, float b);
 
 
 void addDurationMS(fa_duration_t& duration, uint32_t delta_ms);
 void resetDuration(fa_duration_t& duration);
+void rebootTarget();
 
 #endif // FA_COMMON_H

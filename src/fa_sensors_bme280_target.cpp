@@ -39,7 +39,7 @@ void sensorsBME280Read()
     bmeE.readAllMeasurements(&me);
     bmeF.readAllMeasurements(&mf);
     state_raw.temp.exhaust_in = me.temperature;
-    state_raw.humidity.rel_exaust_in = me.humidity;
+    state_raw.humidity.rel_exhaust_in = me.humidity;
     state_raw.temp.fresh_out = mf.temperature;
     state_raw.humidity.rel_fresh_out = mf.humidity;
 }

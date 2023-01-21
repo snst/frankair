@@ -37,7 +37,6 @@ void sensorsDallasScan()
   {
     IMSG(LSENSOR, "No more onewire addresses.");
     oneWire.reset_search();
-    s_flag_scan_sensors = false;
   }
   else
   {

@@ -5,6 +5,7 @@
 #include "fa_settings.h"
 #include "fa_log.h"
 #include "fa_calibration.h"
+#include "fa_sensors.h"
 
 extern fa_state_t state;
 extern fa_state_raw_t state_raw;
@@ -55,6 +56,7 @@ float calcCorrectedValue(float rawV, float rawMin, float rawMax, float refMin, f
     return ret;
 }
 
+
 void sensorsProcessValues()
 {
     fa_temp_t temp;
@@ -78,7 +80,7 @@ void sensorsProcessValues()
     }
     else
     {
-        humidity.rel_exaust_in = state_raw.humidity.rel_exaust_in;
+        humidity.rel_exhaust_in = state_raw.humidity.rel_exhaust_in;
         humidity.rel_fresh_out = state_raw.humidity.rel_fresh_out;
     }
 
@@ -86,19 +88,12 @@ void sensorsProcessValues()
     filterValue(state.temp.exhaust_out, temp.exhaust_out);
     filterValue(state.temp.fresh_in, temp.fresh_in);
     filterValue(state.temp.fresh_out, temp.fresh_out);
-    filterValue(state.humidity.rel_exaust_in, humidity.rel_exaust_in);
+    filterValue(state.humidity.rel_exhaust_in, humidity.rel_exhaust_in);
     filterValue(state.humidity.rel_fresh_out, humidity.rel_fresh_out);
-    state.humidity.abs_exaust_in = convertRelativeToAbsoluteHumidity(state.temp.exhaust_in, state.humidity.rel_exaust_in);
+    state.humidity.abs_exhaust_in = convertRelativeToAbsoluteHumidity(state.temp.exhaust_in, state.humidity.rel_exhaust_in);
     state.humidity.abs_fresh_out = convertRelativeToAbsoluteHumidity(state.temp.fresh_out, state.humidity.rel_fresh_out);
-    state.humidity.abs_delta = state.humidity.abs_exaust_in - state.humidity.abs_fresh_out;
+    state.humidity.abs_delta = state.humidity.abs_exhaust_in - state.humidity.abs_fresh_out;
 
-    char buf[128];
-    sprintf(buf, "FIL ei %f, fo %f, fi %f, eo %f, hi %f, ho %f",
-            state.temp.exhaust_in,
-            state.temp.fresh_out,
-            state.temp.fresh_in,
-            state.temp.exhaust_out,
-            state.humidity.rel_exaust_in,
-            state.humidity.rel_fresh_out);
-    IMSG(LSENSOR, buf);
+    logTempHumidity(LSENSOR, fa_override_sensors.enabled ? "SIM" : "RAW", state_raw.temp, state_raw.humidity);
+    logTempHumidity(LSENSOR, "FIL", state.temp, state.humidity);
 }

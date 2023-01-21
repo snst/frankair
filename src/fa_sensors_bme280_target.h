@@ -6,6 +6,5 @@
 
 void sensorsBME280Setup();
 void sensorsBME280Read();
-void sensorsBME280Scan();
 
 #endif // FA_SENSORS_BME280_H

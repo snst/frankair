@@ -5,10 +5,10 @@
 			"period": "1m"
 		},
 		"timespan": {
+			"magnitude": "hour",
 			"mode": "relative",
 			"period": "latest",
-			"value": 1,
-			"magnitude": "hour"
+			"value": 1
 		}
 	},
 	"name": "frankair",
@@ -44,9 +44,9 @@
 							"bucket": {
 								"backend": "dynamodb",
 								"id": "Bucket",
+								"mapping": "temp_exhaust_in",
 								"tags": {},
-								"user": "olavwaldherr",
-								"mapping": "temp_exhaust_in"
+								"user": "olavwaldherr"
 							},
 							"color": "#008a02",
 							"device": {
@@ -67,6 +67,13 @@
 							}
 						},
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "temp_fresh_out",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#03e212",
 							"device": {
 								"id": "devid1",
@@ -81,18 +88,18 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "temp_fresh_out"
+								"mode": "configurable",
+								"value": 10
 							}
 						},
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "temp_fresh_in",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#0300b3",
 							"device": {
 								"id": "devid1",
@@ -107,18 +114,18 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "temp_fresh_in"
+								"mode": "configurable",
+								"value": 10
 							}
 						},
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "temp_exhaust_out",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#8c8aff",
 							"device": {
 								"id": "devid1",
@@ -133,15 +140,8 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "temp_exhaust_out"
+								"mode": "configurable",
+								"value": 10
 							}
 						}
 					],
@@ -169,11 +169,18 @@
 					},
 					"sources": [
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "humidity_abs_exhaust_in",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#180cc0",
 							"device": {
 								"id": "devid1",
 								"interval": 5,
-								"mapping": "humidity_abs_exaust_in",
+								"mapping": "humidity_abs_exhaust_in",
 								"resource": "State",
 								"update": "interval",
 								"user": "olavwaldherr"
@@ -183,18 +190,18 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "humidity_abs_exaust_in"
+								"mode": "configurable",
+								"value": 10
 							}
 						},
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "humidity_abs_fresh_out",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#4a9a28",
 							"device": {
 								"id": "devid1",
@@ -209,15 +216,8 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "humidity_abs_fresh_out"
+								"mode": "configurable",
+								"value": 10
 							}
 						}
 					],
@@ -246,11 +246,18 @@
 					},
 					"sources": [
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "humidity_rel_exhaust_in",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#146499",
 							"device": {
 								"id": "devid1",
 								"interval": 5,
-								"mapping": "humidity_rel_exaust_in",
+								"mapping": "humidity_rel_exhaust_in",
 								"resource": "State",
 								"update": "interval",
 								"user": "olavwaldherr"
@@ -260,18 +267,18 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "humidity_rel_exaust_in"
+								"mode": "configurable",
+								"value": 10
 							}
 						},
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "humidity_rel_fresh_out",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#378a14",
 							"device": {
 								"id": "devid1",
@@ -286,15 +293,8 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "humidity_rel_fresh_out"
+								"mode": "configurable",
+								"value": 10
 							}
 						}
 					],
@@ -323,6 +323,13 @@
 					},
 					"sources": [
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "fan_level_exhaust",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#334552",
 							"device": {
 								"id": "devid1",
@@ -337,18 +344,18 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "fan_level_exhaust"
+								"mode": "configurable",
+								"value": 10
 							}
 						},
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "fan_level_fresh",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#0592f0",
 							"device": {
 								"id": "devid1",
@@ -363,18 +370,18 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "fan_level_fresh"
+								"mode": "configurable",
+								"value": 10
 							}
 						},
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "fan_level_frost",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#ee692f",
 							"device": {
 								"id": "devid1",
@@ -389,18 +396,18 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "fan_level_frost"
+								"mode": "configurable",
+								"value": 10
 							}
 						},
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "open_flap_frost",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#f5d924",
 							"device": {
 								"id": "devid1",
@@ -415,24 +422,17 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "open_flap_frost"
+								"mode": "configurable",
+								"value": 10
 							}
 						},
 						{
 							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
 								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "mode",
 								"tags": {},
-								"mapping": "mode"
+								"user": "olavwaldherr"
 							},
 							"color": "#53bf45",
 							"device": {
@@ -448,11 +448,18 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
+								"mode": "configurable",
+								"value": 10
 							}
 						},
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "submode",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#ef0bd0",
 							"device": {
 								"id": "devid1",
@@ -467,15 +474,8 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 30,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "submode"
+								"mode": "configurable",
+								"value": 30
 							}
 						}
 					],
@@ -665,12 +665,12 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
-								"resource": "Statistics",
-								"update": "interval",
-								"user": "olavwaldherr",
 								"mapping": [
 									"running_sec"
-								]
+								],
+								"resource": "Statistics",
+								"update": "interval",
+								"user": "olavwaldherr"
 							},
 							"name": "Default",
 							"skipCurrent": 1,
@@ -682,7 +682,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 22,
+						"row": 27,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -705,10 +705,10 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
+								"mapping": "volume_m3_sum",
 								"resource": "Statistics",
 								"update": "interval",
-								"user": "olavwaldherr",
-								"mapping": "volume_m3_sum"
+								"user": "olavwaldherr"
 							},
 							"name": "Default",
 							"skipCurrent": 1,
@@ -743,7 +743,7 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
-								"mapping": "humidity_abs_exaust_in",
+								"mapping": "humidity_abs_exhaust_in",
 								"resource": "State",
 								"update": "interval",
 								"user": "olavwaldherr"
@@ -819,7 +819,7 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
-								"mapping": "humidity_rel_exaust_in",
+								"mapping": "humidity_rel_exhaust_in",
 								"resource": "State",
 								"update": "interval",
 								"user": "olavwaldherr"
@@ -882,7 +882,7 @@
 					},
 					"properties": {
 						"source": "code",
-						"template": "<div ng-app=\"\" ng-init=\"submode=['waiting','on','sniffing', 'undefined']; mode=['off','auto','manual', 'undefined']\">\n\n    <p>Mode : {{mode[value.mode] }}</p>\n    <p>AutoMode: {{submode[value.submode] }}</p>\n    <p>Fan off conditions active: {{value.ctrl_active_humidity_fan_off}}</p>\n    <p>Humidity fan curve active: {{value.ctrl_active_humidity_fan_curve}}</p>\n    <p>Temp fan curve active: {{value.ctrl_active_temp_fan_curve}}</p>\n    <p>Frost fan curve active: {{value.ctrl_active_frost_fan_curve}}</p>\n\n</div>"
+						"template": "<div ng-app=\"\" ng-init=\"submode=['waiting','on','sniffing', 'undefined']; mode=['off','auto','manual', 'undefined']\">\n\n    <p>Mode : {{mode[value.mode] }}</p>\n    <p>AutoMode: {{submode[value.submode] }}</p>\n    <p>Fan off conditions: {{value.ctrl_active_humidity_fan_off}}</p>\n    <p>Humidity fan curve level: {{value.ctrl_active_humidity_fan_curve}}</p>\n    <p>Temp fan curve level: {{value.ctrl_active_temp_fan_curve}}</p>\n    <p>Frost fan curve level: {{value.ctrl_active_frost_fan_curve}}</p>\n\n</div>"
 					},
 					"sources": [
 						{
@@ -1006,7 +1006,7 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
-								"mapping": "humidity_rel_exaust_in",
+								"mapping": "humidity_rel_exhaust_in",
 								"resource": "State",
 								"update": "interval",
 								"user": "olavwaldherr"
@@ -1042,6 +1042,13 @@
 					},
 					"sources": [
 						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "humidity_abs_delta",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
 							"color": "#180cc0",
 							"device": {
 								"id": "devid1",
@@ -1056,15 +1063,8 @@
 							"source": "bucket",
 							"timespan": {
 								"magnitude": "minute",
-								"value": 10,
-								"mode": "configurable"
-							},
-							"bucket": {
-								"id": "Bucket",
-								"user": "olavwaldherr",
-								"backend": "dynamodb",
-								"tags": {},
-								"mapping": "humidity_abs_delta"
+								"mode": "configurable",
+								"value": 10
 							}
 						}
 					],
@@ -1096,10 +1096,10 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
+								"mapping": "liter_sum",
 								"resource": "Statistics",
 								"update": "interval",
-								"user": "olavwaldherr",
-								"mapping": "liter_sum"
+								"user": "olavwaldherr"
 							},
 							"name": "Default",
 							"skipCurrent": 1,
@@ -1134,10 +1134,10 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
+								"mapping": "liter_per_hour",
 								"resource": "Statistics",
 								"update": "interval",
-								"user": "olavwaldherr",
-								"mapping": "liter_per_hour"
+								"user": "olavwaldherr"
 							},
 							"name": "Default",
 							"skipCurrent": 1,
@@ -1149,7 +1149,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 20,
+						"row": 25,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1172,10 +1172,10 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
+								"mapping": "volume_m3_per_hour",
 								"resource": "Statistics",
 								"update": "interval",
-								"user": "olavwaldherr",
-								"mapping": "volume_m3_per_hour"
+								"user": "olavwaldherr"
 							},
 							"name": "Default",
 							"skipCurrent": 1,
@@ -1185,44 +1185,44 @@
 					"type": "text"
 				},
 				{
+					"layout": {
+						"col": 1,
+						"row": 20,
+						"sizeX": 1,
+						"sizeY": 3
+					},
 					"panel": {
 						"color": "#ffffff",
-						"title": "Fan level"
+						"title": "Flap frost open"
 					},
-					"type": "gauge",
 					"properties": {
-						"min": 0,
-						"max": 10,
 						"color": "#1E313E",
-						"gradient": true
+						"gradient": true,
+						"max": 10,
+						"min": 0
 					},
 					"sources": [
 						{
-							"name": "Default",
 							"color": "#1E313E",
-							"source": "device",
 							"device": {
 								"id": "devid1",
-								"user": "olavwaldherr",
+								"interval": 5,
+								"mapping": "open_flap_frost",
 								"resource": "State",
-								"mapping": "fan_level_fresh",
 								"update": "interval",
-								"interval": 5
+								"user": "olavwaldherr"
 							},
-							"skipCurrent": 1
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
 						}
 					],
-					"layout": {
-						"sizeX": 1,
-						"sizeY": 4,
-						"row": 14,
-						"col": 1
-					}
+					"type": "gauge"
 				},
 				{
 					"layout": {
 						"col": 1,
-						"row": 18,
+						"row": 23,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1260,6 +1260,114 @@
 						}
 					],
 					"type": "html"
+				},
+				{
+					"layout": {
+						"col": 1,
+						"row": 17,
+						"sizeX": 1,
+						"sizeY": 3
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Fan frost level"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"gradient": true,
+						"max": 10,
+						"min": 0
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "fan_level_frost",
+								"resource": "State",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "gauge"
+				},
+				{
+					"layout": {
+						"col": 1,
+						"row": 14,
+						"sizeX": 1,
+						"sizeY": 3
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Fan fresh level"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"gradient": true,
+						"max": 10,
+						"min": 0
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "fan_level_fresh",
+								"resource": "State",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "gauge"
+				},
+				{
+					"panel": {
+						"color": "#ffffff",
+						"title": "Efficiency"
+					},
+					"type": "text",
+					"properties": {
+						"decimal_places": 0,
+						"color": "#1E313E",
+						"size": "35px",
+						"weight": "font-thin",
+						"unit_size": "20px",
+						"icon": "",
+						"unit": "%"
+					},
+					"sources": [
+						{
+							"name": "Default",
+							"color": "#1E313E",
+							"source": "device",
+							"device": {
+								"id": "devid1",
+								"user": "olavwaldherr",
+								"resource": "State",
+								"update": "interval",
+								"interval": 5,
+								"mapping": "efficiency"
+							},
+							"skipCurrent": 1
+						}
+					],
+					"layout": {
+						"sizeX": 1,
+						"sizeY": 3,
+						"row": 26,
+						"col": 0
+					}
 				}
 			]
 		},
@@ -1401,7 +1509,7 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
-								"mapping": "humidity_rel_exaust_in",
+								"mapping": "humidity_rel_exhaust_in",
 								"resource": "StateRAW",
 								"update": "interval",
 								"user": "olavwaldherr"
@@ -1561,7 +1669,7 @@
 							"device": {
 								"id": "devid1",
 								"interval": 5,
-								"mapping": "humidity_rel_exaust_in",
+								"mapping": "humidity_rel_exhaust_in",
 								"resource": "StateRAW",
 								"update": "interval",
 								"user": "olavwaldherr"
@@ -1652,97 +1760,97 @@
 					"type": "text"
 				},
 				{
+					"layout": {
+						"col": 3,
+						"row": 0,
+						"sizeX": 3,
+						"sizeY": 6
+					},
 					"panel": {
 						"color": "#ffffff",
 						"title": "Actuator"
 					},
-					"type": "chart",
 					"properties": {
 						"axis": true,
-						"legend": false,
 						"fill": false,
+						"legend": false,
 						"multiple_axes": false
 					},
 					"sources": [
 						{
-							"name": "Fresh fan level",
 							"color": "#3bd204",
-							"source": "device",
-							"timespan": {
-								"value": 30,
-								"magnitude": "minute"
-							},
 							"device": {
 								"id": "devid1",
-								"user": "olavwaldherr",
-								"resource": "State",
+								"interval": 5,
 								"mapping": "fan_level_fresh",
+								"resource": "State",
 								"update": "interval",
-								"interval": 5
+								"user": "olavwaldherr"
 							},
-							"skipCurrent": 1
+							"name": "Fresh fan level",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"value": 30
+							}
 						},
 						{
-							"name": "Exhaust fan level",
 							"color": "#db720f",
-							"source": "device",
-							"timespan": {
-								"value": 30,
-								"magnitude": "minute"
-							},
 							"device": {
 								"id": "devid1",
-								"user": "olavwaldherr",
+								"interval": 5,
+								"mapping": "fan_level_exhaust",
 								"resource": "State",
 								"update": "interval",
-								"interval": 5,
-								"mapping": "fan_level_exhaust"
+								"user": "olavwaldherr"
 							},
-							"skipCurrent": 1
+							"name": "Exhaust fan level",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"value": 30
+							}
 						},
 						{
-							"name": "Frost fan level",
 							"color": "#0292f2",
-							"source": "device",
-							"timespan": {
-								"value": 30,
-								"magnitude": "minute"
-							},
 							"device": {
 								"id": "devid1",
-								"user": "olavwaldherr",
+								"interval": 5,
+								"mapping": "fan_level_frost",
 								"resource": "State",
 								"update": "interval",
-								"interval": 5,
-								"mapping": "fan_level_frost"
+								"user": "olavwaldherr"
 							},
-							"skipCurrent": 1
+							"name": "Frost fan level",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"value": 30
+							}
 						},
 						{
-							"name": "Frost flap open",
 							"color": "#003a61",
-							"source": "device",
-							"timespan": {
-								"value": 30,
-								"magnitude": "minute"
-							},
 							"device": {
 								"id": "devid1",
-								"user": "olavwaldherr",
+								"interval": 5,
+								"mapping": "open_flap_frost",
 								"resource": "State",
 								"update": "interval",
-								"interval": 5,
-								"mapping": "open_flap_frost"
+								"user": "olavwaldherr"
 							},
-							"skipCurrent": 1
+							"name": "Frost flap open",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"value": 30
+							}
 						}
 					],
-					"layout": {
-						"sizeX": 3,
-						"sizeY": 6,
-						"row": 0,
-						"col": 3
-					}
+					"type": "chart"
 				}
 			]
 		},

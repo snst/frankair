@@ -96,10 +96,10 @@ void test_correctHumidityWithCalibrationData(void)
   fa_calibration_sensor.ref_humidity.max = 50.0f;
   fa_humidity_t dest, in;
   in.rel_fresh_out = 20.0f;
-  in.rel_exaust_in = 35.0f;
+  in.rel_exhaust_in = 35.0f;
   correctHumidityWithCalibrationData(dest, in);
   TEST_ASSERT_EQUAL_FLOAT(45.0f, dest.rel_fresh_out);
-  TEST_ASSERT_EQUAL_FLOAT(47.5f, dest.rel_exaust_in);
+  TEST_ASSERT_EQUAL_FLOAT(47.5f, dest.rel_exhaust_in);
 }
 
 void test_sensorsProcessValues(void)
@@ -126,7 +126,7 @@ void test_sensorsProcessValues(void)
   state_raw.temp.exhaust_out = 12.0f;
   state_raw.temp.fresh_in = 13.0f;
   state_raw.temp.fresh_out = 14.0f;
-  state_raw.humidity.rel_exaust_in = 15.0f;
+  state_raw.humidity.rel_exhaust_in = 15.0f;
   state_raw.humidity.rel_fresh_out = 16.0f;
 
   settings.use_calibration_temp = false;
@@ -137,7 +137,7 @@ void test_sensorsProcessValues(void)
   TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.temp.exhaust_out, state.temp.exhaust_out);
   TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.temp.fresh_in, state.temp.fresh_in);
   TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.temp.fresh_out, state.temp.fresh_out);
-  TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.humidity.rel_exaust_in, state.humidity.rel_exaust_in);
+  TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.humidity.rel_exhaust_in, state.humidity.rel_exhaust_in);
   TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.humidity.rel_fresh_out, state.humidity.rel_fresh_out);
 
   settings.use_calibration_temp = true;
@@ -150,7 +150,7 @@ void test_sensorsProcessValues(void)
   TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.temp.fresh_in, state.temp.fresh_in);
   TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.temp.fresh_out, state.temp.fresh_out);
   offset = fa_calibration_sensor.ref_humidity.min - fa_calibration_sensor.exhaust_in_humidity.min;
-  TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.humidity.rel_exaust_in, state.humidity.rel_exaust_in);
+  TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.humidity.rel_exhaust_in, state.humidity.rel_exhaust_in);
   TEST_ASSERT_EQUAL_FLOAT(offset + settings.measurement_alpha * state_raw.humidity.rel_fresh_out, state.humidity.rel_fresh_out);
 }
 
@@ -172,4 +172,36 @@ void test_duration(void)
   addDurationMS(d, 600U);
   TEST_ASSERT_EQUAL(100U, d.ms);
   TEST_ASSERT_EQUAL(1, d.sec);
+}
+
+void test_calcInterpolate(void)
+{
+  TEST_ASSERT_EQUAL_FLOAT(8, mapValue(-10, -10, 2, 8, 1));
+  TEST_ASSERT_EQUAL_FLOAT(4.5, mapValue(-4, -10, 2, 8, 1));
+  TEST_ASSERT_EQUAL_FLOAT(1, mapValue(-10, -10, 2, 1, 8));
+  TEST_ASSERT_EQUAL_FLOAT(7.416666, mapValue(-9, -10, 2, 8, 1));
+  TEST_ASSERT_EQUAL_FLOAT(7.416666, mapValue(1, -10, 2, 1, 8));
+  TEST_ASSERT_EQUAL_FLOAT(1.583333, mapValue(-9, -10, 2, 1, 8));
+  TEST_ASSERT_EQUAL_FLOAT(8, mapValue(10, 10, -2, 8, 1));
+  TEST_ASSERT_EQUAL_FLOAT(1, mapValue(-2, 10, -2, 8, 1));
+  TEST_ASSERT_EQUAL_FLOAT(8, mapValue(-2, 10, -2, -1, 8));
+
+  TEST_ASSERT_TRUE(isInRange(0, 0, 5));
+  TEST_ASSERT_TRUE(isInRange(1, 0, 5));
+  TEST_ASSERT_TRUE(isInRange(1, 5, 1));
+  TEST_ASSERT_FALSE(isInRange(5.1, 5, 1));
+  TEST_ASSERT_FALSE(isInRange(5.1, 1, 5));
+  TEST_ASSERT_TRUE(isInRange(1, -5, 1));
+  TEST_ASSERT_FALSE(isInRange(1, -5, -1));
+  TEST_ASSERT_TRUE(isInRange(-2, -3, 1));
+  TEST_ASSERT_TRUE(isInRange(-3, -3, 1));
+  TEST_ASSERT_TRUE(isInRange(-3, -5, -3));
+  TEST_ASSERT_TRUE(isInRange(-3.1, -5, -3));
+  TEST_ASSERT_FALSE(isInRange(-3.1, -3, 1));
+
+  TEST_ASSERT_EQUAL_FLOAT(12, roundf(12.4));
+  TEST_ASSERT_EQUAL_FLOAT(12, roundf(11.9));
+  TEST_ASSERT_EQUAL_FLOAT(-12, roundf(-12.4));
+  TEST_ASSERT_EQUAL_FLOAT(-12, roundf(-11.9));
+
 }

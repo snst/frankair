@@ -4,12 +4,12 @@
 
 #include "fa_common.h"
 
-extern bool s_flag_scan_sensors;
+extern fa_override_t fa_override_sensors;
 
 void sensorsSetup();
+void sensorsTargetSetup();
 void sensorsRead();
 void sensorsUpdate();
-void sensorsScan();
-void sensorsScanIntern();
+void sensorsReadOverrideData();
 
 #endif // FA_SENSORS_H

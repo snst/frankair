@@ -45,4 +45,7 @@ const char* modeToStr(controller_mode_t mode);
 const char* submodeToStr(controller_submode_auto_t mode);
 uint8_t getMask();
 void setMask(uint8_t mask);
+void logTempHumidity(uint8_t level, const char *info, fa_temp_t &temp,
+                     fa_humidity_t &humidity);
+                     
 #endif // FA_LOG_H

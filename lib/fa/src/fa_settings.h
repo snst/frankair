@@ -10,11 +10,12 @@ extern fa_settings_t settings;
 void calibrationLoad();
 void calibrationWrite();
 void calibrationClear();
+void calibrationDefault();
 
 void settingsLoad();
 void settingsWrite();
 void settingsClear();
-
+void settingsDefault();
 void settingsSanitize();
 
 void format();

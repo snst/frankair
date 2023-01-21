@@ -45,19 +45,19 @@ struct fa_temp_t
 
 struct fa_humidity_t
 {
-  float rel_exaust_in;
+  float rel_exhaust_in;
   float rel_fresh_out;
-  float abs_exaust_in;
+  float abs_exhaust_in;
   float abs_fresh_out;
   float abs_delta;
 };
 
 struct fa_ctrl_active_t
 {
-  bool humidity_fan_curve;
-  bool temp_fan_curve;
-  bool humidity_fan_off;
-  bool frost_fan_curve;
+  uint8_t humidity_fan_curve;
+  uint8_t temp_fan_curve;
+  uint8_t humidity_fan_off;
+  uint8_t frost_fan_curve;
 };
 
 struct fa_statistic_t
@@ -67,6 +67,14 @@ struct fa_statistic_t
   float volume_m3_per_hour;
   float liter_per_hour;
   fa_duration_t running;
+};
+
+struct fa_override_t
+{
+  fa_temp_t temp;
+  float humidity_rel_exhaust_in;
+  float humidity_rel_fresh_out;
+  bool enabled;
 };
 
 struct fa_state_t
@@ -79,6 +87,7 @@ struct fa_state_t
   fa_ctrl_active_t ctrl_active;
   bool is_online;
   fa_duration_t running;
+  float efficiency;
 };
 
 struct fa_state_raw_t

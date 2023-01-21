@@ -15,6 +15,18 @@ void statisticSetup()
     statisticReset();
 }
 
+void statisticCalculateEfficiency()
+{
+    float efficiency = 100.0f;
+    float delta_temp = state.temp.exhaust_in - state.temp.fresh_out;
+    float delta_inc_temp = state.temp.fresh_out - state.temp.fresh_in;
+    if (delta_temp > 0.0f)
+    {
+        efficiency = 100.0f * delta_inc_temp / delta_temp;
+    }
+    state.efficiency = toRange(efficiency, 0.0f, 100.0f);
+}
+
 void statisticUpdate(uint32_t delta_ms)
 {
     float volume = getMainVolume(state.actuator.level_fan_fresh);
@@ -27,6 +39,7 @@ void statisticUpdate(uint32_t delta_ms)
     }
     addDurationMS(statistic.running, delta_ms);
     addDurationMS(state.running, delta_ms);
+    statisticCalculateEfficiency();
 }
 
 void statisticReset()

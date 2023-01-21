@@ -55,7 +55,8 @@ uint8_t adjustFanLevelToValidRange(uint8_t level)
   return level;
 }
 
-uint32_t convertMS(uint32_t& ms, uint32_t mod) {
+uint32_t convertMS(uint32_t &ms, uint32_t mod)
+{
   uint32_t ret = ms / mod;
   ms = ms % mod;
   return ret;
@@ -71,4 +72,9 @@ void addDurationMS(fa_duration_t &duration, uint32_t delta_ms)
 void resetDuration(fa_duration_t &duration)
 {
   memset(&duration, 0U, sizeof(duration));
+}
+
+bool isInRange(float i, float a, float b)
+{
+  return ((i >= a && i <= b) || (i >= b && i <= a));
 }

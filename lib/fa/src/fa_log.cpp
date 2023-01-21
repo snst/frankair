@@ -1,5 +1,6 @@
 // Copyright (c) 2023 by Stefan Schmidt
 #include "fa_log.h"
+#include <cstdio>
 
 fa_log_mask_t log_mask;
 
@@ -68,4 +69,19 @@ void setMask(uint8_t mask)
     log_mask.controller = mask & LCONTROLLER;
     log_mask.iot = mask & LIOT;
     log_mask.actuator = mask & LACTUATOR;
+}
+
+void logTempHumidity(uint8_t level, const char *info, fa_temp_t &temp,
+                     fa_humidity_t &humidity)
+{
+    char buf[128];
+    sprintf(buf, "%s ei %.1f, fo %.1f, fi %.1f, eo %.1f, hi %.1f, ho %.1f",
+            info,
+            temp.exhaust_in,
+            temp.fresh_out,
+            temp.fresh_in,
+            temp.exhaust_out,
+            humidity.rel_exhaust_in,
+            humidity.rel_fresh_out);
+    IMSG(level, buf);
 }

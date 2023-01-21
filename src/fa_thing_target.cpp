@@ -13,6 +13,7 @@
 #include "fa_version.h"
 #include "fa_ota.h"
 #include "fa_statistic.h"
+#include "fa_delayed_task.h"
 
 FAThingerESP32 thing(FA_USERNAME, FA_DEVICE_ID, FA_DEVICE_CREDENTIAL);
 
@@ -37,7 +38,7 @@ template <typename T>
 void valUpdate(protoson::pson &in, const char *name, T &val, bool isEmpty)
 {
   auto &remote = in[name];
-  if (isEmpty) // remote.is_empty())
+  if (isEmpty)
   {
     remote = val;
   }
@@ -49,7 +50,6 @@ void valUpdate(protoson::pson &in, const char *name, T &val, bool isEmpty)
 
 void thingSetup()
 {
-  // thing.add_wifi(FA_SSID, FA_SSID_PASSWORD);
   thing.add_wifi2(FA_SSID_1, FA_SSID_PASSWORD_1);
   thing.add_wifi2(FA_SSID_2, FA_SSID_PASSWORD_2);
 
@@ -67,24 +67,16 @@ void thingSetup()
     settings.log_mask = getMask();
   };
 
-  thing["Settings"] << [](pson &in)
+  thing["Override"] << [](pson &in)
   {
     bool isEmpty = in.is_empty();
-    valUpdate(in, "1.1 Controller mode", settings.mode, isEmpty);
-    valUpdate(in, "1.2 Controller intervall sec", settings.controller_interval_sec, isEmpty);
-    valUpdate(in, "1.3 Sensor read intervall sec", settings.temp_sensor_read_interval_sec, isEmpty);
-    valUpdate(in, "1.4 Sensor alpha filter", settings.measurement_alpha, isEmpty);
-    valUpdate(in, "1.5 Enable sensor calibration temp", settings.use_calibration_temp, isEmpty);
-    valUpdate(in, "1.6 Enable sensor calibration humidity", settings.use_calibration_humidity, isEmpty);
-    valUpdate(in, "2.1 Sniffing enabled", settings.sniff.enabled, isEmpty);
-    valUpdate(in, "2.2 Sniffing fan level", settings.sniff.fan_level, isEmpty);
-    valUpdate(in, "2.3 Sniffing duration sec", settings.sniff.duration_sec, isEmpty);
-    valUpdate(in, "2.4 Sniffing intervall sec", settings.sniff.interval_sec, isEmpty);
-    valUpdate(in, "3.1 Fan level main min", settings.ctrl.fan_level_min, isEmpty);
-    valUpdate(in, "3.2 Fan level main max", settings.ctrl.fan_level_max, isEmpty);
-    valUpdate(in, "3.3 Fan level frost min", settings.ctrl.fan_frost_level_min, isEmpty);
-    valUpdate(in, "3.4 Fan level frost max", settings.ctrl.fan_frost_level_max, isEmpty);
-    force_update = !isEmpty;
+    valUpdate(in, "1 Enabled", fa_override_sensors.enabled, isEmpty);
+    valUpdate(in, "2 Temp exhaust IN", fa_override_sensors.temp.exhaust_in, isEmpty);
+    valUpdate(in, "3 Temp fresh IN", fa_override_sensors.temp.fresh_in, isEmpty);
+    valUpdate(in, "4 Temp exhaust OUT", fa_override_sensors.temp.exhaust_out, isEmpty);
+    valUpdate(in, "5 Temp fresh OUT", fa_override_sensors.temp.fresh_out, isEmpty);
+    valUpdate(in, "6 Humidity exhaust IN", fa_override_sensors.humidity_rel_exhaust_in, isEmpty);
+    valUpdate(in, "7 Humidity fresh OUT", fa_override_sensors.humidity_rel_fresh_out, isEmpty);
   };
 
   thing["Manual"] << [](pson &in)
@@ -97,13 +89,23 @@ void thingSetup()
     force_update = !isEmpty;
   };
 
-  thing["Controller general"] << [](pson &in)
+  thing["Controller"] << [](pson &in)
   {
     bool isEmpty = in.is_empty();
-    valUpdate(in, "1 Enable general humidity conditions for fan", settings.ctrl.humidity_fan_ctrl.enabled, isEmpty);
-    valUpdate(in, "2 Start fan if abs humidity delta greater than g/m³", settings.ctrl.humidity_fan_ctrl.abs_min_start, isEmpty);
-    valUpdate(in, "3 Stop fan if abs humidity delta less than g/m³", settings.ctrl.humidity_fan_ctrl.abs_min_stop, isEmpty);
-    valUpdate(in, "4 Stop fan if rel humidity less than %", settings.ctrl.humidity_fan_ctrl.rel_min_start, isEmpty);
+    valUpdate(in, "1.1 Controller mode", settings.mode, isEmpty);
+    valUpdate(in, "1.2 Controller interval sec", settings.controller_interval_sec, isEmpty);
+    valUpdate(in, "1.3 Sensor read interval sec", settings.temp_sensor_read_interval_sec, isEmpty);
+    valUpdate(in, "1.4 Sensor alpha filter", settings.measurement_alpha, isEmpty);
+    valUpdate(in, "2.1 Sniffing enabled", settings.sniff.enabled, isEmpty);
+    valUpdate(in, "2.2 Sniffing fan level", settings.sniff.fan_level, isEmpty);
+    valUpdate(in, "2.3 Sniffing duration sec", settings.sniff.duration_sec, isEmpty);
+    valUpdate(in, "2.4 Sniffing intervall sec", settings.sniff.interval_sec, isEmpty);
+    valUpdate(in, "3.1 Fan level main min", settings.ctrl.fan_level_min, isEmpty);
+    valUpdate(in, "3.2 Fan level main max", settings.ctrl.fan_level_max, isEmpty);
+    valUpdate(in, "4.1 Enable general humidity conditions for fan", settings.ctrl.humidity_fan_ctrl.enabled, isEmpty);
+    valUpdate(in, "4.2 Start fan if abs humidity delta greater than g/m³", settings.ctrl.humidity_fan_ctrl.abs_min_start, isEmpty);
+    valUpdate(in, "4.3 Stop fan if abs humidity delta less than g/m³", settings.ctrl.humidity_fan_ctrl.abs_min_stop, isEmpty);
+    valUpdate(in, "4.3 Stop fan if rel humidity less than %", settings.ctrl.humidity_fan_ctrl.rel_min_start, isEmpty);
     settingsSanitize();
     force_update = !isEmpty;
   };
@@ -125,8 +127,14 @@ void thingSetup()
       }
       else
       {
-        settings.ctrl.temp_fan_curve.item[i].val = *array_temp_temp[i];
-        settings.ctrl.temp_fan_curve.item[i].level = *array_temp_level[i];
+        if (array_temp_temp[i])
+        {
+          settings.ctrl.temp_fan_curve.item[i].val = *array_temp_temp[i];
+        }
+        if (array_temp_level[i])
+        {
+          settings.ctrl.temp_fan_curve.item[i].level = *array_temp_level[i];
+        }
       }
     }
     force_update = !isEmpty;
@@ -149,8 +157,14 @@ void thingSetup()
       }
       else
       {
-        settings.ctrl.humidity_fan_curve.item[i].val = *array_hum_hum[i];
-        settings.ctrl.humidity_fan_curve.item[i].level = *array_hum_level[i];
+        if (array_hum_hum[i])
+        {
+          settings.ctrl.humidity_fan_curve.item[i].val = *array_hum_hum[i];
+        }
+        if (array_hum_level[i])
+        {
+          settings.ctrl.humidity_fan_curve.item[i].level = *array_hum_level[i];
+        }
       }
     }
     force_update = !isEmpty;
@@ -162,11 +176,13 @@ void thingSetup()
     valUpdate(in, "1 Enable frost flap", settings.ctrl.frost_flap_ctrl.enabled, isEmpty);
     valUpdate(in, "2 Open flap if temp is lesser than °C", settings.ctrl.frost_flap_ctrl.temp_min_open, isEmpty);
     valUpdate(in, "3 Close flap if temp is greater than °C", settings.ctrl.frost_flap_ctrl.temp_min_close, isEmpty);
-    valUpdate(in, "4 Enabled frost-fan curve", settings.ctrl.frost_fan_curve.enabled, isEmpty);
-    valUpdate(in, "5 Used frost-fan curve points", settings.ctrl.frost_fan_curve.enabled_points, isEmpty);
+    valUpdate(in, "4 Fan level frost min", settings.ctrl.fan_frost_level_min, isEmpty);
+    valUpdate(in, "5 Fan level frost max", settings.ctrl.fan_frost_level_max, isEmpty);
+    valUpdate(in, "6 Enabled frost-fan curve", settings.ctrl.frost_fan_curve.enabled, isEmpty);
+    valUpdate(in, "7 Used frost-fan curve points", settings.ctrl.frost_fan_curve.enabled_points, isEmpty);
     settingsSanitize();
-    protoson::pson_array &array_frost_temp_temp = in["6 Temp less than °C"];
-    protoson::pson_array &array_frost_temp_level = in["7 Fan level"];
+    protoson::pson_array &array_frost_temp_temp = in["8 Temp less than °C"];
+    protoson::pson_array &array_frost_temp_level = in["9 Fan level"];
     for (uint8_t i = 0U; i < settings.ctrl.frost_fan_curve.enabled_points; i++)
     {
       if (isEmpty)
@@ -176,8 +192,14 @@ void thingSetup()
       }
       else
       {
-        settings.ctrl.frost_fan_curve.item[i].val = *array_frost_temp_temp[i];
-        settings.ctrl.frost_fan_curve.item[i].level = *array_frost_temp_temp[i];
+        if (array_frost_temp_temp[i])
+        {
+          settings.ctrl.frost_fan_curve.item[i].val = *array_frost_temp_temp[i];
+        }
+        if (array_frost_temp_level[i])
+        {
+          settings.ctrl.frost_fan_curve.item[i].level = *array_frost_temp_level[i];
+        }
       }
     }
     force_update = !isEmpty;
@@ -186,18 +208,20 @@ void thingSetup()
   thing["Calibration sensor"] << [](pson &in)
   {
     bool isEmpty = in.is_empty();
-    valUpdate(in, "1.1 Temp exhaust in min", fa_calibration_sensor.exhaust_in_temp.min, isEmpty);
-    valUpdate(in, "1.2 Temp exhaust in max", fa_calibration_sensor.exhaust_in_temp.max, isEmpty);
-    valUpdate(in, "1.3 Temp exhaust out min", fa_calibration_sensor.exhaust_out_temp.min, isEmpty);
-    valUpdate(in, "1.4 Temp exhaust out max", fa_calibration_sensor.exhaust_out_temp.max, isEmpty);
-    valUpdate(in, "2.1 Temp fresh in min", fa_calibration_sensor.fresh_in_temp.min, isEmpty);
-    valUpdate(in, "2.2 Temp fresh in max", fa_calibration_sensor.fresh_in_temp.max, isEmpty);
-    valUpdate(in, "2.3 Temp fresh out min", fa_calibration_sensor.fresh_out_temp.min, isEmpty);
-    valUpdate(in, "2.4 Temp fresh out max", fa_calibration_sensor.fresh_out_temp.max, isEmpty);
-    valUpdate(in, "3.1 Humidity exhaust in min", fa_calibration_sensor.exhaust_in_humidity.min, isEmpty);
-    valUpdate(in, "3.2 Humidity exhaust in max", fa_calibration_sensor.exhaust_in_humidity.max, isEmpty);
-    valUpdate(in, "3.3 Humidity fresh out min", fa_calibration_sensor.fresh_out_humidity.min, isEmpty);
-    valUpdate(in, "3.4 Humidity fresh out max", fa_calibration_sensor.fresh_out_humidity.max, isEmpty);
+    valUpdate(in, "1.1 Enable sensor calibration temp", settings.use_calibration_temp, isEmpty);
+    valUpdate(in, "1.2 Enable sensor calibration humidity", settings.use_calibration_humidity, isEmpty);
+    valUpdate(in, "2.1 Temp exhaust in min", fa_calibration_sensor.exhaust_in_temp.min, isEmpty);
+    valUpdate(in, "2.2 Temp exhaust in max", fa_calibration_sensor.exhaust_in_temp.max, isEmpty);
+    valUpdate(in, "2.3 Temp exhaust out min", fa_calibration_sensor.exhaust_out_temp.min, isEmpty);
+    valUpdate(in, "2.4 Temp exhaust out max", fa_calibration_sensor.exhaust_out_temp.max, isEmpty);
+    valUpdate(in, "3.1 Temp fresh in min", fa_calibration_sensor.fresh_in_temp.min, isEmpty);
+    valUpdate(in, "3.2 Temp fresh in max", fa_calibration_sensor.fresh_in_temp.max, isEmpty);
+    valUpdate(in, "3.3 Temp fresh out min", fa_calibration_sensor.fresh_out_temp.min, isEmpty);
+    valUpdate(in, "3.4 Temp fresh out max", fa_calibration_sensor.fresh_out_temp.max, isEmpty);
+    valUpdate(in, "4.1 Humidity exhaust in min", fa_calibration_sensor.exhaust_in_humidity.min, isEmpty);
+    valUpdate(in, "4.2 Humidity exhaust in max", fa_calibration_sensor.exhaust_in_humidity.max, isEmpty);
+    valUpdate(in, "4.3 Humidity fresh out min", fa_calibration_sensor.fresh_out_humidity.min, isEmpty);
+    valUpdate(in, "4.4 Humidity fresh out max", fa_calibration_sensor.fresh_out_humidity.max, isEmpty);
 
     force_update = !isEmpty;
   };
@@ -205,12 +229,12 @@ void thingSetup()
   thing["Calibration actuator"] << [](pson &in)
   {
     bool isEmpty = in.is_empty();
-    valUpdate(in, "1.1 Frost flap pos min", fa_calibration_actuator.flap_pos.min, isEmpty);
-    valUpdate(in, "1.2 Frost flap pos max", fa_calibration_actuator.flap_pos.max, isEmpty);
-    valUpdate(in, "1.3 Calibration volume liter", fa_calibration_actuator.calibration_volume_liter, isEmpty);
-    protoson::pson_array &array_fan_main = in["1.4 Fan main level-pwm"];
-    protoson::pson_array &array_fan_main_sec = in["1.5 Fan main calibration volume sec"];
-    protoson::pson_array &array_fan_frost = in["1.6 Fan frost level-pwm"];
+    valUpdate(in, "1 Frost flap pos min", fa_calibration_actuator.flap_pos.min, isEmpty);
+    valUpdate(in, "2 Frost flap pos max", fa_calibration_actuator.flap_pos.max, isEmpty);
+    valUpdate(in, "3 Calibration volume liter", fa_calibration_actuator.calibration_volume_liter, isEmpty);
+    protoson::pson_array &array_fan_main = in["4 Fan main level-pwm"];
+    protoson::pson_array &array_fan_main_sec = in["5 Fan main calibration volume sec"];
+    protoson::pson_array &array_fan_frost = in["6 Fan frost level-pwm"];
 
     for (uint8_t i = 0U; i < FAN_LEVEL_STEPS; i++)
     {
@@ -222,9 +246,18 @@ void thingSetup()
       }
       else
       {
-        fa_calibration_actuator.fan_pwm_main[i] = *array_fan_main[i];
-        fa_calibration_actuator.fan_cal_time_main[i] = *array_fan_main_sec[i];
-        fa_calibration_actuator.fan_pwm_frost[i] = *array_fan_frost[i];
+        if (array_fan_main[i])
+        {
+          fa_calibration_actuator.fan_pwm_main[i] = *array_fan_main[i];
+        }
+        if (array_fan_main_sec[i])
+        {
+          fa_calibration_actuator.fan_cal_time_main[i] = *array_fan_main_sec[i];
+        }
+        if (array_fan_frost[i])
+        {
+          fa_calibration_actuator.fan_pwm_frost[i] = *array_fan_frost[i];
+        }
       }
     }
     force_update = !isEmpty;
@@ -238,9 +271,9 @@ void thingSetup()
     out["temp_exhaust_out"] = state.temp.exhaust_out;
     out["mode"] = (uint8_t)settings.mode;
     out["submode"] = (uint8_t)state.submode_auto;
-    out["humidity_rel_exaust_in"] = state.humidity.rel_exaust_in;
+    out["humidity_rel_exhaust_in"] = state.humidity.rel_exhaust_in;
     out["humidity_rel_fresh_out"] = state.humidity.rel_fresh_out;
-    out["humidity_abs_exaust_in"] = state.humidity.abs_exaust_in;
+    out["humidity_abs_exhaust_in"] = state.humidity.abs_exhaust_in;
     out["humidity_abs_fresh_out"] = state.humidity.abs_fresh_out;
     out["humidity_abs_delta"] = state.humidity.abs_delta;
     out["fan_level_fresh"] = state.actuator.level_fan_fresh;
@@ -248,7 +281,7 @@ void thingSetup()
     out["fan_level_frost"] = state.actuator.level_fan_frost;
     out["open_flap_frost"] = state.actuator.open_flap_frost;
     out["running_sec"] = state.running.sec;
-
+    out["efficiency"] = state.efficiency;
     out["ctrl_active_humidity_fan_off"] = state.ctrl_active.humidity_fan_off;
     out["ctrl_active_humidity_fan_curve"] = state.ctrl_active.humidity_fan_curve;
     out["ctrl_active_temp_fan_curve"] = state.ctrl_active.temp_fan_curve;
@@ -271,7 +304,7 @@ void thingSetup()
     out["temp_fresh_out"] = state_raw.temp.fresh_out;
     out["temp_exhaust_in"] = state_raw.temp.exhaust_in;
     out["temp_exhaust_out"] = state_raw.temp.exhaust_out;
-    out["humidity_rel_exaust_in"] = state_raw.humidity.rel_exaust_in;
+    out["humidity_rel_exhaust_in"] = state_raw.humidity.rel_exhaust_in;
     out["humidity_rel_fresh_out"] = state_raw.humidity.rel_fresh_out;
   };
 
@@ -296,19 +329,19 @@ void thingSetup()
 
   ADD_CMD("a Start sniffing", controllerStartSniff)
   ADD_CMD("b Settings save", settingsWrite)
-  ADD_CMD("c Settings load", settingsLoad)
-  ADD_CMD("d Settings clear", settingsClear)
-  ADD_CMD("e Calibration save", calibrationWrite)
-  ADD_CMD("f Calibration load", calibrationLoad)
-  ADD_CMD("g Calibration clear", calibrationClear)
-  ADD_CMD("h Calibrate temp min", sensorsCalibrateTempLow)
-  ADD_CMD("i Calibrate temp max", sensorsCalibrateTempHigh)
-  ADD_CMD("j Calibrate humidity min", sensorsCalibrateHumidityLow)
-  ADD_CMD("k Calibrate humidity max", sensorsCalibrateHumidityHigh)
-  ADD_CMD("l Scan sensors", sensorsScan)
-  ADD_CMD("m Reboot", ESP.restart)
-  ADD_CMD("n Start OTA simulation", otaStartSim)
-  ADD_CMD("o Start OTA update", otaStart)
-  ADD_CMD("p Abort OTA", otaAbort)
-  ADD_CMD("q Reset statistic", statisticReset)
-}
+  ADD_CMD("c Calibration save", calibrationWrite)
+  ADD_CMD("d Calibrate temp min", sensorsCalibrateTempLow)
+  ADD_CMD("e Calibrate temp max", sensorsCalibrateTempHigh)
+  ADD_CMD("f Calibrate humidity min", sensorsCalibrateHumidityLow)
+  ADD_CMD("g Calibrate humidity max", sensorsCalibrateHumidityHigh)
+  ADD_CMD("h Reboot", delayedTaskReboot);
+  ADD_CMD("i Start OTA simulation", otaStartSim)
+  ADD_CMD("j Start OTA update", otaStart)
+  ADD_CMD("k Abort OTA", otaAbort)
+  ADD_CMD("l Reset statistic", statisticReset)
+  ADD_CMD("m Settings load", settingsLoad)
+  ADD_CMD("n Calibration load", calibrationLoad)
+  ADD_CMD("o Settings clear", settingsClear)
+  ADD_CMD("p Calibration clear", calibrationClear)
+  ADD_CMD("o Settings default", settingsDefault)
+  ADD_CMD("p Calibration default", calibrationDefault)}

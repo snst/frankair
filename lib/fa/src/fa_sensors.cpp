@@ -6,23 +6,35 @@
 #include "fa_calibration.h"
 
 static uint32_t sensors_now = 0;
-bool s_flag_scan_sensors = false;
+fa_override_t fa_override_sensors = {0};
 
+void sensorsSetup()
+{
+  sensorsTargetSetup();
+}
 
 void sensorsUpdate()
 {
-  if (s_flag_scan_sensors)
+  if (intervalCheckSec(sensors_now, settings.temp_sensor_read_interval_sec))
   {
-    sensorsScanIntern();
-  }
-  else if (intervalCheckSec(sensors_now, settings.temp_sensor_read_interval_sec))
-  {
-    sensorsRead();
+    if (fa_override_sensors.enabled)
+    {
+      sensorsReadOverrideData();
+    }
+    else
+    {
+      sensorsRead();
+    }
     sensorsProcessValues();
   }
 }
 
-void sensorsScan()
+void sensorsReadOverrideData()
 {
-  s_flag_scan_sensors = true;
+  state_raw.temp.exhaust_in = fa_override_sensors.temp.exhaust_in;
+  state_raw.temp.fresh_out = fa_override_sensors.temp.fresh_out;
+  state_raw.temp.fresh_in = fa_override_sensors.temp.fresh_in;
+  state_raw.temp.exhaust_out = fa_override_sensors.temp.exhaust_out;
+  state_raw.humidity.rel_exhaust_in = fa_override_sensors.humidity_rel_exhaust_in;
+  state_raw.humidity.rel_fresh_out = fa_override_sensors.humidity_rel_fresh_out;
 }

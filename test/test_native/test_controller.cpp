@@ -28,10 +28,10 @@ void test_controller_auto_update(void)
 {
   resetData();
   settings.ctrl.humidity_fan_ctrl.rel_min_start = 50;
-  state.humidity.rel_exaust_in = 50;
+  state.humidity.rel_exhaust_in = 50;
   controllerModeAutoUpdate();
   TEST_ASSERT_EQUAL_FLOAT(settings.ctrl.fan_level_max, state.actuator.level_fan_fresh);
-  state.humidity.rel_exaust_in = 49;
+  state.humidity.rel_exhaust_in = 49;
   controllerModeAutoUpdate();
   TEST_ASSERT_EQUAL_FLOAT(settings.ctrl.fan_level_min, state.actuator.level_fan_fresh);
 
