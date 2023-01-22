@@ -18,14 +18,72 @@
 	},
 	"tabs": [
 		{
-			"icon": "fas fa-tachometer-alt",
+			"icon": "fas fa-atom",
 			"name": "Main",
 			"widgets": [
 				{
 					"layout": {
-						"col": 2,
+						"col": 0,
 						"row": 0,
-						"sizeX": 4,
+						"sizeX": 2,
+						"sizeY": 15
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Frankair"
+					},
+					"properties": {
+						"source": "code",
+						"template": "<style>\n\n    .image-container {\n      position: relative; /* allow absolute positioning of text within the div */\n      width: 78%; /* fill the width of the parent container */\n      padding-bottom: 100%; /* maintain aspect ratio of the image (width / height = 100 / 75) */\n      background-image: url('https://raw.githubusercontent.com/snst/frankair/main/dashboard/main/bg.jpeg');\n      background-size: cover; /* keep the aspect ratio of the image */\n      background-repeat: no-repeat;\n      background-position: center;\n    }\n    .valh {\n      color: black;\n    }\n    \n    .val {\n      background-color: rgba(255,255,255,0.88);\n      font-size: 1.2em;\n      padding: 3px 5px 3px;\n      width:25%;\n    }\n    \n    .image-container .frost {\n      position: absolute;\n      top: 5%; \n      left: 50%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .fan_exhaust {\n      position: absolute;\n      width:10%;\n      top: 31%; \n      left: 20%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .fan_fresh {\n      position: absolute;\n      width:10%;\n      top: 31%; \n      left: 80%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .inside_in {\n      position: absolute;\n      top: 5%; \n      left: 17%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .outside_in {\n      position: absolute;\n      top: 5%; \n      left: 82%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .inside_out {\n      position: absolute;\n      top: 80%; \n      left: 17%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .outside_out {\n      position: absolute;\n      top: 80%; \n      left: 82%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .status {\n      position: absolute;\n      width:60%;\n      top: 45%; \n      left: 50%;\n       transform: translate(-50%, 0%);\n    }\n    \n    \n    </style>\n    \n    <div class=\"image-container\">\n    \n    <div class=\"val status\" ng-app=\"\" ng-init=\"submode=['waiting','on','sniffing', 'undefined']; mode=['off','auto','manual', 'undefined']\">\n        Δ hum: {{value.humidity_abs_delta|number:2}} g/m³<br>\n        Water: {{value.liter_per_hour|number:2}} l/h<br>\n        Air: {{value.volume_m3_per_hour|number:2}} m³/h<br>\n        Efficiency: {{value.efficiency|number:0}} %<br>\n        Mode : {{mode[value.mode]}} / {{submode[value.submode]}}    \n    </div>\n    \n    \n    <div class=\"val fan_exhaust\">\n        {{value.fan_level_exhaust}}<br>\n    </div>\n    \n    <div class=\"val fan_fresh\">\n        {{value.fan_level_fresh}}\n    </div>\n    \n    <div class=\"val frost\">\n        Open: {{value.open_flap_frost}}<br>\n        Fan: {{value.fan_level_frost}}\n    </div>\n    \n    <div class=\"val inside_in\">\n        {{value.temp_exhaust_in|number:1}} °C<br>\n        {{value.humidity_abs_exhaust_in|number:1}} g/m³<br>\n        {{value.humidity_rel_exhaust_in|number:1}} %<br>\n    </div>\n    \n    <div class=\"val outside_in\">\n        {{value.temp_fresh_in|number:1}} °C<br>\n        {{value.humidity_abs_fresh_out|number:1}} g/m³<br>\n    </div>\n    \n    <div class=\"val inside_out\">\n        {{value.temp_fresh_out|number:1}} °C<br>\n        {{value.humidity_rel_fresh_out|number:1}} %<br>\n    </div>\n    \n    <div class=\"val outside_out\">\n        {{value.temp_exhaust_out|number:1}} °C<br>\n    </div>\n    \n    \n    </div>\n    \n    "
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": [
+									"efficiency",
+									"fan_level_exhaust",
+									"fan_level_fresh",
+									"fan_level_frost",
+									"humidity_abs_delta",
+									"humidity_abs_exhaust_in",
+									"humidity_abs_fresh_out",
+									"humidity_rel_exhaust_in",
+									"humidity_rel_fresh_out",
+									"liter_per_hour",
+									"open_flap_frost",
+									"temp_exhaust_in",
+									"temp_fresh_in",
+									"temp_exhaust_out",
+									"temp_fresh_out",
+									"volume_m3_per_hour",
+									"mode",
+									"submode"
+								],
+								"resource": "State",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "html"
+				}
+			]
+		},
+		{
+			"icon": "fas fa-atom",
+			"name": "History",
+			"widgets": [
+				{
+					"layout": {
+						"col": 0,
+						"row": 0,
+						"sizeX": 6,
 						"sizeY": 5
 					},
 					"panel": {
@@ -149,9 +207,9 @@
 				},
 				{
 					"layout": {
-						"col": 2,
+						"col": 0,
 						"row": 10,
-						"sizeX": 4,
+						"sizeX": 6,
 						"sizeY": 5
 					},
 					"panel": {
@@ -225,9 +283,9 @@
 				},
 				{
 					"layout": {
-						"col": 2,
+						"col": 0,
 						"row": 20,
-						"sizeX": 4,
+						"sizeX": 6,
 						"sizeY": 6
 					},
 					"panel": {
@@ -302,9 +360,9 @@
 				},
 				{
 					"layout": {
-						"col": 2,
+						"col": 0,
 						"row": 15,
-						"sizeX": 4,
+						"sizeX": 6,
 						"sizeY": 5
 					},
 					"panel": {
@@ -481,6 +539,64 @@
 					],
 					"type": "chart"
 				},
+				{
+					"layout": {
+						"col": 0,
+						"row": 5,
+						"sizeX": 6,
+						"sizeY": 5
+					},
+					"panel": {
+						"color": "#ffffff",
+						"subtitle": "",
+						"title": "Abs humidity delta [g / mᵌ]"
+					},
+					"properties": {
+						"axis": true,
+						"fill": false,
+						"legend": true,
+						"multiple_axes": false,
+						"yaxis": {
+							"max": 10,
+							"min": -10
+						}
+					},
+					"sources": [
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "Bucket",
+								"mapping": "humidity_abs_delta",
+								"tags": {},
+								"user": "olavwaldherr"
+							},
+							"color": "#180cc0",
+							"device": {
+								"id": "devid1",
+								"interval": 5,
+								"mapping": "humidity_abs_delta",
+								"resource": "State",
+								"update": "interval",
+								"user": "olavwaldherr"
+							},
+							"name": "inside - outside",
+							"skipCurrent": 1,
+							"source": "bucket",
+							"timespan": {
+								"magnitude": "minute",
+								"mode": "configurable",
+								"value": 10
+							}
+						}
+					],
+					"type": "chart"
+				}
+			]
+		},
+		{
+			"icon": "fas fa-tachometer-alt",
+			"name": "Digital",
+			"widgets": [
 				{
 					"layout": {
 						"col": 1,
@@ -882,7 +998,7 @@
 					},
 					"properties": {
 						"source": "code",
-						"template": "<div ng-app=\"\" ng-init=\"submode=['waiting','on','sniffing', 'undefined']; mode=['off','auto','manual', 'undefined']\">\n\n    <p>Mode : {{mode[value.mode] }}</p>\n    <p>AutoMode: {{submode[value.submode] }}</p>\n    <p>Fan off conditions: {{value.ctrl_active_humidity_fan_off}}</p>\n    <p>Humidity fan curve level: {{value.ctrl_active_humidity_fan_curve}}</p>\n    <p>Temp fan curve level: {{value.ctrl_active_temp_fan_curve}}</p>\n    <p>Frost fan curve level: {{value.ctrl_active_frost_fan_curve}}</p>\n\n</div>"
+						"template": "<div ng-app=\"\" ng-init=\"submode=['waiting','on','sniffing', 'undefined']; mode=['off','auto','manual', 'undefined']\">\n\n    <p>Mode: {{mode[value.mode]}} / {{submode[value.submode]}}</p>\n    <p>Fan off conditions: {{value.ctrl_active_humidity_fan_off}}</p>\n    <p>Humidity fan curve level: {{value.ctrl_active_humidity_fan_curve}}</p>\n    <p>Temp fan curve level: {{value.ctrl_active_temp_fan_curve}}</p>\n    <p>Frost fan curve level: {{value.ctrl_active_frost_fan_curve}}</p>\n\n</div>"
 					},
 					"sources": [
 						{
@@ -1017,58 +1133,6 @@
 						}
 					],
 					"type": "tachometer"
-				},
-				{
-					"layout": {
-						"col": 2,
-						"row": 5,
-						"sizeX": 4,
-						"sizeY": 5
-					},
-					"panel": {
-						"color": "#ffffff",
-						"subtitle": "",
-						"title": "Abs humidity delta [g / mᵌ]"
-					},
-					"properties": {
-						"axis": true,
-						"fill": false,
-						"legend": true,
-						"multiple_axes": false,
-						"yaxis": {
-							"max": 10,
-							"min": -10
-						}
-					},
-					"sources": [
-						{
-							"bucket": {
-								"backend": "dynamodb",
-								"id": "Bucket",
-								"mapping": "humidity_abs_delta",
-								"tags": {},
-								"user": "olavwaldherr"
-							},
-							"color": "#180cc0",
-							"device": {
-								"id": "devid1",
-								"interval": 5,
-								"mapping": "humidity_abs_delta",
-								"resource": "State",
-								"update": "interval",
-								"user": "olavwaldherr"
-							},
-							"name": "inside - outside",
-							"skipCurrent": 1,
-							"source": "bucket",
-							"timespan": {
-								"magnitude": "minute",
-								"mode": "configurable",
-								"value": 10
-							}
-						}
-					],
-					"type": "chart"
 				},
 				{
 					"layout": {
@@ -2271,5 +2335,6 @@
 				}
 			]
 		}
-	]
+	],
+	"widgets": []
 }
