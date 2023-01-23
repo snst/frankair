@@ -11,7 +11,7 @@
 			"value": 12
 		}
 	},
-	"name": "frankair",
+	"name": "Frankair",
 	"properties": {
 		"columns": 6,
 		"row_height": 40
@@ -1981,10 +1981,10 @@
 							"device": {
 								"id": "Frankair",
 								"interval": 5,
-								"mapping": "transferted_size",
 								"resource": "OTA",
 								"update": "interval",
-								"user": "frankair"
+								"user": "frankair",
+								"mapping": "transferred_size"
 							},
 							"name": "Default",
 							"skipCurrent": 1,

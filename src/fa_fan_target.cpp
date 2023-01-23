@@ -13,7 +13,7 @@ void fanSetup()
   pwm.attach(GPIO_PWM3, 4U);
 }
 
-void fanSetPWM(uint8_t gpio, uint8_t val)
+void fanSetPWM(uint8_t gpio, uint8_t val, uint8_t freq)
 {
-  pwm.write(gpio, val, 20U);
+  pwm.write(gpio, val, freq);
 }

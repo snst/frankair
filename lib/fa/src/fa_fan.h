@@ -9,6 +9,6 @@ void fanSetLevelFresh(uint8_t level);
 void fanSetLevelExhaust(uint8_t level);
 void fanSetLevelFrost(uint8_t level);
 void fanSetLevelFreshAndExhaust(uint8_t level);
-void fanSetPWM(uint8_t gpio, uint8_t val);
+void fanSetPWM(uint8_t gpio, uint8_t val, uint8_t freq);
 
 #endif // FA_FAN_H

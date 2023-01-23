@@ -37,6 +37,8 @@ struct fa_calibration_actuator_t
   uint8_t fan_pwm_frost[FAN_LEVEL_STEPS];
   uint8_t fan_cal_time_main[FAN_LEVEL_STEPS];
   uint8_t calibration_volume_liter;
+  uint8_t fan_freq_main;
+  uint8_t fan_freq_frost;
 };
 
 void sensorsCalibrateTempLow();

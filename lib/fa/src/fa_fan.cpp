@@ -11,7 +11,7 @@ static uint8_t last_frost_level = 0xFF;
 
 void fanSetLevelMain(uint8_t gpio, uint8_t level)
 {
-  fanSetPWM(gpio, 255U - calibration_actuator.fan_pwm_main[level]);
+  fanSetPWM(gpio, 255U - calibration_actuator.fan_pwm_main[level], calibration_actuator.fan_freq_main);
 }
 
 void fanSetLevelFresh(uint8_t level)
@@ -41,7 +41,7 @@ void fanSetLevelFrost(uint8_t level)
   level = adjustFanLevelToValidRange(level);
   if (updateIfChanged(last_frost_level, level))
   {
-    fanSetPWM(GPIO_PWM3, calibration_actuator.fan_pwm_frost[level]);
+    fanSetPWM(GPIO_PWM3, calibration_actuator.fan_pwm_frost[level], calibration_actuator.fan_freq_frost);
     IMSG(LACTUATOR, "fanSetLevelFrost", level);
   }
   state.actuator.level_fan_frost = level;

@@ -142,4 +142,6 @@ void calibrationDefault()
     calibration_actuator.fan_pwm_frost[8] = 190U;
     calibration_actuator.fan_pwm_frost[9] = 219U;
     calibration_actuator.fan_pwm_frost[10] = 255U;
+    calibration_actuator.fan_freq_main = 20U;
+    calibration_actuator.fan_freq_frost = 20U;
 }
