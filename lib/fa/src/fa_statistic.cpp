@@ -7,7 +7,6 @@
 #include "fa_calibration.h"
 #include "fa_log.h"
 
-extern fa_state_t state;
 fa_statistic_t statistic;
 
 void statisticSetup()

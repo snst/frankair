@@ -5,6 +5,7 @@
 void loggingSetup()
 {
   Serial.begin(9600U);
+  settings.log_mask = LERROR | LINFO;
 }
 
 void IMSG(uint8_t mask, const char *txt)

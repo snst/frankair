@@ -6,6 +6,7 @@
 #include "fa_flap.h"
 #include "fa_log.h"
 #include "fa_statistic.h"
+#include "fa_error.h"
 #include <math.h>
 
 static uint32_t controller_now = 0U;
@@ -268,6 +269,11 @@ void controllerModeAutoUpdateFan()
   }
 }
 
+void controllerModeAutoForceOn()
+{
+  controllerModeAutoChangeSubMode(controller_submode_auto_t::kOn);
+}
+
 void controllerModeAutoUpdate()
 {
   IMSG(LDEBUG, "controllerModeAutoUpdate() ", submodeToStr(state.submode_auto));
@@ -320,6 +326,7 @@ void controllerUpdate()
   uint32_t controller_ms = intervalCheckSec(controller_now, settings.controller_interval_sec);
   if ((0U < controller_ms) || force_update)
   {
+    errorUpdate();
     statisticUpdate(controller_ms);
 
     if (updateIfChanged(state.mode, settings.mode))
@@ -327,17 +334,25 @@ void controllerUpdate()
       controllerModeChanged();
     }
 
-    switch ((controller_mode_t)state.mode)
+    if (0U < state.errors)
     {
-    case controller_mode_t::kAuto:
-      controllerModeAutoUpdate();
-      break;
-    case controller_mode_t::kManual:
-      controllerModeManualUpdate();
-      break;
-    case controller_mode_t::kOff:
-    default:
-      break;
+      fanSetLevelFreshAndExhaust(FAN_LEVEL_MIN);
+      fanSetLevelFrost(FAN_LEVEL_MIN);
+    }
+    else
+    {
+      switch ((controller_mode_t)state.mode)
+      {
+      case controller_mode_t::kAuto:
+        controllerModeAutoUpdate();
+        break;
+      case controller_mode_t::kManual:
+        controllerModeManualUpdate();
+        break;
+      case controller_mode_t::kOff:
+      default:
+        break;
+      }
     }
 
     force_update = false;

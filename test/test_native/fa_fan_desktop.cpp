@@ -7,6 +7,6 @@ void fanSetup()
 {
 }
 
-void fanSetPWM(uint8_t gpio, uint8_t val)
+void fanSetPWM(uint8_t gpio, uint8_t val, uint8_t freq)
 {
 }

@@ -4,13 +4,15 @@
 #include <DallasTemperature.h>
 #include "fa_controller.h"
 #include "fa_sensors.h"
+#include "fa_defines.h"
+#include "fa_common.h"
+#include "fa_error.h"
 
 OneWire oneWire(GPIO_ONE_WIRE);
 DallasTemperature dallas(&oneWire);
 
 DeviceAddress sensor_fresh_in = {0x28, 0xFF, 0x64, 0x01, 0xB9, 0xD9, 0x54, 0xAB};
 DeviceAddress sensor_exhaust_out = {0x28, 0xFF, 0x64, 0x01, 0xB9, 0xBB, 0x64, 0xDE};
-
 
 void sensorsDallasSetup()
 {
@@ -20,8 +22,28 @@ void sensorsDallasSetup()
 void sensorsDallasRead()
 {
   dallas.requestTemperatures();
-  state_raw.temp.fresh_in = dallas.getTempC(sensor_fresh_in);
-  state_raw.temp.exhaust_out = dallas.getTempC(sensor_exhaust_out);
+
+  float val = dallas.getTempC(sensor_fresh_in);
+  if (DEVICE_DISCONNECTED_C == val)
+  {
+    IMSG(LERROR, "Error: Dallas fresh IN failed.");
+    errorSet(ERROR_SENSOR_FRESH_IN);
+  }
+  else
+  {
+    state_raw.temp.fresh_in = val;
+  }
+
+  val = dallas.getTempC(sensor_exhaust_out);
+  if (DEVICE_DISCONNECTED_C == val)
+  {
+    IMSG(LERROR, "Error: Dallas exhaust OUT failed.");
+    errorSet(ERROR_SENSOR_EXHAUST_OUT);
+  }
+  else
+  {
+    state_raw.temp.exhaust_out = val;
+  }
 }
 
 void sensorsDallasScan()

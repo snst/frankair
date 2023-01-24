@@ -205,7 +205,7 @@ class BME280
 	
 	//Software reset routine
 	void reset( void );
-	void readAllMeasurements(BME280_SensorMeasurements *measurements);
+	bool readAllMeasurements(BME280_SensorMeasurements *measurements);
 	
     //Returns the values as floats.
     float readFloatPressure( void );
@@ -226,7 +226,7 @@ class BME280
 
 	//ReadRegisterRegion takes a uint8 array address as input and reads
 	//a chunk of memory into that array.
-    void readRegisterRegion(uint8_t*, uint8_t, uint8_t );
+    bool readRegisterRegion(uint8_t*, uint8_t, uint8_t );
 	//readRegister reads one register
     uint8_t readRegister(uint8_t);
     //Reads two regs, LSByte then MSByte order, and concatenates them

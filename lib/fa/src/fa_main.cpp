@@ -20,8 +20,8 @@ void setup()
 {
   loggingSetup();
   IMSG(LINFO, "Welcome to frankair! Version:", FA_VERSION);
-  calibrationLoad();
   settingsLoad();
+  calibrationLoad();
   ledSetup();
   fanSetup();
   sensorsSetup();

@@ -2,6 +2,7 @@
 #include "fa_sensors_bme280_target.h"
 #include "fa_controller.h"
 #include "fa_log.h"
+#include "fa_error.h"
 
 #include <Wire.h>
 #include "SparkFunBME280.h"
@@ -27,7 +28,6 @@ void sensorsBME280Setup()
         IMSG(LERROR, "Error: bmeF i2c");
     }
     IMSG(LDEBUG, "bmeF.getMode", bmeF.getMode());
-    
 }
 
 void sensorsBME280Read()
@@ -36,10 +36,24 @@ void sensorsBME280Read()
     bmeF.setMode(MODE_FORCED);
     BME280_SensorMeasurements me = {0U};
     BME280_SensorMeasurements mf = {0U};
-    bmeE.readAllMeasurements(&me);
-    bmeF.readAllMeasurements(&mf);
-    state_raw.temp.exhaust_in = me.temperature;
-    state_raw.humidity.rel_exhaust_in = me.humidity;
-    state_raw.temp.fresh_out = mf.temperature;
-    state_raw.humidity.rel_fresh_out = mf.humidity;
+    if (bmeE.readAllMeasurements(&me))
+    {
+        state_raw.temp.exhaust_in = me.temperature;
+        state_raw.humidity.rel_exhaust_in = me.humidity;
+    }
+    else
+    {
+        IMSG(LERROR, "Error: BME exhaust IN failed.");
+        errorSet(ERROR_SENSOR_EXHAUST_IN);
+    }
+    if (bmeF.readAllMeasurements(&mf))
+    {
+        state_raw.temp.fresh_out = mf.temperature;
+        state_raw.humidity.rel_fresh_out = mf.humidity;
+    }
+    else
+    {
+        IMSG(LERROR, "Error: BME fresh OUT failed.");
+        errorSet(ERROR_SENSOR_FRESH_OUT);
+    }
 }

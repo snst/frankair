@@ -6,9 +6,8 @@
 #include "fa_log.h"
 #include "fa_calibration.h"
 #include "fa_sensors.h"
+#include "fa_structs.h"
 
-extern fa_state_t state;
-extern fa_state_raw_t state_raw;
 
 float convertRelativeToAbsoluteHumidity(
     float temperature_C,

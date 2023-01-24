@@ -88,6 +88,7 @@ struct fa_state_t
   fa_humidity_t humidity;
   fa_ctrl_active_t ctrl_active;
   fa_duration_t running;
+  uint8_t errors;
 };
 
 struct fa_state_raw_t
@@ -158,5 +159,8 @@ struct fa_settings_t
   fa_ctrl_t ctrl;
   fa_sniff_t sniff;
 };
+
+extern fa_state_t state;
+extern fa_state_raw_t state_raw;
 
 #endif // FA_STRUCTS_H

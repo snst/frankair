@@ -7,7 +7,6 @@
 
 fa_calibration_sensor_t calibration_sensor;
 fa_calibration_actuator_t calibration_actuator;
-extern fa_state_raw_t state_raw;
 
 void sensorsCalibrateTempLow()
 {

@@ -12,12 +12,20 @@
 #include "fa_ota.h"
 #include "fa_statistic.h"
 #include "fa_delayed_task.h"
+#include "fa_error.h"
 
 FAThingerESP32 thing(FA_USERNAME, FA_DEVICE_ID, FA_DEVICE_CREDENTIAL);
 
 void thingUpdate()
 {
-	state.is_online = thing.is_connected();
+	if (state.is_online != thing.is_connected())
+	{
+		state.is_online = thing.is_connected();
+		if (state.is_online)
+		{
+			thingCallEndpoint("welcome");
+		}
+	}
 
 	if (!state.is_online)
 	{
@@ -342,6 +350,7 @@ void thingSetup()
 		out["ctrl_active_frost_fan_curve"] = state.ctrl_active.frost_fan_curve;
 		out["liter_per_hour"] = statistic.liter_per_hour;
 		out["volume_m3_per_hour"] = statistic.volume_m3_per_hour;
+		out["errors"] = state.errors;
 	};
 
 	thing["Statistics"] >> [](pson &out)
@@ -381,22 +390,29 @@ void thingSetup()
 		out["simulate"] = ota.simulate;
 	};
 
-	ADD_CMD("a Start sniffing", controllerStartSniff)
-	ADD_CMD("b Settings save", settingsWrite)
-	ADD_CMD("c Calibration save", calibrationWrite)
-	ADD_CMD("d Calibrate temp min", sensorsCalibrateTempLow)
-	ADD_CMD("e Calibrate temp max", sensorsCalibrateTempHigh)
-	ADD_CMD("f Calibrate humidity min", sensorsCalibrateHumidityLow)
-	ADD_CMD("g Calibrate humidity max", sensorsCalibrateHumidityHigh)
-	ADD_CMD("h Reboot", delayedTaskReboot);
-	ADD_CMD("i Start OTA simulation", otaStartSim)
-	ADD_CMD("j Start OTA update", otaStart)
-	ADD_CMD("k Abort OTA", otaAbort)
-	ADD_CMD("l Reset statistic", statisticReset)
-	ADD_CMD("m Settings load", settingsLoad)
-	ADD_CMD("n Calibration load", calibrationLoad)
-	ADD_CMD("o Settings clear", settingsClear)
-	ADD_CMD("p Calibration clear", calibrationClear)
-	ADD_CMD("o Settings default", settingsDefault)
-	ADD_CMD("p Calibration default", calibrationDefault)
+	ADD_CMD("a Trigger auto sniffing", controllerStartSniff);
+	ADD_CMD("b Trigger auto on", controllerModeAutoForceOn);
+	ADD_CMD("c Reboot", delayedTaskReboot);
+	ADD_CMD("d Start OTA simulation", otaStartSim);
+	ADD_CMD("e Start OTA update", otaStart);
+	ADD_CMD("f Abort OTA", otaAbort);
+	ADD_CMD("g Reset statistic", statisticReset);
+	ADD_CMD("h Clear errors", errorClear);
+	ADD_CMD("i Settings save", settingsWrite);
+	ADD_CMD("j Calibration save", calibrationWrite);
+	ADD_CMD("k Calibrate temp min", sensorsCalibrateTempLow);
+	ADD_CMD("l Calibrate temp max", sensorsCalibrateTempHigh);
+	ADD_CMD("m Calibrate humidity min", sensorsCalibrateHumidityLow);
+	ADD_CMD("n Calibrate humidity max", sensorsCalibrateHumidityHigh);
+	ADD_CMD("o Settings load", settingsLoad);
+	ADD_CMD("p Calibration load", calibrationLoad);
+	ADD_CMD("q Settings clear", settingsClear);
+	ADD_CMD("r Calibration clear", calibrationClear);
+	ADD_CMD("s Settings default", settingsDefault);
+	ADD_CMD("t Calibration default", calibrationDefault);
+}
+
+void thingCallEndpoint(const char *endpoint_name)
+{
+	thing.call_endpoint(endpoint_name, "");
 }

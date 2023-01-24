@@ -310,14 +310,15 @@ void BME280::reset( void )
 //****************************************************************************//
 
 //Read all sensor registers as a burst. See BME280 Datasheet section 4. Data readout
-void BME280::readAllMeasurements(BME280_SensorMeasurements *measurements){
+bool BME280::readAllMeasurements(BME280_SensorMeasurements *measurements){
 	
 	uint8_t dataBurst[8];
-	readRegisterRegion(dataBurst, BME280_MEASUREMENTS_REG, 8);
+	bool ret = readRegisterRegion(dataBurst, BME280_MEASUREMENTS_REG, 8);
 	
 	readTempCFromBurst(dataBurst, measurements);
 	//readFloatPressureFromBurst(dataBurst, measurements);
 	readFloatHumidityFromBurst(dataBurst, measurements);
+	return ret;
 }
 
 //****************************************************************************//
@@ -539,7 +540,7 @@ void BME280::readTempCFromBurst(uint8_t buffer[], BME280_SensorMeasurements *mea
 //  Utility
 //
 //****************************************************************************//
-void BME280::readRegisterRegion(uint8_t *outputPointer , uint8_t offset, uint8_t length)
+bool BME280::readRegisterRegion(uint8_t *outputPointer , uint8_t offset, uint8_t length)
 {
 	//define pointer that will point to the external space
 	uint8_t i = 0;
@@ -580,6 +581,7 @@ void BME280::readRegisterRegion(uint8_t *outputPointer , uint8_t offset, uint8_t
 		#endif
 			break;
 	}
+	return i == length;
 }
 
 uint8_t BME280::readRegister(uint8_t offset)
