@@ -801,8 +801,8 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 12,
+						"col": 2,
+						"row": 10,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -843,7 +843,7 @@
 				},
 				{
 					"layout": {
-						"col": 1,
+						"col": 0,
 						"row": 12,
 						"sizeX": 1,
 						"sizeY": 2
@@ -1036,7 +1036,7 @@
 						"col": 0,
 						"row": 6,
 						"sizeX": 1,
-						"sizeY": 6
+						"sizeY": 4
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -1044,7 +1044,7 @@
 					},
 					"properties": {
 						"source": "code",
-						"template": "<div ng-app=\"\" ng-init=\"submode=['waiting','on','sniffing', 'undefined']; mode=['off','auto','manual', 'undefined']\">\n\n    <p>Mode: {{mode[value.mode]}} / {{submode[value.submode]}}</p>\n    <p>Fan off conditions: {{value.ctrl_active_humidity_fan_off}}</p>\n    <p>Humidity fan curve level: {{value.ctrl_active_humidity_fan_curve}}</p>\n    <p>Temp fan curve level: {{value.ctrl_active_temp_fan_curve}}</p>\n    <p>Frost fan curve level: {{value.ctrl_active_frost_fan_curve}}</p>\n\n</div>"
+						"template": "<div ng-app=\"\" ng-init=\"submode=['waiting','on','sniffing', 'undefined']; mode=['off','auto','manual', 'undefined']\">\n\n{{mode[value.mode]}}: {{submode[value.submode]}}<br>\nFan off conditions: {{value.ctrl_active_humidity_fan_off}}<br>\nHumidity fan curve level: {{value.ctrl_active_humidity_fan_curve}}<br>\nTemp fan curve level: {{value.ctrl_active_temp_fan_curve}}<br>\nFrost fan curve level: {{value.ctrl_active_frost_fan_curve}}<br>\nError: {{value.errors}}<br>\n\n</div>"
 					},
 					"sources": [
 						{
@@ -1058,7 +1058,8 @@
 									"ctrl_active_humidity_fan_off",
 									"ctrl_active_temp_fan_curve",
 									"mode",
-									"submode"
+									"submode",
+									"errors"
 								],
 								"resource": "State",
 								"update": "interval",
@@ -1182,7 +1183,7 @@
 				},
 				{
 					"layout": {
-						"col": 2,
+						"col": 1,
 						"row": 12,
 						"sizeX": 1,
 						"sizeY": 2
@@ -1220,7 +1221,7 @@
 				},
 				{
 					"layout": {
-						"col": 2,
+						"col": 1,
 						"row": 10,
 						"sizeX": 1,
 						"sizeY": 2
@@ -1244,10 +1245,10 @@
 							"device": {
 								"id": "Frankair",
 								"interval": 5,
+								"mapping": "liter_per_hour",
 								"resource": "State",
 								"update": "interval",
-								"user": "frankair",
-								"mapping": "liter_per_hour"
+								"user": "frankair"
 							},
 							"name": "Default",
 							"skipCurrent": 1,
@@ -1258,7 +1259,7 @@
 				},
 				{
 					"layout": {
-						"col": 1,
+						"col": 0,
 						"row": 10,
 						"sizeX": 1,
 						"sizeY": 2
@@ -1282,10 +1283,10 @@
 							"device": {
 								"id": "Frankair",
 								"interval": 5,
+								"mapping": "volume_m3_per_hour",
 								"resource": "State",
 								"update": "interval",
-								"user": "frankair",
-								"mapping": "volume_m3_per_hour"
+								"user": "frankair"
 							},
 							"name": "Default",
 							"skipCurrent": 1,
@@ -2422,5 +2423,6 @@
 				}
 			]
 		}
-	]
+	],
+	"widgets": []
 }
