@@ -34,7 +34,7 @@
 					},
 					"properties": {
 						"source": "code",
-						"template": "<style>\n\n    .image-container {\n      position: relative; /* allow absolute positioning of text within the div */\n      width: 100%; /* fill the width of the parent container */\n      padding-bottom: 130%; /* maintain aspect ratio of the image (width / height = 100 / 75) */\n      background-image: url('https://raw.githubusercontent.com/snst/frankair/main/dashboard/main/bg.jpeg');\n      background-size: cover; /* keep the aspect ratio of the image */\n      background-repeat: no-repeat;\n      background-position: center;\n    }\n    .valh {\n      color: black;\n    }\n    \n    .val {\n      /*background-color: rgba(255,255,255,0.88);*/\n      /*backdrop-filter: blur(10px) saturate(70%);\n      background: rgba(255, 255, 255, 0.2);*/\n      color: white;\n      font-size: 1.5em;\n      padding: 3px 5px 3px;\n      width:25%;\n      text-shadow: 0px 0px 15px black,0px 0px 15px black,0px 0px 15px black,0px 0px 15px black,0px 0px 15px black;\n      /*width: min-content;*/\n    }\n    \n    .image-container .frost {\n      position: absolute;\n      top: 5%; \n      left: 55%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .fan_exhaust {\n      position: absolute;\n      width:15%;\n      top: 31%; \n      left: 20%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .fan_fresh {\n      position: absolute;\n      width:15%;\n      top: 31%; \n      left: 80%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .inside_in {\n      position: absolute;\n      top: 5%; \n      left: 18%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .outside_in {\n      position: absolute;\n      top: 5%; \n      left: 82%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .inside_out {\n      position: absolute;\n      top: 80%; \n      left: 18%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .outside_out {\n      position: absolute;\n      top: 80%; \n      left: 82%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .status {\n      position: absolute;\n      width:60%;\n      top: 42%; \n      left: 55%;\n       transform: translate(-50%, 0%);\n    }\n    \n    \n    </style>\n    \n    <div class=\"image-container\">\n    \n    <div class=\"val status\" ng-app=\"\" ng-init=\"submode=['waiting','on','sniffing', 'undefined']; mode=['off','auto','manual', 'undefined']\">\n        Δ Hum: {{value.humidity_abs_delta|number:2}} g/m³<br>\n        Water: {{value.liter_per_hour|number:2}} l/h<br>\n        Air: {{value.volume_m3_per_hour|number:2}} m³/h<br>\n        Efficiency: {{value.efficiency|number:0}} %<br>\n        Mode : {{mode[value.mode]}} / {{submode[value.submode]}}    \n    </div>\n    \n    \n    <div class=\"val fan_exhaust\">\n        <i class=\"m-r-xs fas fa-spinner\" ng-class=\"tab.icon\" style=\"\"></i> {{value.fan_level_exhaust}}<br>\n    </div>\n    \n    <div class=\"val fan_fresh\">\n        <i class=\"m-r-xs fas fa-spinner\" ng-class=\"tab.icon\" style=\"\"></i> {{value.fan_level_fresh}}\n    </div>\n    \n    <div class=\"val frost\">\n        <i class=\"m-r-xs fas fa-unlock\" ng-class=\"tab.icon\" style=\"\"></i> {{value.open_flap_frost}}<br>\n        <i class=\"m-r-xs fas fa-spinner\" ng-class=\"tab.icon\" style=\"\"></i> {{value.fan_level_frost}}\n    </div>\n    \n    <div class=\"val inside_in\">\n        {{value.temp_exhaust_in|number:1}} °C<br>\n        {{value.humidity_abs_exhaust_in|number:1}} g/m³<br>\n        {{value.humidity_rel_exhaust_in|number:1}} %<br>\n    </div>\n    \n    <div class=\"val outside_in\">\n        {{value.temp_fresh_in|number:1}} °C<br>\n        {{value.humidity_abs_fresh_out|number:1}} g/m³<br>\n    </div>\n    \n    <div class=\"val inside_out\">\n        {{value.temp_fresh_out|number:1}} °C<br>\n        {{value.humidity_rel_fresh_out|number:1}} %<br>\n    </div>\n    \n    <div class=\"val outside_out\">\n        {{value.temp_exhaust_out|number:1}} °C<br>\n    </div>\n    \n    \n    </div>\n    \n    "
+						"template": "<style>\n\n    .image-container {\n      position: relative; /* allow absolute positioning of text within the div */\n      width: 100%; /* fill the width of the parent container */\n      padding-bottom: 130%; /* maintain aspect ratio of the image (width / height = 100 / 75) */\n      background-image: url('https://raw.githubusercontent.com/snst/frankair/main/dashboard/main/bg.jpeg');\n      background-size: cover; /* keep the aspect ratio of the image */\n      background-repeat: no-repeat;\n      background-position: center;\n    }\n    .valh {\n      color: black;\n    }\n    \n    .val {\n      /*background-color: rgba(255,255,255,0.88);*/\n      /*backdrop-filter: blur(10px) saturate(70%);\n      background: rgba(255, 255, 255, 0.2);*/\n      color: white;\n      font-size: 1.5em;\n      padding: 3px 5px 3px;\n      width:25%;\n      text-shadow: 0px 0px 15px black,0px 0px 15px black,0px 0px 15px black,0px 0px 15px black,0px 0px 15px black;\n      /*width: min-content;*/\n    }\n    \n    .image-container .frost {\n      position: absolute;\n      top: 5%; \n      left: 55%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .fan_exhaust {\n      position: absolute;\n      width:15%;\n      top: 31%; \n      left: 20%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .fan_fresh {\n      position: absolute;\n      width:15%;\n      top: 31%; \n      left: 80%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .inside_in {\n      position: absolute;\n      top: 5%; \n      left: 18%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .outside_in {\n      position: absolute;\n      top: 5%; \n      left: 82%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .inside_out {\n      position: absolute;\n      top: 80%; \n      left: 18%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .outside_out {\n      position: absolute;\n      top: 80%; \n      left: 82%;\n       transform: translate(-50%, 0%);\n    }\n    \n    .image-container .status {\n      position: absolute;\n      width:60%;\n      top: 42%; \n      left: 55%;\n       transform: translate(-50%, 0%);\n    }\n    \n    \n    </style>\n    \n    <div class=\"image-container\">\n    \n    <div class=\"val status\" ng-app=\"\" ng-init=\"submode=['waiting','on','sniffing', 'undefined']; mode=['Off','Auto','Manual', 'Undefined']\">\n        Δ Hum: {{value.humidity_abs_delta|number:2}} g/m³<br>\n        Water: {{value.liter_per_hour|number:2}} l/h<br>\n        Air: {{value.volume_m3_per_hour|number:2}} m³/h<br>\n        Efficiency: {{value.efficiency|number:0}} %<br>\n        {{mode[value.mode]}}: {{submode[value.submode]}}<br>\n        Error: {{value.errors}}<br>\n    </div>\n    \n    \n    <div class=\"val fan_exhaust\">\n        <i class=\"m-r-xs fas fa-spinner\" ng-class=\"tab.icon\" style=\"\"></i> {{value.fan_level_exhaust}}<br>\n    </div>\n    \n    <div class=\"val fan_fresh\">\n        <i class=\"m-r-xs fas fa-spinner\" ng-class=\"tab.icon\" style=\"\"></i> {{value.fan_level_fresh}}\n    </div>\n    \n    <div class=\"val frost\">\n        <i class=\"m-r-xs fas fa-unlock\" ng-class=\"tab.icon\" style=\"\"></i> {{value.open_flap_frost}}<br>\n        <i class=\"m-r-xs fas fa-spinner\" ng-class=\"tab.icon\" style=\"\"></i> {{value.fan_level_frost}}\n    </div>\n    \n    <div class=\"val inside_in\">\n        {{value.temp_exhaust_in|number:1}} °C<br>\n        {{value.humidity_abs_exhaust_in|number:1}} g/m³<br>\n        {{value.humidity_rel_exhaust_in|number:1}} %<br>\n    </div>\n    \n    <div class=\"val outside_in\">\n        {{value.temp_fresh_in|number:1}} °C<br>\n        {{value.humidity_abs_fresh_out|number:1}} g/m³<br>\n    </div>\n    \n    <div class=\"val inside_out\">\n        {{value.temp_fresh_out|number:1}} °C<br>\n        {{value.humidity_rel_fresh_out|number:1}} %<br>\n    </div>\n    \n    <div class=\"val outside_out\">\n        {{value.temp_exhaust_out|number:1}} °C<br>\n    </div>\n    \n    \n    </div>\n    \n    "
 					},
 					"sources": [
 						{
@@ -60,7 +60,8 @@
 									"temp_fresh_out",
 									"volume_m3_per_hour",
 									"mode",
-									"submode"
+									"submode",
+									"errors"
 								],
 								"resource": "State",
 								"update": "interval",
@@ -501,7 +502,7 @@
 					},
 					"panel": {
 						"color": "#ffffff",
-						"title": "Actuator"
+						"title": "Status"
 					},
 					"properties": {
 						"axis": true,
@@ -548,7 +549,7 @@
 								"tags": {},
 								"user": "frankair"
 							},
-							"color": "#ee692f",
+							"color": "#558273",
 							"device": {
 								"id": "Frankair",
 								"interval": 5,
@@ -617,6 +618,21 @@
 								"mode": "configurable",
 								"value": 30
 							}
+						},
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "state",
+								"mapping": "errors",
+								"tags": {},
+								"user": "frankair"
+							},
+							"color": "#ff0000",
+							"name": "Error",
+							"source": "bucket",
+							"timespan": {
+								"mode": "configurable"
+							}
 						}
 					],
 					"type": "chart"
@@ -629,8 +645,8 @@
 			"widgets": [
 				{
 					"layout": {
-						"col": 1,
-						"row": 11,
+						"col": 4,
+						"row": 2,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -671,8 +687,8 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 13,
+						"col": 3,
+						"row": 4,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -709,8 +725,8 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 11,
+						"col": 3,
+						"row": 2,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -747,8 +763,8 @@
 				},
 				{
 					"layout": {
-						"col": 1,
-						"row": 13,
+						"col": 4,
+						"row": 4,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -786,7 +802,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 25,
+						"row": 12,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -828,7 +844,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 28,
+						"row": 12,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -865,8 +881,8 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 7,
+						"col": 3,
+						"row": 0,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -903,8 +919,8 @@
 				},
 				{
 					"layout": {
-						"col": 1,
-						"row": 7,
+						"col": 4,
+						"row": 0,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -941,8 +957,8 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 9,
+						"col": 2,
+						"row": 2,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -979,8 +995,8 @@
 				},
 				{
 					"layout": {
-						"col": 1,
-						"row": 9,
+						"col": 2,
+						"row": 4,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1018,7 +1034,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 15,
+						"row": 6,
 						"sizeX": 1,
 						"sizeY": 6
 					},
@@ -1060,7 +1076,7 @@
 						"col": 1,
 						"row": 0,
 						"sizeX": 1,
-						"sizeY": 7
+						"sizeY": 6
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -1112,7 +1128,7 @@
 						"col": 0,
 						"row": 0,
 						"sizeX": 1,
-						"sizeY": 7
+						"sizeY": 6
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -1166,8 +1182,8 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 23,
+						"col": 2,
+						"row": 12,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1204,8 +1220,8 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 21,
+						"col": 2,
+						"row": 10,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1228,10 +1244,10 @@
 							"device": {
 								"id": "Frankair",
 								"interval": 5,
-								"mapping": "liter_per_hour",
-								"resource": "Statistics",
+								"resource": "State",
 								"update": "interval",
-								"user": "frankair"
+								"user": "frankair",
+								"mapping": "liter_per_hour"
 							},
 							"name": "Default",
 							"skipCurrent": 1,
@@ -1243,7 +1259,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 26,
+						"row": 10,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1266,10 +1282,10 @@
 							"device": {
 								"id": "Frankair",
 								"interval": 5,
-								"mapping": "volume_m3_per_hour",
-								"resource": "Statistics",
+								"resource": "State",
 								"update": "interval",
-								"user": "frankair"
+								"user": "frankair",
+								"mapping": "volume_m3_per_hour"
 							},
 							"name": "Default",
 							"skipCurrent": 1,
@@ -1280,10 +1296,10 @@
 				},
 				{
 					"layout": {
-						"col": 1,
-						"row": 21,
+						"col": 4,
+						"row": 6,
 						"sizeX": 1,
-						"sizeY": 3
+						"sizeY": 4
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -1316,7 +1332,7 @@
 				{
 					"layout": {
 						"col": 1,
-						"row": 24,
+						"row": 8,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1357,10 +1373,10 @@
 				},
 				{
 					"layout": {
-						"col": 1,
-						"row": 18,
+						"col": 3,
+						"row": 6,
 						"sizeX": 1,
-						"sizeY": 3
+						"sizeY": 4
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -1392,10 +1408,10 @@
 				},
 				{
 					"layout": {
-						"col": 1,
-						"row": 15,
+						"col": 2,
+						"row": 6,
 						"sizeX": 1,
-						"sizeY": 3
+						"sizeY": 4
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -1427,10 +1443,10 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 27,
+						"col": 1,
+						"row": 6,
 						"sizeX": 1,
-						"sizeY": 3
+						"sizeY": 2
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -1462,6 +1478,47 @@
 						}
 					],
 					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 2,
+						"row": 0,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Status"
+					},
+					"properties": {
+						"color": "#00aa00",
+						"colors": [
+							{
+								"blink": false,
+								"color": "#ff0000",
+								"max": 255,
+								"min": 1
+							}
+						],
+						"size": "25px"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "errors",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "led"
 				}
 			]
 		},
@@ -1981,10 +2038,10 @@
 							"device": {
 								"id": "Frankair",
 								"interval": 5,
+								"mapping": "transferred_size",
 								"resource": "OTA",
 								"update": "interval",
-								"user": "frankair",
-								"mapping": "transferred_size"
+								"user": "frankair"
 							},
 							"name": "Default",
 							"skipCurrent": 1,
