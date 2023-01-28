@@ -3,6 +3,7 @@
 #define FA_THING_PRIV_H
 
 #include "fa_common.h"
+#include "fa_led.h"
 #include <ThingerESP32.h>
 
 #define WIFI_MAX_CNT 2U
@@ -12,6 +13,7 @@
   thing[name] = []()          \
   {                           \
     IMSG(LIOT, name);         \
+    cmdFeedback();            \
     action();                 \
   };
 

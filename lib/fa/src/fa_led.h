@@ -4,8 +4,9 @@
 
 #include <stdint.h>
 
-void led_enable(bool enable);
+bool ledEnable(bool enable);
 void ledSetup();
 void ledUpdate();
+void ledBlink(uint8_t count);
 
 #endif // FA_LED_H

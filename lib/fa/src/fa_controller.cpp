@@ -14,6 +14,7 @@ static uint32_t sniff_now = 0U;
 static uint32_t wait_now = 0U;
 fa_state_t state;
 fa_state_raw_t state_raw;
+bool force_update_controller = false;
 
 void controllerSetup()
 {
@@ -199,21 +200,26 @@ void controllerModeAutoChangeSubMode(controller_submode_auto_t submode)
   }
 }
 
-void controllerStartSniff()
+void controllerStartSniffing()
 {
-  IMSG(LDEBUG, "controllerStartSniff()");
+  IMSG(LDEBUG, "controllerStartSniffing()");
   controllerModeAutoChangeSubMode(controller_submode_auto_t::kSniff);
-  fanSetLevelFreshAndExhaust(settings.sniff.fan_level);
   intervalReset(sniff_now);
+  controllerModeAutoSniff();
+}
+
+void controllerStopSniffing()
+{
+  IMSG(LDEBUG, "controllerStopSniffing()");
+  controllerModeAutoOn();
 }
 
 void controllerStartWait()
 {
   IMSG(LDEBUG, "controllerStartWait()");
   controllerModeAutoChangeSubMode(controller_submode_auto_t::kWait);
-  fanSetLevelFreshAndExhaust(settings.ctrl.fan_level_min);
-  fanSetLevelFrost(FAN_LEVEL_MIN);
   intervalReset(wait_now);
+  controllerModeAutoWait();
 }
 
 void controllerModeAutoUpdateFlap()
@@ -239,9 +245,9 @@ void controllerModeAutoUpdateFlap()
   }
 }
 
-void controllerModeAutoUpdateFan()
+void controllerModeAutoOn()
 {
-  IMSG(LDEBUG, "controllerModeAutoUpdateFan()");
+  IMSG(LDEBUG, "controllerModeAutoOn()");
   logTempHumidity(LCONTROLLER, "", state.temp, state.humidity);
 
   uint8_t fan_level = settings.ctrl.fan_level_max;
@@ -269,9 +275,16 @@ void controllerModeAutoUpdateFan()
   }
 }
 
-void controllerModeAutoForceOn()
+void controllerModeAutoWait()
 {
-  controllerModeAutoChangeSubMode(controller_submode_auto_t::kOn);
+  fanSetLevelFreshAndExhaust(settings.ctrl.fan_level_min);
+  fanSetLevelFrost(settings.ctrl.fan_frost_level_min);
+}
+
+void controllerModeAutoSniff()
+{
+  fanSetLevelFreshAndExhaust(settings.sniff.fan_level);
+  fanSetLevelFrost(settings.ctrl.fan_frost_level_min);
 }
 
 void controllerModeAutoUpdate()
@@ -281,30 +294,31 @@ void controllerModeAutoUpdate()
   switch ((controller_submode_auto_t)state.submode_auto)
   {
   case controller_submode_auto_t::kWait:
+    controllerModeAutoWait();
     if (intervalCheckSec(wait_now, settings.sniff.interval_sec))
     {
-      IMSG(LDEBUG, "kWait finished => controllerStartSniff()");
-      controllerStartSniff();
+      IMSG(LDEBUG, "kWait finished => controllerStartSniffing()");
+      controllerStartSniffing();
     }
     break;
   case controller_submode_auto_t::kOn:
-    controllerModeAutoUpdateFan();
-    controllerModeAutoUpdateFlap();
+    controllerModeAutoOn();
     break;
   case controller_submode_auto_t::kSniff:
+    controllerModeAutoSniff();
     if (intervalCheckSec(sniff_now, settings.sniff.duration_sec))
     {
-      IMSG(LDEBUG, "kSniff finished => controllerModeAutoUpdateFan()");
-      controllerModeAutoUpdateFan();
+      IMSG(LDEBUG, "kSniff finished => controllerModeAutoOn()");
+      controllerStopSniffing();
     }
-    controllerModeAutoUpdateFlap();
     break;
   default:
   case controller_submode_auto_t::kUndefined:
-    IMSG(LDEBUG, "kUndefined => controllerStartSniff()");
-    controllerStartSniff();
+    IMSG(LDEBUG, "kUndefined => controllerStartSniffing()");
+    controllerStartSniffing();
     break;
   }
+  controllerModeAutoUpdateFlap();
 }
 
 void controllerModeChanged()
@@ -324,8 +338,9 @@ void controllerModeChanged()
 void controllerUpdate()
 {
   uint32_t controller_ms = intervalCheckSec(controller_now, settings.controller_interval_sec);
-  if ((0U < controller_ms) || force_update)
+  if ((0U < controller_ms) || force_update_controller)
   {
+    force_update_controller = false;
     errorUpdate();
     statisticUpdate(controller_ms);
 
@@ -354,7 +369,5 @@ void controllerUpdate()
         break;
       }
     }
-
-    force_update = false;
   }
 }

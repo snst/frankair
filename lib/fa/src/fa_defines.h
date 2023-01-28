@@ -31,4 +31,6 @@
 
 #define FAN_LEVEL_STEPS 11U
 
+#define CMD_FEEDBACK_BLINK_CNT 4U
+
 #endif // FA_DEFINES_H

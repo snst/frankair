@@ -8,7 +8,7 @@
 
 #define toRange(x, min, max) (x < min ? min : (x > max ? max : x))
 
-extern bool force_update;
+extern bool force_update_controller;
 
 uint32_t getMillis();
 uint32_t intervalCheckSec(uint32_t &last, uint32_t sec);
@@ -24,11 +24,13 @@ bool isInRange(float i, float a, float b);
 void addDurationMS(fa_duration_t& duration, uint32_t delta_ms);
 void resetDuration(fa_duration_t& duration);
 void rebootTarget();
+void cmdFeedback();
+float round2(float val);
 
 template <typename T>
 bool updateIfChanged(T &dest, T src)
 {
-  if ((dest != src) || force_update)
+  if (dest != src)
   {
     dest = src;
     return true;

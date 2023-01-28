@@ -44,7 +44,6 @@ void test_calcInterpolate(void);
 void test_common(void);
 
 
-
 int main(int argc, char **argv)
 {
   UNITY_BEGIN();

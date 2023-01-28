@@ -8,7 +8,8 @@ void ledSetup()
     pinMode(GPIO_LED, OUTPUT);
 }
 
-void led_enable(bool enable)
+bool ledEnable(bool enable)
 {
     digitalWrite(GPIO_LED, enable ? HIGH : LOW);
+    return enable;
 }

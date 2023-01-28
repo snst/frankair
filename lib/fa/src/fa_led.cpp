@@ -4,22 +4,39 @@
 #include "fa_structs.h"
 #include "fa_common.h"
 
-static uint32_t led_now = 0U;
+static uint8_t led_blink_count = 0U;
+static bool led_on = false;
+    static uint32_t led_now = 0U;
 
 void ledUpdate()
 {
-    static bool led_on = false;
-    if (state.is_online)
+    if (0U < led_blink_count)
     {
-        if (!led_on)
+        if (intervalCheckMS(led_now, 100U))
         {
-            led_on = true;
-            led_enable(led_on);
+            led_on = ledEnable(!led_on);
+            led_blink_count--;
         }
     }
-    else if (intervalCheckMS(led_now, 100U))
+    else
     {
-        led_on = !led_on;
-        led_enable(led_on);
+        if (state.is_online)
+        {
+            if (!led_on)
+            {
+                led_on = ledEnable(true);
+            }
+        }
+        else if (intervalCheckMS(led_now, 100U))
+        {
+            led_on = ledEnable(!led_on);
+        }
     }
+}
+
+void ledBlink(uint8_t count)
+{
+    led_on = ledEnable(true);
+    led_blink_count = count;
+    intervalReset(led_now);
 }
