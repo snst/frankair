@@ -112,6 +112,8 @@ void thingSetup()
 		valUpdate(in, "1.2 Controller interval sec", settings.controller_interval_sec, isEmpty);
 		valUpdate(in, "1.3 Sensor read interval sec", settings.temp_sensor_read_interval_sec, isEmpty);
 		valUpdate(in, "1.4 Sensor alpha filter", settings.measurement_alpha, isEmpty);
+		valUpdate(in, "1.5 Enable sensor calibration temp", settings.use_calibration_temp, isEmpty);
+		valUpdate(in, "1.6 Enable sensor calibration humidity", settings.use_calibration_humidity, isEmpty);
 		settingsSanitize();
 	};
 
@@ -225,23 +227,31 @@ void thingSetup()
 		settingsSanitize();
 	};
 
-	thing["Calibration sensor"] << [](pson &in)
+	thing["Calibration temperature"] << [](pson &in)
 	{
 		bool isEmpty = in.is_empty();
-		valUpdate(in, "1.1 Enable sensor calibration temp", settings.use_calibration_temp, isEmpty);
-		valUpdate(in, "1.2 Enable sensor calibration humidity", settings.use_calibration_humidity, isEmpty);
-		valUpdate(in, "2.1 Temp exhaust in min", calibration_sensor.exhaust_in_temp.min, isEmpty);
+		valUpdate(in, "1.1 Temp reference min", calibration_sensor.ref_temp.min, isEmpty);
+		valUpdate(in, "1.2 Temp exhaust in min", calibration_sensor.exhaust_in_temp.min, isEmpty);
+		valUpdate(in, "1.3 Temp exhaust out min", calibration_sensor.exhaust_out_temp.min, isEmpty);
+		valUpdate(in, "1.4 Temp fresh in min", calibration_sensor.fresh_in_temp.min, isEmpty);
+		valUpdate(in, "1.5 Temp fresh out min", calibration_sensor.fresh_out_temp.min, isEmpty);
+		valUpdate(in, "2.1 Temp reference max", calibration_sensor.ref_temp.max, isEmpty);
 		valUpdate(in, "2.2 Temp exhaust in max", calibration_sensor.exhaust_in_temp.max, isEmpty);
-		valUpdate(in, "2.3 Temp exhaust out min", calibration_sensor.exhaust_out_temp.min, isEmpty);
-		valUpdate(in, "2.4 Temp exhaust out max", calibration_sensor.exhaust_out_temp.max, isEmpty);
-		valUpdate(in, "3.1 Temp fresh in min", calibration_sensor.fresh_in_temp.min, isEmpty);
-		valUpdate(in, "3.2 Temp fresh in max", calibration_sensor.fresh_in_temp.max, isEmpty);
-		valUpdate(in, "3.3 Temp fresh out min", calibration_sensor.fresh_out_temp.min, isEmpty);
-		valUpdate(in, "3.4 Temp fresh out max", calibration_sensor.fresh_out_temp.max, isEmpty);
-		valUpdate(in, "4.1 Humidity exhaust in min", calibration_sensor.exhaust_in_humidity.min, isEmpty);
-		valUpdate(in, "4.2 Humidity exhaust in max", calibration_sensor.exhaust_in_humidity.max, isEmpty);
-		valUpdate(in, "4.3 Humidity fresh out min", calibration_sensor.fresh_out_humidity.min, isEmpty);
-		valUpdate(in, "4.4 Humidity fresh out max", calibration_sensor.fresh_out_humidity.max, isEmpty);
+		valUpdate(in, "2.3 Temp exhaust out max", calibration_sensor.exhaust_out_temp.max, isEmpty);
+		valUpdate(in, "2.4 Temp fresh in max", calibration_sensor.fresh_in_temp.max, isEmpty);
+		valUpdate(in, "2.5 Temp fresh out max", calibration_sensor.fresh_out_temp.max, isEmpty);
+		settingsSanitize();
+	};
+
+	thing["Calibration humidity"] << [](pson &in)
+	{
+		bool isEmpty = in.is_empty();
+		valUpdate(in, "1.1 Humidity reference min", calibration_sensor.ref_humidity.min, isEmpty);
+		valUpdate(in, "1.2 Humidity exhaust in min", calibration_sensor.exhaust_in_humidity.min, isEmpty);
+		valUpdate(in, "1.3 Humidity fresh out min", calibration_sensor.fresh_out_humidity.min, isEmpty);
+		valUpdate(in, "2.1 Humidity reference max", calibration_sensor.ref_humidity.max, isEmpty);
+		valUpdate(in, "2.2 Humidity exhaust in max", calibration_sensor.exhaust_in_humidity.max, isEmpty);
+		valUpdate(in, "2.3 Humidity fresh out max", calibration_sensor.fresh_out_humidity.max, isEmpty);
 		settingsSanitize();
 	};
 
