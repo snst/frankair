@@ -18,8 +18,8 @@ void resetData()
   settings.ctrl.humidity_fan_curve.enabled_points = 0U;
   settings.ctrl.temp_fan_curve.enabled_points = 0U;
   settings.ctrl.humidity_fan_ctrl.enabled = true;
-  settings.ctrl.humidity_fan_ctrl.rel_min_off = 50;
-  state.humidity.rel_exhaust_in = 50;
+  settings.ctrl.humidity_fan_ctrl.rel_min_off = 50.0f;
+  state.humidity.rel_exhaust_in = settings.ctrl.humidity_fan_ctrl.rel_min_off + 1.0f;
   state.submode_auto = (uint8_t)controller_submode_auto_t::kOn;
   fanSetLevelExhaust(settings.ctrl.fan_level_max);
   fanSetLevelFresh(settings.ctrl.fan_level_max);
@@ -29,6 +29,7 @@ void resetData()
 void test_controller_auto_update(void)
 {
   resetData();
+  state.humidity.abs_delta = settings.ctrl.humidity_fan_ctrl.abs_min_off + 0.1f;
   controllerModeAutoUpdate();
   TEST_ASSERT_EQUAL_FLOAT(settings.ctrl.fan_level_max, state.actuator.level_fan_fresh);
 
@@ -39,7 +40,7 @@ void test_controller_auto_update(void)
 
   resetData();
   settings.ctrl.humidity_fan_ctrl.abs_min_off = 0.5f;
-  state.humidity.abs_delta = 0.5f;
+  state.humidity.abs_delta = settings.ctrl.humidity_fan_ctrl.abs_min_off + 0.1f;
   controllerModeAutoUpdate();
   TEST_ASSERT_EQUAL_FLOAT(settings.ctrl.fan_level_max, state.actuator.level_fan_fresh);
   state.humidity.abs_delta = 0.4f;
@@ -185,4 +186,128 @@ void test_controller_frost_curve(void)
   TEST_ASSERT_EQUAL(3U, calcFanFrostLevel());
   state.temp.fresh_in = -50.0f;
   TEST_ASSERT_EQUAL(4U, calcFanFrostLevel());
+}
+
+fa_state_t expect_state;
+
+bool check_auto_step()
+{
+  controllerModeAutoUpdate();
+  bool ret = true;
+  ret &= (expect_state.actuator.level_fan_exhaust == state.actuator.level_fan_exhaust);
+  // TEST_ASSERT_TRUE(ret);
+  // ret &= (expect_state.actuator.level_fan_fresh == state.actuator.level_fan_fresh);
+  // TEST_ASSERT_TRUE(ret);
+  ret &= (expect_state.actuator.level_fan_frost == state.actuator.level_fan_frost);
+  // TEST_ASSERT_TRUE(ret);
+  ret &= (expect_state.actuator.open_flap_frost == state.actuator.open_flap_frost);
+  // TEST_ASSERT_TRUE(ret);
+  ret &= (expect_state.submode_auto == state.submode_auto);
+
+  return ret;
+}
+
+void test_controller_sequence(void)
+{
+  memset(&state, 0U, sizeof(state));
+  memset(&expect_state, 0U, sizeof(expect_state));
+  settingsDefault();
+  state.mode = (uint8_t)controller_mode_t::kAuto;
+  state.submode_auto = (uint8_t)controller_submode_auto_t::kOn;
+  state.humidity.rel_exhaust_in = settings.ctrl.humidity_fan_ctrl.rel_min_off + 1.0f;
+
+  // manual flap
+  settings.ctrl.frost_flap_ctrl.enabled = false;
+  settings.manual.open_flap_frost = 3U;
+  expect_state.actuator.open_flap_frost = settings.manual.open_flap_frost;
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  // auto flap
+  settings.ctrl.frost_flap_ctrl.enabled = true;
+  settings.ctrl.frost_flap_ctrl.temp_min_open = -2.0f;
+  settings.ctrl.frost_flap_ctrl.temp_min_close = 4.0f;
+
+  // between min open and close => do nothing
+  state.actuator.open_flap_frost = 3U;
+  state.temp.fresh_in = (settings.ctrl.frost_flap_ctrl.temp_min_open + settings.ctrl.frost_flap_ctrl.temp_min_close) / 2U;
+  expect_state.actuator.open_flap_frost = 3U;
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  // set to settings.ctrl.frost_flap_ctrl.temp_min_open => open flap
+  state.temp.fresh_in = settings.ctrl.frost_flap_ctrl.temp_min_open;
+  expect_state.actuator.open_flap_frost = FLAP_LEVEL_MAX;
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  // set between settings.ctrl.frost_flap_ctrl.temp_min_open/temp_min_close => still open flap
+  state.temp.fresh_in = (settings.ctrl.frost_flap_ctrl.temp_min_open + settings.ctrl.frost_flap_ctrl.temp_min_close) / 2U;
+  expect_state.actuator.open_flap_frost = FLAP_LEVEL_MAX;
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  // set to settings.ctrl.frost_flap_ctrl.temp_min_close => close flap
+  state.temp.fresh_in = settings.ctrl.frost_flap_ctrl.temp_min_close;
+  expect_state.actuator.open_flap_frost = FLAP_LEVEL_MIN;
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  state.submode_auto = (uint8_t)controller_submode_auto_t::kOn;
+  settings.ctrl.humidity_fan_ctrl.enabled = false;
+  state.temp.exhaust_in = 100.0f;
+  state.humidity.abs_delta = 100.0f;
+  expect_state.submode_auto = (uint8_t)controller_submode_auto_t::kOn;
+  expect_state.actuator.level_fan_exhaust = settings.ctrl.temp_fan_curve.item[0].level;
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  state.temp.exhaust_in = settings.ctrl.temp_fan_curve.item[1].val;
+  expect_state.actuator.level_fan_exhaust = settings.ctrl.temp_fan_curve.item[1].level;
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  // temp between two points
+  state.temp.exhaust_in = (settings.ctrl.temp_fan_curve.item[0].val + settings.ctrl.temp_fan_curve.item[1].val) / 2.0f;
+  expect_state.actuator.level_fan_exhaust = (settings.ctrl.temp_fan_curve.item[0].level + settings.ctrl.temp_fan_curve.item[1].level) / 2.0f;
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  // temp very low, enabled_points-1 not to completely turn off fans
+  state.temp.exhaust_in = -100.0f;
+  settings.ctrl.temp_fan_curve.enabled_points--;
+  expect_state.actuator.level_fan_exhaust = settings.ctrl.temp_fan_curve.item[settings.ctrl.temp_fan_curve.enabled_points - 1U].level;
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  // temp very low, last temp point turns off fan => kWait
+  settings.ctrl.temp_fan_curve.enabled_points++;
+  expect_state.actuator.level_fan_exhaust = settings.ctrl.temp_fan_curve.item[settings.ctrl.temp_fan_curve.enabled_points - 1U].level;
+  expect_state.submode_auto = (uint8_t)controller_submode_auto_t::kWait;
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  state.temp.exhaust_in = settings.ctrl.temp_fan_curve.item[1].val;
+  expect_state.actuator.level_fan_exhaust = settings.ctrl.temp_fan_curve.item[1].level;
+  expect_state.submode_auto = (uint8_t)controller_submode_auto_t::kOn;
+  controllerStartSniffing();
+  controllerStopSniffing();
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  // humidity further reduces fan level
+  state.humidity.abs_delta = settings.ctrl.humidity_fan_curve.item[2].val;
+  expect_state.actuator.level_fan_exhaust = settings.ctrl.humidity_fan_curve.item[2].level;
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  // stop fan because rel humidity too low
+  settings.ctrl.humidity_fan_ctrl.enabled = true;
+  state.humidity.rel_exhaust_in = settings.ctrl.humidity_fan_ctrl.rel_min_off;
+  expect_state.actuator.level_fan_exhaust = settings.ctrl.fan_level_min;
+  expect_state.submode_auto = (uint8_t)controller_submode_auto_t::kWait;
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  state.humidity.rel_exhaust_in = settings.ctrl.humidity_fan_ctrl.rel_min_off + 0.1f;
+  state.humidity.abs_delta = settings.ctrl.humidity_fan_ctrl.abs_min_on - 0.1f;
+  controllerStartSniffing();
+  controllerStopSniffing();
+  TEST_ASSERT_TRUE(check_auto_step());
+
+  state.temp.exhaust_in = 100.0f;
+  state.humidity.abs_delta = settings.ctrl.humidity_fan_curve.item[2].val;
+  TEST_ASSERT_TRUE(settings.ctrl.humidity_fan_curve.item[2].val >= settings.ctrl.humidity_fan_ctrl.abs_min_on);
+  expect_state.actuator.level_fan_exhaust = settings.ctrl.humidity_fan_curve.item[2].level;
+  expect_state.submode_auto = (uint8_t)controller_submode_auto_t::kOn;
+  controllerStartSniffing();
+  controllerStopSniffing();
+  TEST_ASSERT_TRUE(check_auto_step());
 }

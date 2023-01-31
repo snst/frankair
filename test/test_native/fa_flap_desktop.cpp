@@ -9,7 +9,6 @@ void flapSetup()
 {
 }
 
-void flapSetOpen(uint8_t val)
+void flapSetOpenPWM(uint8_t val)
 {
-    printf("flapSetOpen to %u\n", val);
 }

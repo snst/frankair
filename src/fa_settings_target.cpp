@@ -8,8 +8,6 @@
 const char *SETTINGS_NAMESPACE = "settings";
 const char *CALIBRATION_NAMESPACE = "calibration";
 
-fa_settings_t settings;
-
 void settingsLoad()
 {
   Preferences preferences;

@@ -10,24 +10,13 @@
 #include "fa_controller.h"
 
 extern Pwm pwm;
-static uint8_t last_flap_level = 0xFF;
 
 void flapSetup()
 {
     pwm.attach(GPIO_SERVO, 0U);
 }
 
-void flapSetOpen(uint8_t level)
+void flapSetOpenPWM(uint8_t val)
 {
-    uint8_t new_level = toRange(level, FLAP_LEVEL_MIN, FLAP_LEVEL_MAX);
-    if (updateIfChanged(last_flap_level, new_level))
-    {
-        pwm.writeServo(GPIO_SERVO,
-                       mapValue(new_level,
-                                FLAP_LEVEL_MIN, FLAP_LEVEL_MAX,
-                                calibration_actuator.flap_pos.min,
-                                calibration_actuator.flap_pos.max));
-        IMSG(LACTUATOR, "flapSetOpen", new_level);
-    }
-    state.actuator.open_flap_frost = new_level;
+    pwm.writeServo(GPIO_SERVO, val);
 }

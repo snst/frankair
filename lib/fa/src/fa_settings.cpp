@@ -3,6 +3,8 @@
 #include "fa_common.h"
 #include <cstring>
 
+fa_settings_t settings;
+
 void settingsSanitize()
 {
     settings.ctrl.temp_fan_curve.enabled_points = toRange(settings.ctrl.temp_fan_curve.enabled_points, FAN_CURVE_POINTS_MIN, FAN_CURVE_POINTS_MAX);

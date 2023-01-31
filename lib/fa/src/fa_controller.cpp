@@ -80,7 +80,7 @@ bool calcFanOffHumidity(uint8_t &fan_level)
   if (settings.ctrl.humidity_fan_ctrl.enabled)
   {
     // Stop fan if rel humidity in room is lower than minimum e.g. 50%
-    if (state.humidity.rel_exhaust_in < settings.ctrl.humidity_fan_ctrl.rel_min_off)
+    if (state.humidity.rel_exhaust_in <= settings.ctrl.humidity_fan_ctrl.rel_min_off)
     {
       reduceFanLevel(fan_level, settings.ctrl.fan_level_min);
       IMSG(LCONTROLLER, "Relative humidity too low. Set fan minimum. Hum", settings.ctrl.humidity_fan_ctrl.rel_min_off);
@@ -92,7 +92,7 @@ bool calcFanOffHumidity(uint8_t &fan_level)
       {
       case controller_submode_auto_t::kOn:
         // Stop fan if abs humidity delta is lower than minimum delta e.g. 0.5g/m³
-        if (state.humidity.abs_delta < settings.ctrl.humidity_fan_ctrl.abs_min_off)
+        if (state.humidity.abs_delta <= settings.ctrl.humidity_fan_ctrl.abs_min_off)
         {
           reduceFanLevel(fan_level, settings.ctrl.fan_level_min);
           IMSG(LCONTROLLER, "kOn: Absolute humidity delta too low. Set fan minimum. Hum", settings.ctrl.humidity_fan_ctrl.abs_min_off);
@@ -228,12 +228,12 @@ void controllerModeAutoUpdateFlap()
   if (settings.ctrl.frost_flap_ctrl.enabled)
   {
     float temp = state.temp.fresh_in;
-    if (temp < settings.ctrl.frost_flap_ctrl.temp_min_open)
+    if (temp <= settings.ctrl.frost_flap_ctrl.temp_min_open)
     {
       flapSetOpen(FLAP_LEVEL_MAX);
       IMSG(LCONTROLLER, "Temp fresh IN lower => open flap. Temp", settings.ctrl.frost_flap_ctrl.temp_min_open);
     }
-    if (temp > settings.ctrl.frost_flap_ctrl.temp_min_close)
+    if (temp >= settings.ctrl.frost_flap_ctrl.temp_min_close)
     {
       flapSetOpen(FLAP_LEVEL_MIN);
       IMSG(LCONTROLLER, "Temp fresh IN higher => close flap. Temp", settings.ctrl.frost_flap_ctrl.temp_min_close);

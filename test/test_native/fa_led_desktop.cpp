@@ -8,4 +8,5 @@ void ledSetup()
 
 bool ledEnable(bool enable)
 {
+    return enable;
 }
