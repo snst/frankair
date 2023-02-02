@@ -99,3 +99,18 @@ float round2(float val)
 {
   return roundf(val * 100.0f) / 100.0f;
 }
+
+float calcAverage(float x1, float x2)
+{
+    return (x1 + x2) / 2.0f;
+}
+
+float calcAverage(float x1, float x2, float x3, float x4)
+{
+    return (x1 + x2 + x3 + x4) / 4.0f;
+}
+
+void filterValue(float &val, float measurement)
+{
+    val = (settings.measurement_alpha * measurement) + ((1.0f - settings.measurement_alpha) * val);
+}

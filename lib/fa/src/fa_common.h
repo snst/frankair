@@ -26,6 +26,9 @@ void resetDuration(fa_duration_t& duration);
 void rebootTarget();
 void cmdFeedback();
 float round2(float val);
+float calcAverage(float x1, float x2);
+float calcAverage(float x1, float x2, float x3, float x4);
+void filterValue(float &val, float measurement);
 
 template <typename T>
 bool updateIfChanged(T &dest, T src)

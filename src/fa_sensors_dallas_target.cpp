@@ -31,7 +31,7 @@ void sensorsDallasRead()
   }
   else
   {
-    state_raw.temp.fresh_in = val;
+    filterValue(state_raw.temp.fresh_in, val);
   }
 
   val = dallas.getTempC(sensor_exhaust_out);
@@ -42,7 +42,7 @@ void sensorsDallasRead()
   }
   else
   {
-    state_raw.temp.exhaust_out = val;
+    filterValue(state_raw.temp.exhaust_out, val);
   }
 }
 

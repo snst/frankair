@@ -38,8 +38,8 @@ void sensorsBME280Read()
     BME280_SensorMeasurements mf = {0U};
     if (bmeE.readAllMeasurements(&me))
     {
-        state_raw.temp.exhaust_in = me.temperature;
-        state_raw.humidity.rel_exhaust_in = me.humidity;
+        filterValue(state_raw.temp.exhaust_in, me.temperature);
+        filterValue(state_raw.humidity.rel_exhaust_in, me.humidity);
     }
     else
     {
@@ -48,8 +48,8 @@ void sensorsBME280Read()
     }
     if (bmeF.readAllMeasurements(&mf))
     {
-        state_raw.temp.fresh_out = mf.temperature;
-        state_raw.humidity.rel_fresh_out = mf.humidity;
+        filterValue(state_raw.temp.fresh_out, mf.temperature);
+        filterValue(state_raw.humidity.rel_fresh_out, mf.humidity);
     }
     else
     {

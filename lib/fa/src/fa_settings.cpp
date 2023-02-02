@@ -17,10 +17,11 @@ void settingsDefault()
     IMSG(LINFO, "settingsDefault()");
     memset(&settings, 0U, sizeof(settings));
     settings.mode = (uint8_t)controller_mode_t::kAuto;
-    settings.controller_interval_sec = 5U;       // sec
-    settings.temp_sensor_read_interval_sec = 1U; // sec
+    settings.controller_interval_sec = 10U;       // sec
+    settings.temp_sensor_read_interval_sec = 5U; // sec
     settings.measurement_alpha = 0.8f;
     settings.use_calibration_humidity = false;
+    settings.use_calibrated_temp_for_abs_humidity = false;
     settings.use_calibration_temp = false;
     settings.log_mask = LERROR | LINFO | LIOT | LCONTROLLER | LACTUATOR;
     settings.ctrl.fan_frost_level_max = FAN_LEVEL_MAX;

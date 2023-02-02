@@ -155,6 +155,7 @@ struct fa_settings_t
   float measurement_alpha;
   bool use_calibration_temp;
   bool use_calibration_humidity;
+  bool use_calibrated_temp_for_abs_humidity;
   fa_actuator_t manual;
   fa_ctrl_t ctrl;
   fa_sniff_t sniff;

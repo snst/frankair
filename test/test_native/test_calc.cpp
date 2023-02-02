@@ -131,8 +131,10 @@ void test_sensorsProcessValues(void)
 
   settings.use_calibration_temp = false;
   settings.use_calibration_humidity = false;
+  settings.use_calibrated_temp_for_abs_humidity = false;
   settings.measurement_alpha = 0.5f;
   sensorsProcessValues();
+  
   TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.temp.exhaust_in, state.temp.exhaust_in);
   TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.temp.exhaust_out, state.temp.exhaust_out);
   TEST_ASSERT_EQUAL_FLOAT(settings.measurement_alpha * state_raw.temp.fresh_in, state.temp.fresh_in);

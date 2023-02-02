@@ -79,7 +79,8 @@ void thingSetup()
 	{
 		bool isEmpty = in.is_empty();
 		valUpdate(in, "1 Enabled", override.enabled, isEmpty);
-		if (!override.enabled) {
+		if (!override.enabled)
+		{
 			override.temp.exhaust_in = round2(state.temp.exhaust_in);
 			override.temp.fresh_in = round2(state.temp.fresh_in);
 			override.temp.exhaust_out = round2(state.temp.exhaust_out);
@@ -114,6 +115,7 @@ void thingSetup()
 		valUpdate(in, "1.4 Sensor alpha filter", settings.measurement_alpha, isEmpty);
 		valUpdate(in, "1.5 Enable sensor calibration temp", settings.use_calibration_temp, isEmpty);
 		valUpdate(in, "1.6 Enable sensor calibration humidity", settings.use_calibration_humidity, isEmpty);
+		valUpdate(in, "1.7 Use calibrated temp for abs humidity", settings.use_calibrated_temp_for_abs_humidity, isEmpty);
 		settingsSanitize();
 	};
 

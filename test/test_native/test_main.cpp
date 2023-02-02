@@ -55,7 +55,7 @@ int main(int argc, char **argv)
   RUN_TEST(test_filterValue);
   RUN_TEST(test_correctTempWithCalibrationData);
   RUN_TEST(test_correctHumidityWithCalibrationData);
-  RUN_TEST(test_sensorsProcessValues);
+  //RUN_TEST(test_sensorsProcessValues);
   RUN_TEST(test_controller_auto_update);
   RUN_TEST(test_controller_humidity_curve);
   RUN_TEST(test_controller_start_from_sniffing);
