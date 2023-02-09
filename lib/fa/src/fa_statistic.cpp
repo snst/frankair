@@ -17,11 +17,11 @@ void statisticSetup()
 void statisticCalculateEfficiency()
 {
     float efficiency = 100.0f;
-    float delta_temp = state.temp.exhaust_in - state.temp.fresh_out;
-    float delta_inc_temp = state.temp.fresh_out - state.temp.fresh_in;
+    float delta_temp = state.temp.exhaust_in - state.temp.fresh_in;
+    float inc_temp = state.temp.fresh_out - state.temp.fresh_in;
     if (delta_temp > 0.0f)
     {
-        efficiency = 100.0f * delta_inc_temp / delta_temp;
+        efficiency = 100.0f * inc_temp / delta_temp;
     }
     state.efficiency = toRange(efficiency, 0.0f, 100.0f);
 }
