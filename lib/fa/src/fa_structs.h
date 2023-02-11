@@ -136,6 +136,8 @@ struct fa_ctrl_t
   fa_fan_curve_t frost_fan_curve;
   fa_humidity_ctrl_t humidity_fan_ctrl;
   fa_frost_flap_ctrl_t frost_flap_ctrl;
+  int8_t fan_offset_fresh;
+  int8_t fan_offset_exhaust;
 };
 
 struct fa_sniff_t
@@ -159,6 +161,7 @@ struct fa_settings_t
   fa_actuator_t manual;
   fa_ctrl_t ctrl;
   fa_sniff_t sniff;
+
 };
 
 extern fa_state_t state;

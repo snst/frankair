@@ -269,7 +269,7 @@ void controllerModeAutoOn()
     {
       // Fans are running
       controllerModeAutoChangeSubMode(controller_submode_auto_t::kOn);
-      fanSetLevelFreshAndExhaust(fan_level);
+      fanSetLevelMainWithOffset(fan_level);
       fanSetLevelFrost(calcFanFrostLevel());
     }
   }
@@ -277,14 +277,14 @@ void controllerModeAutoOn()
 
 void controllerModeAutoWait()
 {
-  fanSetLevelFreshAndExhaust(settings.ctrl.fan_level_min);
-  fanSetLevelFrost(settings.ctrl.fan_frost_level_min);
+  fanSetFrostMinimum();
+  fanSetMainMinimum();
 }
 
 void controllerModeAutoSniff()
 {
-  fanSetLevelFreshAndExhaust(settings.sniff.fan_level);
-  fanSetLevelFrost(settings.ctrl.fan_frost_level_min);
+  fanSetFrostMinimum();
+  fanSetMainSniffing();
 }
 
 void controllerModeAutoUpdate()
@@ -328,8 +328,8 @@ void controllerModeChanged()
   switch ((controller_mode_t)state.mode)
   {
   case controller_mode_t::kOff:
-    fanSetLevelFreshAndExhaust(FAN_LEVEL_MIN);
-    fanSetLevelFrost(FAN_LEVEL_MIN);
+    fanSetMainOff();
+    fanSetFrostOff();
     flapSetOpen(FLAP_LEVEL_MIN);
     break;
   }
@@ -351,8 +351,8 @@ void controllerUpdate()
 
     if (0U < state.errors)
     {
-      fanSetLevelFreshAndExhaust(FAN_LEVEL_MIN);
-      fanSetLevelFrost(FAN_LEVEL_MIN);
+      fanSetFrostOff();
+      fanSetMainOff();
     }
     else
     {

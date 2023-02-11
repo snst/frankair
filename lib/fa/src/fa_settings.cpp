@@ -24,6 +24,8 @@ void settingsDefault()
     settings.use_calibrated_temp_for_abs_humidity = false;
     settings.use_calibration_temp = false;
     settings.log_mask = LERROR | LINFO | LIOT | LCONTROLLER | LACTUATOR;
+    settings.ctrl.fan_offset_exhaust = 0;
+    settings.ctrl.fan_offset_fresh = 0;
     settings.ctrl.fan_frost_level_max = FAN_LEVEL_MAX;
     settings.ctrl.fan_frost_level_min = FAN_LEVEL_MIN;
     settings.ctrl.fan_level_max = FAN_LEVEL_MAX;

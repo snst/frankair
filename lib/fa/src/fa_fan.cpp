@@ -47,8 +47,39 @@ void fanSetLevelFrost(uint8_t level)
   state.actuator.level_fan_frost = level;
 }
 
-void fanSetLevelFreshAndExhaust(uint8_t level)
+void fanSetLevelMain(uint8_t level)
 {
   fanSetLevelFresh(level);
   fanSetLevelExhaust(level);
+}
+
+void fanSetLevelMainWithOffset(uint8_t level)
+{
+  fanSetLevelFresh(toRange(((int8_t)level) + settings.ctrl.fan_offset_fresh, settings.ctrl.fan_level_min, settings.ctrl.fan_level_max));
+  fanSetLevelExhaust(toRange(((int8_t)level) + settings.ctrl.fan_offset_exhaust, settings.ctrl.fan_level_min, settings.ctrl.fan_level_max));
+}
+
+void fanSetMainOff()
+{
+  fanSetLevelMain(FAN_LEVEL_MIN);
+}
+
+void fanSetMainMinimum()
+{
+  fanSetLevelMainWithOffset(settings.ctrl.fan_level_min);
+}
+
+void fanSetMainSniffing()
+{
+  fanSetLevelMain(settings.sniff.fan_level);
+}
+
+void fanSetFrostOff()
+{
+  fanSetLevelFrost(FAN_LEVEL_MIN);
+}
+
+void fanSetFrostMinimum()
+{
+  fanSetLevelFrost(settings.ctrl.fan_frost_level_min);
 }

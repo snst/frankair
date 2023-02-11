@@ -5,16 +5,19 @@
 			"period": "1m"
 		},
 		"timespan": {
-			"magnitude": "hour",
+			"magnitude": "day",
 			"mode": "relative",
 			"period": "latest",
-			"value": 12
+			"value": 7
 		}
 	},
 	"name": "Frankair",
 	"properties": {
-		"columns": 6,
-		"row_height": 40
+		"border_radius": "5px",
+		"columns": 14,
+		"hide_header": false,
+		"row_height": 40,
+		"show_template": false
 	},
 	"tabs": [
 		{
@@ -25,8 +28,8 @@
 					"layout": {
 						"col": 0,
 						"row": 0,
-						"sizeX": 2,
-						"sizeY": 15
+						"sizeX": 7,
+						"sizeY": 26
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -84,7 +87,7 @@
 					"layout": {
 						"col": 0,
 						"row": 0,
-						"sizeX": 6,
+						"sizeX": 14,
 						"sizeY": 5
 					},
 					"panel": {
@@ -136,7 +139,7 @@
 					"layout": {
 						"col": 0,
 						"row": 5,
-						"sizeX": 6,
+						"sizeX": 14,
 						"sizeY": 5
 					},
 					"panel": {
@@ -177,7 +180,7 @@
 					"layout": {
 						"col": 0,
 						"row": 10,
-						"sizeX": 6,
+						"sizeX": 14,
 						"sizeY": 5
 					},
 					"panel": {
@@ -218,7 +221,7 @@
 					"layout": {
 						"col": 0,
 						"row": 15,
-						"sizeX": 6,
+						"sizeX": 14,
 						"sizeY": 5
 					},
 					"panel": {
@@ -344,7 +347,7 @@
 					"layout": {
 						"col": 0,
 						"row": 20,
-						"sizeX": 6,
+						"sizeX": 14,
 						"sizeY": 5
 					},
 					"panel": {
@@ -420,7 +423,7 @@
 					"layout": {
 						"col": 0,
 						"row": 30,
-						"sizeX": 6,
+						"sizeX": 14,
 						"sizeY": 6
 					},
 					"panel": {
@@ -497,7 +500,7 @@
 					"layout": {
 						"col": 0,
 						"row": 25,
-						"sizeX": 6,
+						"sizeX": 14,
 						"sizeY": 5
 					},
 					"panel": {
@@ -647,24 +650,24 @@
 					"layout": {
 						"col": 4,
 						"row": 2,
-						"sizeX": 1,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#ffdca0",
+						"color": "#dfffdb",
 						"subtitle": "",
-						"title": "Outside IN"
+						"title": ""
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-thermometer-quarter",
 						"iconSize": "",
 						"max": 100,
 						"min": 0,
 						"size": "35px",
 						"unit": "°C",
-						"unit_size": "20px",
+						"unit_size": "15px",
 						"weight": "font-thin"
 					},
 					"sources": [
@@ -687,22 +690,22 @@
 				},
 				{
 					"layout": {
-						"col": 3,
-						"row": 4,
-						"sizeX": 1,
+						"col": 0,
+						"row": 8,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#ffdca0",
-						"title": "Inside OUT"
+						"color": "#dfe896",
+						"title": ""
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-thermometer-quarter",
 						"size": "35px",
 						"unit": "°C",
-						"unit_size": "20px",
+						"unit_size": "15px",
 						"weight": "font-thin"
 					},
 					"sources": [
@@ -725,22 +728,22 @@
 				},
 				{
 					"layout": {
-						"col": 3,
-						"row": 2,
-						"sizeX": 1,
+						"col": 0,
+						"row": 4,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#ffdca0",
-						"title": "Inside IN"
+						"color": "#f4ff9e",
+						"title": ""
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-thermometer-quarter",
 						"size": "35px",
 						"unit": "°C",
-						"unit_size": "20px",
+						"unit_size": "15px",
 						"weight": "font-thin"
 					},
 					"sources": [
@@ -764,46 +767,8 @@
 				{
 					"layout": {
 						"col": 4,
-						"row": 4,
-						"sizeX": 1,
-						"sizeY": 2
-					},
-					"panel": {
-						"color": "#ffdca0",
-						"title": "Outside OUT"
-					},
-					"properties": {
-						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
-						"size": "35px",
-						"unit": "°C",
-						"unit_size": "20px",
-						"weight": "font-thin"
-					},
-					"sources": [
-						{
-							"color": "#1E313E",
-							"device": {
-								"id": "Frankair",
-								"interval": 5,
-								"mapping": "temp_exhaust_out",
-								"resource": "State",
-								"update": "interval",
-								"user": "frankair"
-							},
-							"name": "Default",
-							"skipCurrent": 1,
-							"source": "device"
-						}
-					],
-					"type": "text"
-				},
-				{
-					"layout": {
-						"col": 2,
-						"row": 10,
-						"sizeX": 1,
+						"row": 12,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
@@ -843,9 +808,9 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 12,
-						"sizeX": 1,
+						"col": 4,
+						"row": 8,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
@@ -854,11 +819,11 @@
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
+						"decimal_places": 1,
 						"icon": "",
 						"size": "35px",
 						"unit": "m³",
-						"unit_size": "20px",
+						"unit_size": "15px",
 						"weight": "font-thin"
 					},
 					"sources": [
@@ -881,22 +846,22 @@
 				},
 				{
 					"layout": {
-						"col": 3,
+						"col": 0,
 						"row": 0,
-						"sizeX": 1,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#94dfff",
-						"title": "Abs humidity inside IN"
+						"color": "#f4ff9e",
+						"title": "Inside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-tint",
 						"size": "35px",
 						"unit": "g / mᵌ",
-						"unit_size": "20px",
+						"unit_size": "15px",
 						"weight": "font-thin"
 					},
 					"sources": [
@@ -921,20 +886,20 @@
 					"layout": {
 						"col": 4,
 						"row": 0,
-						"sizeX": 1,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#94dfff",
-						"title": "Abs humidity outside IN"
+						"color": "#dfffdb",
+						"title": "Outside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-tint",
 						"size": "35px",
 						"unit": "g / mᵌ",
-						"unit_size": "20px",
+						"unit_size": "15px",
 						"weight": "font-thin"
 					},
 					"sources": [
@@ -957,22 +922,22 @@
 				},
 				{
 					"layout": {
-						"col": 2,
+						"col": 0,
 						"row": 2,
-						"sizeX": 1,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#e1effe",
-						"title": "Rel humidity inside IN"
+						"color": "#f4ff9e",
+						"title": ""
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-water",
 						"size": "35px",
 						"unit": "%",
-						"unit_size": "20px",
+						"unit_size": "15px",
 						"weight": "font-thin"
 					},
 					"sources": [
@@ -995,22 +960,22 @@
 				},
 				{
 					"layout": {
-						"col": 2,
-						"row": 4,
-						"sizeX": 1,
+						"col": 0,
+						"row": 6,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#e1effe",
-						"title": "Rel humidity inside OUT"
+						"color": "#dfe896",
+						"title": "Inside OUT"
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-water",
 						"size": "35px",
 						"unit": "%",
-						"unit_size": "20px",
+						"unit_size": "15px",
 						"weight": "font-thin"
 					},
 					"sources": [
@@ -1034,8 +999,8 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 6,
-						"sizeX": 1,
+						"row": 10,
+						"sizeX": 2,
 						"sizeY": 4
 					},
 					"panel": {
@@ -1074,118 +1039,9 @@
 				},
 				{
 					"layout": {
-						"col": 1,
-						"row": 0,
-						"sizeX": 1,
-						"sizeY": 6
-					},
-					"panel": {
-						"color": "#ffffff",
-						"subtitle": "",
-						"title": "Abs humidity delta (IN - OUT)"
-					},
-					"properties": {
-						"colors": [
-							{
-								"color": "#809fff",
-								"max": 0,
-								"min": -10
-							},
-							{
-								"color": "#a2ff70",
-								"max": 10,
-								"min": 0
-							}
-						],
-						"majorTicks": 2,
-						"max": 10,
-						"min": -10,
-						"plateColor": "#ffffff",
-						"showValue": true,
-						"textColor": "#1E313E",
-						"tickColor": "#000000",
-						"unit": "g/m³"
-					},
-					"sources": [
-						{
-							"color": "#1E313E",
-							"device": {
-								"id": "Frankair",
-								"interval": 5,
-								"mapping": "humidity_abs_delta",
-								"resource": "State",
-								"update": "interval",
-								"user": "frankair"
-							},
-							"name": "Default",
-							"skipCurrent": 1,
-							"source": "device"
-						}
-					],
-					"type": "tachometer"
-				},
-				{
-					"layout": {
-						"col": 0,
-						"row": 0,
-						"sizeX": 1,
-						"sizeY": 6
-					},
-					"panel": {
-						"color": "#ffffff",
-						"subtitle": "",
-						"title": "Rel humidity inside IN"
-					},
-					"properties": {
-						"colors": [
-							{
-								"color": "#ffc8c8",
-								"max": 40,
-								"min": 0
-							},
-							{
-								"color": "#86fe86",
-								"max": 70,
-								"min": 40
-							},
-							{
-								"color": "#809fff",
-								"max": 100,
-								"min": 70
-							}
-						],
-						"majorTicks": 10,
-						"max": 100,
-						"min": 0,
-						"plateColor": "#ffffff",
-						"showValue": true,
-						"textColor": "#1E313E",
-						"tickColor": "#000000",
-						"unit": "%"
-					},
-					"sources": [
-						{
-							"color": "#1E313E",
-							"device": {
-								"id": "Frankair",
-								"interval": 5,
-								"mapping": "humidity_rel_exhaust_in",
-								"resource": "State",
-								"update": "interval",
-								"user": "frankair"
-							},
-							"name": "Default",
-							"skipCurrent": 1,
-							"source": "device"
-						}
-					],
-					"type": "tachometer"
-				},
-				{
-					"layout": {
-						"col": 1,
-						"row": 12,
-						"sizeX": 1,
+						"col": 4,
+						"row": 10,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
@@ -1194,11 +1050,11 @@
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
+						"decimal_places": 1,
 						"icon": "",
 						"size": "35px",
 						"unit": "l",
-						"unit_size": "20px",
+						"unit_size": "15px",
 						"weight": "font-thin"
 					},
 					"sources": [
@@ -1221,9 +1077,9 @@
 				},
 				{
 					"layout": {
-						"col": 1,
+						"col": 2,
 						"row": 10,
-						"sizeX": 1,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
@@ -1236,7 +1092,7 @@
 						"icon": "",
 						"size": "35px",
 						"unit": "l/h",
-						"unit_size": "20px",
+						"unit_size": "15px",
 						"weight": "font-thin"
 					},
 					"sources": [
@@ -1259,9 +1115,9 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 10,
-						"sizeX": 1,
+						"col": 2,
+						"row": 8,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
@@ -1274,7 +1130,7 @@
 						"icon": "",
 						"size": "35px",
 						"unit": "m³/h",
-						"unit_size": "20px",
+						"unit_size": "15px",
 						"weight": "font-thin"
 					},
 					"sources": [
@@ -1297,10 +1153,10 @@
 				},
 				{
 					"layout": {
-						"col": 4,
+						"col": 2,
 						"row": 6,
-						"sizeX": 1,
-						"sizeY": 4
+						"sizeX": 2,
+						"sizeY": 2
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -1309,6 +1165,8 @@
 					"properties": {
 						"color": "#1E313E",
 						"gradient": true,
+						"icon": "",
+						"iconSize": "",
 						"max": 10,
 						"min": 0
 					},
@@ -1328,13 +1186,13 @@
 							"source": "device"
 						}
 					],
-					"type": "gauge"
+					"type": "progressbar"
 				},
 				{
 					"layout": {
-						"col": 1,
-						"row": 8,
-						"sizeX": 1,
+						"col": 2,
+						"row": 12,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
@@ -1374,10 +1232,10 @@
 				},
 				{
 					"layout": {
-						"col": 3,
-						"row": 6,
-						"sizeX": 1,
-						"sizeY": 4
+						"col": 2,
+						"row": 4,
+						"sizeX": 2,
+						"sizeY": 2
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -1386,6 +1244,9 @@
 					"properties": {
 						"color": "#1E313E",
 						"gradient": true,
+						"icon": "",
+						"iconColor": "#ffffff",
+						"iconSize": 16,
 						"max": 10,
 						"min": 0
 					},
@@ -1405,14 +1266,14 @@
 							"source": "device"
 						}
 					],
-					"type": "gauge"
+					"type": "progressbar"
 				},
 				{
 					"layout": {
 						"col": 2,
-						"row": 6,
-						"sizeX": 1,
-						"sizeY": 4
+						"row": 2,
+						"sizeX": 2,
+						"sizeY": 2
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -1421,6 +1282,8 @@
 					"properties": {
 						"color": "#1E313E",
 						"gradient": true,
+						"icon": "",
+						"iconSize": "",
 						"max": 10,
 						"min": 0
 					},
@@ -1440,11 +1303,11 @@
 							"source": "device"
 						}
 					],
-					"type": "gauge"
+					"type": "progressbar"
 				},
 				{
 					"layout": {
-						"col": 1,
+						"col": 5,
 						"row": 6,
 						"sizeX": 1,
 						"sizeY": 2
@@ -1459,7 +1322,7 @@
 						"icon": "",
 						"size": "35px",
 						"unit": "%",
-						"unit_size": "20px",
+						"unit_size": "15px",
 						"weight": "font-thin"
 					},
 					"sources": [
@@ -1482,8 +1345,8 @@
 				},
 				{
 					"layout": {
-						"col": 2,
-						"row": 0,
+						"col": 4,
+						"row": 6,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1520,6 +1383,94 @@
 						}
 					],
 					"type": "led"
+				},
+				{
+					"layout": {
+						"col": 2,
+						"row": 0,
+						"sizeX": 2,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"colors": [
+							{
+								"color": "#fecda4",
+								"max": 0.01,
+								"min": -100
+							},
+							{
+								"color": "#d5feb4",
+								"max": 100,
+								"min": 0.01
+							}
+						],
+						"title": "Abs humidity delta"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 1,
+						"icon": "",
+						"size": "35px",
+						"unit": "g/m³",
+						"unit_size": "15px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "humidity_abs_delta",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 4,
+						"row": 4,
+						"sizeX": 2,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#c2dfbf",
+						"title": "Outside OUT"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"decimal_places": 1,
+						"icon": "fas fa-thermometer-quarter",
+						"size": "35px",
+						"unit": "°C",
+						"unit_size": "15px",
+						"weight": "font-thin"
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "temp_exhaust_out",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "text"
 				}
 			]
 		},
@@ -1530,8 +1481,8 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 6,
-						"sizeX": 6,
+						"row": 4,
+						"sizeX": 14,
 						"sizeY": 7
 					},
 					"panel": {
@@ -1623,8 +1574,8 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 13,
-						"sizeX": 6,
+						"row": 11,
+						"sizeX": 14,
 						"sizeY": 8
 					},
 					"panel": {
@@ -1679,20 +1630,20 @@
 				},
 				{
 					"layout": {
-						"col": 1,
+						"col": 2,
 						"row": 0,
-						"sizeX": 1,
-						"sizeY": 3
+						"sizeX": 2,
+						"sizeY": 2
 					},
 					"panel": {
-						"color": "#ffffff",
+						"color": "#f4ff9e",
 						"subtitle": "",
-						"title": "Temperature inside IN"
+						"title": ""
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-thermometer-quarter",
 						"size": "35px",
 						"unit": "°C",
 						"unit_size": "20px",
@@ -1718,20 +1669,20 @@
 				},
 				{
 					"layout": {
-						"col": 2,
-						"row": 3,
-						"sizeX": 1,
-						"sizeY": 3
+						"col": 4,
+						"row": 2,
+						"sizeX": 2,
+						"sizeY": 2
 					},
 					"panel": {
-						"color": "#ffffff",
+						"color": "#c2dfbf",
 						"subtitle": "",
-						"title": "Temperature outside OUT"
+						"title": "Outside OUT"
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-thermometer-quarter",
 						"size": "35px",
 						"unit": "°C",
 						"unit_size": "20px",
@@ -1758,19 +1709,19 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 3,
-						"sizeX": 1,
-						"sizeY": 3
+						"row": 2,
+						"sizeX": 2,
+						"sizeY": 2
 					},
 					"panel": {
-						"color": "#ffffff",
+						"color": "#dfe896",
 						"subtitle": "",
-						"title": "Rel humidity inside OUT"
+						"title": "Inside OUT"
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-water",
 						"size": "35px",
 						"unit": "%",
 						"unit_size": "20px",
@@ -1798,18 +1749,18 @@
 					"layout": {
 						"col": 0,
 						"row": 0,
-						"sizeX": 1,
-						"sizeY": 3
+						"sizeX": 2,
+						"sizeY": 2
 					},
 					"panel": {
-						"color": "#ffffff",
+						"color": "#f4ff9e",
 						"subtitle": "",
-						"title": "Rel humidity inside IN"
+						"title": "Inside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-water",
 						"size": "35px",
 						"unit": "%",
 						"unit_size": "20px",
@@ -1835,20 +1786,20 @@
 				},
 				{
 					"layout": {
-						"col": 2,
+						"col": 4,
 						"row": 0,
-						"sizeX": 1,
-						"sizeY": 3
+						"sizeX": 2,
+						"sizeY": 2
 					},
 					"panel": {
-						"color": "#ffffff",
+						"color": "#dfffdb",
 						"subtitle": "",
-						"title": "Temperature outside IN"
+						"title": "Outside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-thermometer-quarter",
 						"size": "35px",
 						"unit": "°C",
 						"unit_size": "20px",
@@ -1874,20 +1825,20 @@
 				},
 				{
 					"layout": {
-						"col": 1,
-						"row": 3,
-						"sizeX": 1,
-						"sizeY": 3
+						"col": 2,
+						"row": 2,
+						"sizeX": 2,
+						"sizeY": 2
 					},
 					"panel": {
-						"color": "#ffffff",
+						"color": "#dfe896",
 						"subtitle": "",
-						"title": "Temperature inside OUT"
+						"title": ""
 					},
 					"properties": {
 						"color": "#1E313E",
-						"decimal_places": 2,
-						"icon": "",
+						"decimal_places": 1,
+						"icon": "fas fa-thermometer-quarter",
 						"size": "35px",
 						"unit": "°C",
 						"unit_size": "20px",
@@ -1913,10 +1864,10 @@
 				},
 				{
 					"layout": {
-						"col": 3,
+						"col": 6,
 						"row": 0,
-						"sizeX": 3,
-						"sizeY": 6
+						"sizeX": 8,
+						"sizeY": 4
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -2016,9 +1967,9 @@
 			"widgets": [
 				{
 					"layout": {
-						"col": 1,
+						"col": 2,
 						"row": 2,
-						"sizeX": 1,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
@@ -2053,8 +2004,8 @@
 				},
 				{
 					"layout": {
-						"col": 1,
-						"row": 6,
+						"col": 3,
+						"row": 4,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -2092,7 +2043,7 @@
 					"layout": {
 						"col": 0,
 						"row": 2,
-						"sizeX": 1,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
@@ -2127,9 +2078,9 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 4,
-						"sizeX": 1,
+						"col": 4,
+						"row": 2,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
@@ -2202,7 +2153,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 6,
+						"row": 4,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -2238,46 +2189,9 @@
 				},
 				{
 					"layout": {
-						"col": 2,
-						"row": 2,
-						"sizeX": 1,
-						"sizeY": 2
-					},
-					"panel": {
-						"color": "#ffffff",
-						"title": "Checksum"
-					},
-					"properties": {
-						"color": "#1E313E",
-						"decimal_places": 0,
-						"icon": "",
-						"size": "35px",
-						"unit_size": "20px",
-						"weight": "font-thin"
-					},
-					"sources": [
-						{
-							"color": "#1E313E",
-							"device": {
-								"id": "Frankair",
-								"interval": 5,
-								"mapping": "checksum",
-								"resource": "OTA",
-								"update": "interval",
-								"user": "frankair"
-							},
-							"name": "Default",
-							"skipCurrent": 1,
-							"source": "device"
-						}
-					],
-					"type": "text"
-				},
-				{
-					"layout": {
 						"col": 0,
 						"row": 0,
-						"sizeX": 1,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
@@ -2312,8 +2226,8 @@
 				},
 				{
 					"layout": {
-						"col": 2,
-						"row": 6,
+						"col": 4,
+						"row": 4,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -2386,9 +2300,9 @@
 				},
 				{
 					"layout": {
-						"col": 1,
+						"col": 2,
 						"row": 0,
-						"sizeX": 2,
+						"sizeX": 4,
 						"sizeY": 2
 					},
 					"panel": {
@@ -2423,6 +2337,5 @@
 				}
 			]
 		}
-	],
-	"widgets": []
+	]
 }

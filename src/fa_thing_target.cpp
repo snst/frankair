@@ -116,6 +116,8 @@ void thingSetup()
 		valUpdate(in, "1.5 Enable sensor calibration temp", settings.use_calibration_temp, isEmpty);
 		valUpdate(in, "1.6 Enable sensor calibration humidity", settings.use_calibration_humidity, isEmpty);
 		valUpdate(in, "1.7 Use calibrated temp for abs humidity", settings.use_calibrated_temp_for_abs_humidity, isEmpty);
+		valUpdate(in, "1.8 Fan offset exhaust", settings.ctrl.fan_offset_exhaust, isEmpty);
+		valUpdate(in, "1.9 Fan offset fresh", settings.ctrl.fan_offset_fresh, isEmpty);
 		settingsSanitize();
 	};
 
