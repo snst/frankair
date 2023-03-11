@@ -7,5 +7,7 @@
 void flapSetup();
 void flapSetOpen(uint8_t val);
 void flapSetOpenPWM(uint8_t val);
+void flapClose();
+void flapOpen();
 
 #endif // FA_FAN_H

@@ -51,7 +51,7 @@ void valUpdate(protoson::pson &in, const char *name, T &val, bool isEmpty)
 	else
 	{
 		cmdFeedback();
-		force_update_controller = true;
+		controllerForceUpdate();
 		val = remote;
 	}
 }
@@ -204,11 +204,12 @@ void thingSetup()
 		bool isEmpty = in.is_empty();
 		valUpdate(in, "1 Enable frost flap", settings.ctrl.frost_flap_ctrl.enabled, isEmpty);
 		valUpdate(in, "2 Open flap if temp is lesser than °C", settings.ctrl.frost_flap_ctrl.temp_min_open, isEmpty);
-		valUpdate(in, "3 Close flap if temp is greater than °C", settings.ctrl.frost_flap_ctrl.temp_min_close, isEmpty);
-		valUpdate(in, "4 Enabled frost-fan curve", settings.ctrl.frost_fan_curve.enabled, isEmpty);
-		valUpdate(in, "5 Number of frost-fan curve points", settings.ctrl.frost_fan_curve.enabled_points, isEmpty);
-		protoson::pson_array &array_frost_temp_temp = in["6 Fresh IN temp °C"];
-		protoson::pson_array &array_frost_temp_level = in["7 Fan level"];
+		valUpdate(in, "3 Open flap to pos", settings.ctrl.frost_flap_ctrl.level_open, isEmpty);
+		valUpdate(in, "4 Close flap if temp is greater than °C", settings.ctrl.frost_flap_ctrl.temp_min_close, isEmpty);
+		valUpdate(in, "5 Enabled frost-fan curve", settings.ctrl.frost_fan_curve.enabled, isEmpty);
+		valUpdate(in, "6 Number of frost-fan curve points", settings.ctrl.frost_fan_curve.enabled_points, isEmpty);
+		protoson::pson_array &array_frost_temp_temp = in["7 Fresh IN temp °C"];
+		protoson::pson_array &array_frost_temp_level = in["8 Fan level"];
 		for (uint8_t i = 0U; i < settings.ctrl.frost_fan_curve.enabled_points; i++)
 		{
 			if (isEmpty)
@@ -403,7 +404,7 @@ void thingSetup()
 	};
 
 	ADD_CMD("a Start sniffing", controllerStartSniffing);
-	ADD_CMD("b Stop sniffing", controllerStopSniffing);
+	ADD_CMD("b Stop sniffing", controllerModeAutoOn);
 	ADD_CMD("c Reboot", delayedTaskReboot);
 	ADD_CMD("d Reset statistic", statisticReset);
 	ADD_CMD("e Clear errors", errorClear);
@@ -427,4 +428,9 @@ void thingSetup()
 void thingCallEndpoint(const char *endpoint_name)
 {
 	thing.call_endpoint(endpoint_name, "");
+}
+
+void thingStream()
+{
+	thing.stream("State");
 }

@@ -122,6 +122,7 @@ struct fa_frost_flap_ctrl_t
 {
   float temp_min_open;
   float temp_min_close;
+  uint8_t level_open;
   bool enabled;
 };
 
@@ -161,7 +162,6 @@ struct fa_settings_t
   fa_actuator_t manual;
   fa_ctrl_t ctrl;
   fa_sniff_t sniff;
-
 };
 
 extern fa_state_t state;

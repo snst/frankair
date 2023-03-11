@@ -7,6 +7,7 @@
 void thingSetup();
 void thingUpdate();
 void thingCallEndpoint(const char* endpoint_name);
+void thingStream();
 
 
 #endif // FA_THING_H

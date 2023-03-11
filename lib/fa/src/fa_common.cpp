@@ -62,7 +62,7 @@ float mapValue(float x, float in_min, float in_max, float out_min, float out_max
 
 uint8_t adjustFanLevelToValidRange(uint8_t level)
 {
-  level = toRange(level, FAN_LEVEL_MIN, FAN_LEVEL_MAX);
+  level = toRange(level, FAN_LEVEL_OFF, FAN_LEVEL_MAX);
   return level;
 }
 

@@ -7,14 +7,19 @@
 #include "fa_log.h"
 #include "fa_statistic.h"
 #include "fa_error.h"
+#include "fa_thing.h"
 #include <math.h>
 
 static uint32_t controller_now = 0U;
 static uint32_t sniff_now = 0U;
 static uint32_t wait_now = 0U;
+static uint32_t stream_now = 0U;
+
 fa_state_t state;
 fa_state_raw_t state_raw;
 bool force_update_controller = false;
+bool update_stream = false;
+extern fa_override_t override;
 
 void controllerSetup()
 {
@@ -24,22 +29,10 @@ void controllerSetup()
 
 void controllerModeManualUpdate()
 {
-  if (updateIfChanged(state.actuator.level_fan_fresh, settings.manual.level_fan_fresh))
-  {
-    fanSetLevelFresh(state.actuator.level_fan_fresh);
-  }
-  if (updateIfChanged(state.actuator.level_fan_exhaust, settings.manual.level_fan_exhaust))
-  {
-    fanSetLevelExhaust(state.actuator.level_fan_exhaust);
-  }
-  if (updateIfChanged(state.actuator.level_fan_frost, settings.manual.level_fan_frost))
-  {
-    fanSetLevelFrost(state.actuator.level_fan_frost);
-  }
-  if (updateIfChanged(state.actuator.open_flap_frost, settings.manual.open_flap_frost))
-  {
-    flapSetOpen(state.actuator.open_flap_frost);
-  }
+  fanSetLevelFresh(settings.manual.level_fan_fresh);
+  fanSetLevelExhaust(settings.manual.level_fan_exhaust);
+  fanSetLevelFrost(settings.manual.level_fan_frost);
+  flapSetOpen(settings.manual.open_flap_frost);
 }
 
 bool reduceFanLevel(uint8_t &dest, uint8_t val)
@@ -180,10 +173,10 @@ bool calcFanLevelByTempCurve(uint8_t &fan_level)
 
 uint8_t calcFanFrostLevel()
 {
-  uint8_t fan_level = FAN_LEVEL_MIN;
-  if (state.actuator.open_flap_frost > FLAP_LEVEL_MIN)
+  uint8_t fan_level = FAN_LEVEL_OFF;
+  if (state.actuator.open_flap_frost > FLAP_LEVEL_CLOSE)
   {
-    uint8_t new_level = FAN_LEVEL_MIN;
+    uint8_t new_level = FAN_LEVEL_OFF;
     calcFanLevelCurve(state.temp.fresh_in, settings.ctrl.frost_fan_curve, new_level);
     bool active = increaseFanLevel(fan_level, new_level);
     state.ctrl_active.frost_fan_curve = active ? new_level : settings.ctrl.fan_frost_level_min;
@@ -194,10 +187,15 @@ uint8_t calcFanFrostLevel()
 void controllerModeAutoChangeSubMode(controller_submode_auto_t submode)
 {
   uint8_t old = state.submode_auto;
-  if (updateIfChanged(state.submode_auto, (uint8_t)submode))
+  if (updateIfChanged(state.submode_auto, (uint8_t)submode, update_stream))
   {
     IMSG(LCONTROLLER, "Submode: ", submodeToStr(old), " => ", submodeToStr(submode));
   }
+}
+
+void controllerForceUpdate()
+{
+  force_update_controller = true;
 }
 
 void controllerStartSniffing()
@@ -205,13 +203,7 @@ void controllerStartSniffing()
   IMSG(LDEBUG, "controllerStartSniffing()");
   controllerModeAutoChangeSubMode(controller_submode_auto_t::kSniff);
   intervalReset(sniff_now);
-  controllerModeAutoSniff();
-}
-
-void controllerStopSniffing()
-{
-  IMSG(LDEBUG, "controllerStopSniffing()");
-  controllerModeAutoOn();
+  controllerForceUpdate();
 }
 
 void controllerStartWait()
@@ -219,29 +211,37 @@ void controllerStartWait()
   IMSG(LDEBUG, "controllerStartWait()");
   controllerModeAutoChangeSubMode(controller_submode_auto_t::kWait);
   intervalReset(wait_now);
-  controllerModeAutoWait();
+  controllerForceUpdate();
 }
 
-void controllerModeAutoUpdateFlap()
+void controllerModeAutoUpdateFrost()
 {
-  IMSG(LDEBUG, "controllerModeAutoUpdateFlap()");
-  if (settings.ctrl.frost_flap_ctrl.enabled)
+  IMSG(LDEBUG, "controllerModeAutoUpdateFrost()");
+
+  if (controller_submode_auto_t::kWait == (controller_submode_auto_t)state.submode_auto)
   {
-    float temp = state.temp.fresh_in;
-    if (temp <= settings.ctrl.frost_flap_ctrl.temp_min_open)
-    {
-      flapSetOpen(FLAP_LEVEL_MAX);
-      IMSG(LCONTROLLER, "Temp fresh IN lower => open flap. Temp", settings.ctrl.frost_flap_ctrl.temp_min_open);
-    }
-    if (temp >= settings.ctrl.frost_flap_ctrl.temp_min_close)
-    {
-      flapSetOpen(FLAP_LEVEL_MIN);
-      IMSG(LCONTROLLER, "Temp fresh IN higher => close flap. Temp", settings.ctrl.frost_flap_ctrl.temp_min_close);
-    }
+    // close flap if waiting
+    flapClose();
+    fanSetFrostOff();
   }
   else
   {
-    flapSetOpen(settings.manual.open_flap_frost);
+    if (settings.ctrl.frost_flap_ctrl.enabled)
+    {
+      float temp = state.temp.fresh_in;
+      if (temp <= settings.ctrl.frost_flap_ctrl.temp_min_open)
+      {
+        flapOpen();
+        IMSG(LCONTROLLER, "Temp fresh IN lower => open flap. Temp", settings.ctrl.frost_flap_ctrl.temp_min_open);
+      }
+      if (temp >= settings.ctrl.frost_flap_ctrl.temp_min_close)
+      {
+        flapClose();
+        IMSG(LCONTROLLER, "Temp fresh IN higher => close flap. Temp", settings.ctrl.frost_flap_ctrl.temp_min_close);
+      }
+
+      fanSetLevelFrost(calcFanFrostLevel());
+    }
   }
 }
 
@@ -260,7 +260,7 @@ void controllerModeAutoOn()
   {
     calcFanLevelByHumidityCurve(fan_level);
     calcFanLevelByTempCurve(fan_level);
-    if (FAN_LEVEL_MIN == fan_level)
+    if (FAN_LEVEL_OFF == fan_level)
     {
       IMSG(LCONTROLLER, "Fan completely reduced => kWait");
       controllerStartWait();
@@ -270,21 +270,9 @@ void controllerModeAutoOn()
       // Fans are running
       controllerModeAutoChangeSubMode(controller_submode_auto_t::kOn);
       fanSetLevelMainWithOffset(fan_level);
-      fanSetLevelFrost(calcFanFrostLevel());
+      // fanSetLevelFrost(calcFanFrostLevel());
     }
   }
-}
-
-void controllerModeAutoWait()
-{
-  fanSetFrostMinimum();
-  fanSetMainMinimum();
-}
-
-void controllerModeAutoSniff()
-{
-  fanSetFrostMinimum();
-  fanSetMainSniffing();
 }
 
 void controllerModeAutoUpdate()
@@ -294,31 +282,35 @@ void controllerModeAutoUpdate()
   switch ((controller_submode_auto_t)state.submode_auto)
   {
   case controller_submode_auto_t::kWait:
-    controllerModeAutoWait();
     if (intervalCheckSec(wait_now, settings.sniff.interval_sec))
     {
       IMSG(LDEBUG, "kWait finished => controllerStartSniffing()");
       controllerStartSniffing();
     }
+    else
+    {
+      fanSetMainMinimum();
+    }
     break;
   case controller_submode_auto_t::kOn:
     controllerModeAutoOn();
     break;
+  default:
   case controller_submode_auto_t::kSniff:
-    controllerModeAutoSniff();
+
     if (intervalCheckSec(sniff_now, settings.sniff.duration_sec))
     {
       IMSG(LDEBUG, "kSniff finished => controllerModeAutoOn()");
-      controllerStopSniffing();
+      controllerModeAutoOn();
+    }
+    else
+    {
+      fanSetMainSniffing();
     }
     break;
-  default:
-  case controller_submode_auto_t::kUndefined:
-    IMSG(LDEBUG, "kUndefined => controllerStartSniffing()");
-    controllerStartSniffing();
-    break;
   }
-  controllerModeAutoUpdateFlap();
+
+  controllerModeAutoUpdateFrost();
 }
 
 void controllerModeChanged()
@@ -330,13 +322,14 @@ void controllerModeChanged()
   case controller_mode_t::kOff:
     fanSetMainOff();
     fanSetFrostOff();
-    flapSetOpen(FLAP_LEVEL_MIN);
+    flapClose();
     break;
   }
 }
 
 void controllerUpdate()
 {
+  update_stream = false;
   uint32_t controller_ms = intervalCheckSec(controller_now, settings.controller_interval_sec);
   if ((0U < controller_ms) || force_update_controller)
   {
@@ -344,12 +337,12 @@ void controllerUpdate()
     errorUpdate();
     statisticUpdate(controller_ms);
 
-    if (updateIfChanged(state.mode, settings.mode))
+    if (updateIfChanged(state.mode, settings.mode, update_stream))
     {
       controllerModeChanged();
     }
 
-    if (0U < state.errors)
+    if ((0U < state.errors) && !override.enabled)
     {
       fanSetFrostOff();
       fanSetMainOff();
@@ -370,4 +363,21 @@ void controllerUpdate()
       }
     }
   }
+
+  static uint32_t last_update_stream = 0U;
+  if (update_stream || intervalCheckSec(stream_now, 600U))
+  {
+    if ((now() - last_update_stream) >= 2000U) // only stream if no updated within last 2 sec
+    {
+      update_stream = false;
+      last_update_stream = now();
+      intervalReset(stream_now);
+      thingStream();
+    }
+  }
+}
+
+void controller_now_reset_for_test()
+{
+  controller_now = 0U;
 }

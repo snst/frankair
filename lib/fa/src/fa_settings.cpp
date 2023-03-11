@@ -10,6 +10,7 @@ void settingsSanitize()
     settings.ctrl.temp_fan_curve.enabled_points = toRange(settings.ctrl.temp_fan_curve.enabled_points, FAN_CURVE_POINTS_MIN, FAN_CURVE_POINTS_MAX);
     settings.ctrl.humidity_fan_curve.enabled_points = toRange(settings.ctrl.humidity_fan_curve.enabled_points, FAN_CURVE_POINTS_MIN, FAN_CURVE_POINTS_MAX);
     settings.ctrl.frost_fan_curve.enabled_points = toRange(settings.ctrl.frost_fan_curve.enabled_points, FAN_CURVE_POINTS_MIN, FAN_CURVE_POINTS_MAX);
+    settings.ctrl.frost_flap_ctrl.level_open = toRange(settings.ctrl.frost_flap_ctrl.level_open, FLAP_LEVEL_CLOSE, FLAP_LEVEL_OPEN);
 }
 
 void settingsDefault()
@@ -17,7 +18,7 @@ void settingsDefault()
     IMSG(LINFO, "settingsDefault()");
     memset(&settings, 0U, sizeof(settings));
     settings.mode = (uint8_t)controller_mode_t::kAuto;
-    settings.controller_interval_sec = 10U;       // sec
+    settings.controller_interval_sec = 10U;      // sec
     settings.temp_sensor_read_interval_sec = 5U; // sec
     settings.measurement_alpha = 0.8f;
     settings.use_calibration_humidity = false;
@@ -27,9 +28,9 @@ void settingsDefault()
     settings.ctrl.fan_offset_exhaust = 0;
     settings.ctrl.fan_offset_fresh = 0;
     settings.ctrl.fan_frost_level_max = FAN_LEVEL_MAX;
-    settings.ctrl.fan_frost_level_min = FAN_LEVEL_MIN;
+    settings.ctrl.fan_frost_level_min = FAN_LEVEL_OFF;
     settings.ctrl.fan_level_max = FAN_LEVEL_MAX;
-    settings.ctrl.fan_level_min = FAN_LEVEL_MIN;
+    settings.ctrl.fan_level_min = FAN_LEVEL_OFF;
     settings.ctrl.frost_fan_curve.enabled = true;
     settings.ctrl.frost_fan_curve.enabled_points = 3U;
     settings.ctrl.frost_fan_curve.item[0].val = 0.0f;
@@ -42,8 +43,8 @@ void settingsDefault()
     settings.ctrl.frost_flap_ctrl.temp_min_close = 2.0f;
     settings.ctrl.frost_flap_ctrl.temp_min_open = 0.0f;
     settings.ctrl.humidity_fan_ctrl.enabled = true;
-    settings.ctrl.humidity_fan_ctrl.abs_min_on = 1.0f;  // g/m³
-    settings.ctrl.humidity_fan_ctrl.abs_min_off = 0.5f;   // g/m³
+    settings.ctrl.humidity_fan_ctrl.abs_min_on = 1.0f;   // g/m³
+    settings.ctrl.humidity_fan_ctrl.abs_min_off = 0.5f;  // g/m³
     settings.ctrl.humidity_fan_ctrl.rel_min_off = 50.0f; // rel %
     settings.ctrl.humidity_fan_curve.enabled = true;
     settings.ctrl.humidity_fan_curve.enabled_points = 4U;
@@ -69,4 +70,5 @@ void settingsDefault()
     settings.sniff.fan_level = 5U;
     settings.sniff.interval_sec = 30U * 60U;
     settings.sniff.duration_sec = 60U;
+    settings.ctrl.frost_flap_ctrl.level_open = FLAP_LEVEL_OPEN;
 }

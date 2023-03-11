@@ -15,9 +15,8 @@ bool calcFanLevelByHumidityCurve(uint8_t &fan_level);
 bool calcFanLevelByTempCurve(uint8_t &fan_level);
 void controllerModeAutoChangeSubMode(controller_submode_auto_t submode);
 uint8_t calcFanFrostLevel();
-void controllerStopSniffing();
 void controllerModeAutoOn();
-void controllerModeAutoWait();
-void controllerModeAutoSniff();
+void controllerForceUpdate();
+void controller_now_reset_for_test();
 
 #endif // FA_CONTROLLER_H

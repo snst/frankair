@@ -5,10 +5,10 @@
 			"period": "1m"
 		},
 		"timespan": {
-			"magnitude": "day",
+			"magnitude": "hour",
 			"mode": "relative",
 			"period": "latest",
-			"value": 7
+			"value": 24
 		}
 	},
 	"name": "Frankair",
@@ -86,9 +86,9 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 0,
+						"row": 16,
 						"sizeX": 14,
-						"sizeY": 5
+						"sizeY": 7
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -101,8 +101,8 @@
 						"legend": false,
 						"multiple_axes": false,
 						"yaxis": {
-							"max": 10,
-							"min": -10
+							"max": "",
+							"min": ""
 						}
 					},
 					"sources": [
@@ -138,7 +138,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 5,
+						"row": 36,
 						"sizeX": 14,
 						"sizeY": 5
 					},
@@ -153,8 +153,8 @@
 						"legend": false,
 						"multiple_axes": false,
 						"yaxis": {
-							"max": 10,
-							"min": 0
+							"max": "",
+							"min": ""
 						}
 					},
 					"sources": [
@@ -179,7 +179,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 10,
+						"row": 41,
 						"sizeX": 14,
 						"sizeY": 5
 					},
@@ -194,8 +194,8 @@
 						"legend": false,
 						"multiple_axes": false,
 						"yaxis": {
-							"max": 10,
-							"min": 0
+							"max": "",
+							"min": ""
 						}
 					},
 					"sources": [
@@ -220,9 +220,9 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 15,
+						"row": 8,
 						"sizeX": 14,
-						"sizeY": 5
+						"sizeY": 8
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -346,9 +346,9 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 20,
+						"row": 0,
 						"sizeX": 14,
-						"sizeY": 5
+						"sizeY": 8
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -360,7 +360,7 @@
 						"legend": true,
 						"multiple_axes": false,
 						"yaxis": {
-							"min": 0
+							"min": ""
 						}
 					},
 					"sources": [
@@ -372,7 +372,7 @@
 								"tags": {},
 								"user": "frankair"
 							},
-							"color": "#180cc0",
+							"color": "#4a9a28",
 							"device": {
 								"id": "Frankair",
 								"interval": 5,
@@ -398,7 +398,7 @@
 								"tags": {},
 								"user": "frankair"
 							},
-							"color": "#4a9a28",
+							"color": "#180cc0",
 							"device": {
 								"id": "Frankair",
 								"interval": 5,
@@ -422,9 +422,9 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 30,
+						"row": 28,
 						"sizeX": 14,
-						"sizeY": 6
+						"sizeY": 8
 					},
 					"panel": {
 						"color": "#ffffff",
@@ -436,8 +436,8 @@
 						"legend": true,
 						"multiple_axes": false,
 						"yaxis": {
-							"max": 100,
-							"min": 0
+							"max": "",
+							"min": ""
 						}
 					},
 					"sources": [
@@ -499,7 +499,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 25,
+						"row": 23,
 						"sizeX": 14,
 						"sizeY": 5
 					},
@@ -648,15 +648,15 @@
 			"widgets": [
 				{
 					"layout": {
-						"col": 4,
-						"row": 2,
-						"sizeX": 2,
+						"col": 3,
+						"row": 0,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
 						"color": "#dfffdb",
 						"subtitle": "",
-						"title": ""
+						"title": "Outside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -665,7 +665,7 @@
 						"iconSize": "",
 						"max": 100,
 						"min": 0,
-						"size": "35px",
+						"size": "25px",
 						"unit": "°C",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -691,19 +691,19 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 8,
-						"sizeX": 2,
+						"row": 2,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
 						"color": "#dfe896",
-						"title": ""
+						"title": "Inside OUT"
 					},
 					"properties": {
 						"color": "#1E313E",
 						"decimal_places": 1,
 						"icon": "fas fa-thermometer-quarter",
-						"size": "35px",
+						"size": "25px",
 						"unit": "°C",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -729,19 +729,19 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 4,
-						"sizeX": 2,
+						"row": 0,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
 						"color": "#f4ff9e",
-						"title": ""
+						"title": "Inside IN"
 					},
 					"properties": {
 						"color": "#1E313E",
 						"decimal_places": 1,
 						"icon": "fas fa-thermometer-quarter",
-						"size": "35px",
+						"size": "25px",
 						"unit": "°C",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -766,8 +766,8 @@
 				},
 				{
 					"layout": {
-						"col": 4,
-						"row": 12,
+						"col": 0,
+						"row": 10,
 						"sizeX": 2,
 						"sizeY": 2
 					},
@@ -808,9 +808,9 @@
 				},
 				{
 					"layout": {
-						"col": 4,
-						"row": 8,
-						"sizeX": 2,
+						"col": 2,
+						"row": 10,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
@@ -821,7 +821,7 @@
 						"color": "#1E313E",
 						"decimal_places": 1,
 						"icon": "",
-						"size": "35px",
+						"size": "25px",
 						"unit": "m³",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -846,20 +846,20 @@
 				},
 				{
 					"layout": {
-						"col": 0,
+						"col": 1,
 						"row": 0,
-						"sizeX": 2,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
 						"color": "#f4ff9e",
-						"title": "Inside IN"
+						"title": ""
 					},
 					"properties": {
 						"color": "#1E313E",
 						"decimal_places": 1,
 						"icon": "fas fa-tint",
-						"size": "35px",
+						"size": "25px",
 						"unit": "g / mᵌ",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -884,20 +884,20 @@
 				},
 				{
 					"layout": {
-						"col": 4,
-						"row": 0,
-						"sizeX": 2,
+						"col": 1,
+						"row": 2,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
-						"color": "#dfffdb",
-						"title": "Outside IN"
+						"color": "#dfe896",
+						"title": ""
 					},
 					"properties": {
 						"color": "#1E313E",
 						"decimal_places": 1,
 						"icon": "fas fa-tint",
-						"size": "35px",
+						"size": "25px",
 						"unit": "g / mᵌ",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -922,9 +922,9 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 2,
-						"sizeX": 2,
+						"col": 2,
+						"row": 0,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
@@ -935,7 +935,7 @@
 						"color": "#1E313E",
 						"decimal_places": 1,
 						"icon": "fas fa-water",
-						"size": "35px",
+						"size": "25px",
 						"unit": "%",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -960,20 +960,20 @@
 				},
 				{
 					"layout": {
-						"col": 0,
-						"row": 6,
-						"sizeX": 2,
+						"col": 2,
+						"row": 2,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
 						"color": "#dfe896",
-						"title": "Inside OUT"
+						"title": ""
 					},
 					"properties": {
 						"color": "#1E313E",
 						"decimal_places": 1,
 						"icon": "fas fa-water",
-						"size": "35px",
+						"size": "25px",
 						"unit": "%",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -999,7 +999,7 @@
 				{
 					"layout": {
 						"col": 0,
-						"row": 10,
+						"row": 6,
 						"sizeX": 2,
 						"sizeY": 4
 					},
@@ -1039,9 +1039,9 @@
 				},
 				{
 					"layout": {
-						"col": 4,
+						"col": 3,
 						"row": 10,
-						"sizeX": 2,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
@@ -1052,7 +1052,7 @@
 						"color": "#1E313E",
 						"decimal_places": 1,
 						"icon": "",
-						"size": "35px",
+						"size": "25px",
 						"unit": "l",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -1077,9 +1077,9 @@
 				},
 				{
 					"layout": {
-						"col": 2,
-						"row": 10,
-						"sizeX": 2,
+						"col": 3,
+						"row": 8,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
@@ -1090,7 +1090,7 @@
 						"color": "#1E313E",
 						"decimal_places": 2,
 						"icon": "",
-						"size": "35px",
+						"size": "25px",
 						"unit": "l/h",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -1117,7 +1117,7 @@
 					"layout": {
 						"col": 2,
 						"row": 8,
-						"sizeX": 2,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
@@ -1128,7 +1128,7 @@
 						"color": "#1E313E",
 						"decimal_places": 2,
 						"icon": "",
-						"size": "35px",
+						"size": "25px",
 						"unit": "m³/h",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -1153,14 +1153,14 @@
 				},
 				{
 					"layout": {
-						"col": 2,
+						"col": 3,
 						"row": 6,
-						"sizeX": 2,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
 						"color": "#ffffff",
-						"title": "Flap frost open"
+						"title": "Flap open"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -1190,7 +1190,7 @@
 				},
 				{
 					"layout": {
-						"col": 2,
+						"col": 0,
 						"row": 12,
 						"sizeX": 2,
 						"sizeY": 2
@@ -1233,13 +1233,13 @@
 				{
 					"layout": {
 						"col": 2,
-						"row": 4,
-						"sizeX": 2,
+						"row": 6,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
 						"color": "#ffffff",
-						"title": "Fan frost level"
+						"title": "Fan frost"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -1270,45 +1270,8 @@
 				},
 				{
 					"layout": {
-						"col": 2,
-						"row": 2,
-						"sizeX": 2,
-						"sizeY": 2
-					},
-					"panel": {
-						"color": "#ffffff",
-						"title": "Fan fresh level"
-					},
-					"properties": {
-						"color": "#1E313E",
-						"gradient": true,
-						"icon": "",
-						"iconSize": "",
-						"max": 10,
-						"min": 0
-					},
-					"sources": [
-						{
-							"color": "#1E313E",
-							"device": {
-								"id": "Frankair",
-								"interval": 5,
-								"mapping": "fan_level_fresh",
-								"resource": "State",
-								"update": "interval",
-								"user": "frankair"
-							},
-							"name": "Default",
-							"skipCurrent": 1,
-							"source": "device"
-						}
-					],
-					"type": "progressbar"
-				},
-				{
-					"layout": {
-						"col": 5,
-						"row": 6,
+						"col": 0,
+						"row": 4,
 						"sizeX": 1,
 						"sizeY": 2
 					},
@@ -1320,7 +1283,7 @@
 						"color": "#1E313E",
 						"decimal_places": 0,
 						"icon": "",
-						"size": "35px",
+						"size": "25px",
 						"unit": "%",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -1345,9 +1308,9 @@
 				},
 				{
 					"layout": {
-						"col": 4,
-						"row": 6,
-						"sizeX": 1,
+						"col": 2,
+						"row": 12,
+						"sizeX": 2,
 						"sizeY": 2
 					},
 					"panel": {
@@ -1386,9 +1349,9 @@
 				},
 				{
 					"layout": {
-						"col": 2,
-						"row": 0,
-						"sizeX": 2,
+						"col": 1,
+						"row": 4,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
@@ -1405,7 +1368,7 @@
 								"min": 0.01
 							}
 						],
-						"title": "Abs humidity delta"
+						"title": "Hum delta"
 					},
 					"properties": {
 						"color": "#1E313E",
@@ -1436,9 +1399,9 @@
 				},
 				{
 					"layout": {
-						"col": 4,
-						"row": 4,
-						"sizeX": 2,
+						"col": 3,
+						"row": 2,
+						"sizeX": 1,
 						"sizeY": 2
 					},
 					"panel": {
@@ -1449,7 +1412,7 @@
 						"color": "#1E313E",
 						"decimal_places": 1,
 						"icon": "fas fa-thermometer-quarter",
-						"size": "35px",
+						"size": "25px",
 						"unit": "°C",
 						"unit_size": "15px",
 						"weight": "font-thin"
@@ -1471,6 +1434,438 @@
 						}
 					],
 					"type": "text"
+				},
+				{
+					"layout": {
+						"col": 2,
+						"row": 4,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Fan exhaust"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"gradient": true,
+						"icon": "",
+						"iconSize": "",
+						"max": 10,
+						"min": 0
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "fan_level_exhaust",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "progressbar"
+				},
+				{
+					"layout": {
+						"col": 3,
+						"row": 4,
+						"sizeX": 1,
+						"sizeY": 2
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Fan fresh"
+					},
+					"properties": {
+						"color": "#1E313E",
+						"gradient": true,
+						"icon": "",
+						"iconSize": "",
+						"max": 10,
+						"min": 0
+					},
+					"sources": [
+						{
+							"color": "#1E313E",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "fan_level_fresh",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Default",
+							"skipCurrent": 1,
+							"source": "device"
+						}
+					],
+					"type": "progressbar"
+				},
+				{
+					"layout": {
+						"col": 4,
+						"row": 7,
+						"sizeX": 10,
+						"sizeY": 7
+					},
+					"panel": {
+						"color": "#ffffff",
+						"colors": [],
+						"title": "Temperature [°C]"
+					},
+					"properties": {
+						"axis": true,
+						"fill": false,
+						"legend": true,
+						"multiple_axes": false
+					},
+					"sources": [
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "state",
+								"mapping": "temp_exhaust_in",
+								"tags": {},
+								"user": "frankair"
+							},
+							"color": "#008a02",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "temp_exhaust_in",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Inside IN",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"mode": "configurable",
+								"value": 30
+							}
+						},
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "state",
+								"mapping": "temp_fresh_out",
+								"tags": {},
+								"user": "frankair"
+							},
+							"color": "#03e212",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "temp_fresh_out",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Inside OUT",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"mode": "configurable",
+								"value": 30
+							}
+						},
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "state",
+								"mapping": "temp_fresh_in",
+								"tags": {},
+								"user": "frankair"
+							},
+							"color": "#0300b3",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "temp_fresh_in",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"device_property": {},
+							"name": "Outside IN",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"mode": "configurable",
+								"value": 30
+							}
+						},
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "state",
+								"mapping": "temp_exhaust_out",
+								"tags": {},
+								"user": "frankair"
+							},
+							"color": "#8c8aff",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "temp_exhaust_out",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Outside OUT",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"mode": "configurable",
+								"value": 30
+							}
+						}
+					],
+					"type": "chart"
+				},
+				{
+					"layout": {
+						"col": 4,
+						"row": 0,
+						"sizeX": 10,
+						"sizeY": 7
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Abs humidity [g / mᵌ]"
+					},
+					"properties": {
+						"axis": true,
+						"fill": false,
+						"legend": true,
+						"multiple_axes": false,
+						"yaxis": {
+							"min": ""
+						}
+					},
+					"sources": [
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "state",
+								"mapping": "humidity_abs_exhaust_in",
+								"tags": {},
+								"user": "frankair"
+							},
+							"color": "#4aae28",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "humidity_abs_exhaust_in",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Inside",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"mode": "configurable",
+								"value": 30
+							}
+						},
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "state",
+								"mapping": "humidity_abs_fresh_out",
+								"tags": {},
+								"user": "frankair"
+							},
+							"color": "#0300b3",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "humidity_abs_fresh_out",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Outside",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"mode": "configurable",
+								"value": 30
+							}
+						}
+					],
+					"type": "chart"
+				},
+				{
+					"layout": {
+						"col": 4,
+						"row": 14,
+						"sizeX": 10,
+						"sizeY": 5
+					},
+					"panel": {
+						"color": "#ffffff",
+						"title": "Status"
+					},
+					"properties": {
+						"axis": true,
+						"fill": false,
+						"legend": true,
+						"multiple_axes": false,
+						"yaxis": {
+							"max": 10,
+							"min": 0
+						}
+					},
+					"sources": [
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "state",
+								"mapping": "fan_level_fresh",
+								"tags": {},
+								"user": "frankair"
+							},
+							"color": "#0592f0",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "fan_level_fresh",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Fan fresh",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"mode": "configurable",
+								"value": 30
+							}
+						},
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "state",
+								"mapping": "fan_level_frost",
+								"tags": {},
+								"user": "frankair"
+							},
+							"color": "#558273",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "fan_level_frost",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Fan frost",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"mode": "configurable",
+								"value": 30
+							}
+						},
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "state",
+								"mapping": "open_flap_frost",
+								"tags": {},
+								"user": "frankair"
+							},
+							"color": "#f5d924",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "open_flap_frost",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Flap frost open",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"mode": "configurable",
+								"value": 30
+							}
+						},
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "state",
+								"mapping": "submode",
+								"tags": {},
+								"user": "frankair"
+							},
+							"color": "#ef0bd0",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "submode",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "SubMode",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"mode": "configurable",
+								"value": 30
+							}
+						},
+						{
+							"bucket": {
+								"backend": "dynamodb",
+								"id": "state",
+								"mapping": "errors",
+								"tags": {},
+								"user": "frankair"
+							},
+							"color": "#ff0000",
+							"device": {
+								"id": "Frankair",
+								"interval": 5,
+								"mapping": "errors",
+								"resource": "State",
+								"update": "interval",
+								"user": "frankair"
+							},
+							"name": "Error",
+							"skipCurrent": 1,
+							"source": "device",
+							"timespan": {
+								"magnitude": "minute",
+								"mode": "configurable",
+								"value": 30
+							}
+						}
+					],
+					"type": "chart"
 				}
 			]
 		},

@@ -4,3 +4,8 @@
 void thingCallEndpoint(const char *endpoint_name)
 {
 }
+
+void thingStream()
+{
+    
+}

@@ -6,7 +6,7 @@
 
 static uint8_t led_blink_count = 0U;
 static bool led_on = false;
-    static uint32_t led_now = 0U;
+static uint32_t led_now = 0U;
 
 void ledUpdate()
 {
