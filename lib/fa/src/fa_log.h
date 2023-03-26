@@ -11,7 +11,7 @@ struct fa_log_mask_t
   bool info;
   bool debug;
   bool sensor;
-  bool controller;
+  bool sm;
   bool iot;
   bool actuator;
 };
@@ -22,7 +22,7 @@ extern fa_log_mask_t log_mask;
 #define LINFO 2U
 #define LDEBUG 4U
 #define LSENSOR 8U
-#define LCONTROLLER 16U
+#define LSM 16U
 #define LIOT 32U
 #define LACTUATOR 64U
 
@@ -41,7 +41,6 @@ void IMSGHEX(uint8_t mask, uint8_t val);
 const char *modeToStr(uint8_t mode);
 const char *submodeToStr(uint8_t mode);
 const char *modeToStr(controller_mode_t mode);
-const char *submodeToStr(controller_submode_auto_t mode);
 uint8_t getMask();
 void setMask(uint8_t mask);
 void logTempHumidity(uint8_t level, const char *info, fa_temp_t &temp,

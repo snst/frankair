@@ -2,51 +2,11 @@
 #include "fa_common.h"
 #include "fa_log.h"
 #include "fa_led.h"
+#include "fa_sm.h"
 #include <cstring>
 #include <math.h>
 
-static uint32_t now_ms = 0U;
-
-void intervalNowSet(uint32_t ms)
-{
-  now_ms = ms;
-}
-
-void intervalNowAdd(uint32_t ms)
-{
-  now_ms += ms;
-}
-
-void intervalUpdate()
-{
-  now_ms = getMillis();
-}
-
-uint32_t now()
-{
-  return now_ms;
-}
-
-void intervalReset(uint32_t &val)
-{
-  val = now();
-}
-
-uint32_t intervalCheckSec(uint32_t &last, uint32_t sec)
-{
-  return intervalCheckMS(last, (1000U * sec));
-}
-
-uint32_t intervalCheckMS(uint32_t &last, uint32_t ms)
-{
-  uint32_t diff = now() - last;
-  if (diff >= ms)
-  {
-    last = now();
-    return diff;
-  }
-  return 0U;
-}
+bool g_update_stream = false;
 
 float mapValue(float x, float in_min, float in_max, float out_min, float out_max)
 {
@@ -66,13 +26,6 @@ uint8_t adjustFanLevelToValidRange(uint8_t level)
   return level;
 }
 
-uint32_t convertMS(uint32_t &ms, uint32_t mod)
-{
-  uint32_t ret = ms / mod;
-  ms = ms % mod;
-  return ret;
-}
-
 void addDurationMS(fa_duration_t &duration, uint32_t delta_ms)
 {
   duration.ms += delta_ms;
@@ -80,17 +33,12 @@ void addDurationMS(fa_duration_t &duration, uint32_t delta_ms)
   duration.ms = duration.ms % 1000U;
 }
 
-void resetDuration(fa_duration_t &duration)
-{
-  memset(&duration, 0U, sizeof(duration));
-}
-
 bool isInRange(float i, float a, float b)
 {
   return ((i >= a && i <= b) || (i >= b && i <= a));
 }
 
-void cmdFeedback()
+void showCmdFeedback()
 {
   ledBlink(CMD_FEEDBACK_BLINK_CNT);
 }
@@ -112,5 +60,6 @@ float calcAverage(float x1, float x2, float x3, float x4)
 
 void filterValue(float &val, float measurement)
 {
-    val = (settings.measurement_alpha * measurement) + ((1.0f - settings.measurement_alpha) * val);
+    float alpha = smInState(fa_sm_gen_StateId::fa_sm_gen_StateId_SNIFF) ? settings.measurement_alpha_sniff : settings.measurement_alpha_on;
+    val = (alpha * measurement) + ((1.0f - alpha) * val);
 }

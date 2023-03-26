@@ -7,9 +7,14 @@
 extern fa_override_t override;
 
 void sensorsSetup();
-void sensorsTargetSetup();
+void sensorsSetupPlatform();
 void sensorsRead();
 void sensorsUpdate();
 void sensorsReadOverrideData();
+
+static bool isOverrideEnabled()
+{
+    return override.enabled;
+}
 
 #endif // FA_SENSORS_H

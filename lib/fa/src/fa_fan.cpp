@@ -17,10 +17,10 @@ void fanSetLevelMain(uint8_t gpio, uint8_t level)
 void fanSetLevelFresh(uint8_t level)
 {
   level = adjustFanLevelToValidRange(level);
-  if (updateIfChanged(last_fresh_level, level, update_stream))
+  if (updateIfChanged(last_fresh_level, level, g_update_stream))
   {
     fanSetLevelMain(GPIO_PWM1, level);
-    IMSG(LACTUATOR, "fanSetLevelFresh", level);
+    IMSG(LACTUATOR, __func__, level);
   }
   state.actuator.level_fan_fresh = level;
 }
@@ -28,10 +28,10 @@ void fanSetLevelFresh(uint8_t level)
 void fanSetLevelExhaust(uint8_t level)
 {
   level = adjustFanLevelToValidRange(level);
-  if (updateIfChanged(last_exhaust_level, level, update_stream))
+  if (updateIfChanged(last_exhaust_level, level, g_update_stream))
   {
     fanSetLevelMain(GPIO_PWM2, level);
-    IMSG(LACTUATOR, "fanSetLevelExhaust", level);
+    IMSG(LACTUATOR, __func__, level);
   }
   state.actuator.level_fan_exhaust = level;
 }
@@ -39,10 +39,10 @@ void fanSetLevelExhaust(uint8_t level)
 void fanSetLevelFrost(uint8_t level)
 {
   level = adjustFanLevelToValidRange(level);
-  if (updateIfChanged(last_frost_level, level, update_stream))
+  if (updateIfChanged(last_frost_level, level, g_update_stream))
   {
     fanSetPWM(GPIO_PWM3, calibration_actuator.fan_pwm_frost[level], calibration_actuator.fan_freq_frost);
-    IMSG(LACTUATOR, "fanSetLevelFrost", level);
+    IMSG(LACTUATOR, __func__, level);
   }
   state.actuator.level_fan_frost = level;
 }
@@ -71,7 +71,12 @@ void fanSetMainMinimum()
 
 void fanSetMainSniffing()
 {
-  fanSetLevelMainWithOffset(settings.sniff.fan_level);
+  fanSetLevelMainWithOffset(settings.sniff.fan_level_sniff);
+}
+
+void fanSetMainWaiting()
+{
+  fanSetLevelMainWithOffset(settings.sniff.fan_level_wait);
 }
 
 void fanSetFrostOff()

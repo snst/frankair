@@ -4,28 +4,33 @@
 #include "fa_controller.h"
 #include "fa_calc.h"
 #include "fa_calibration.h"
+#include "fa_timer.h"
+#include "fa_ota.h"
 
-static uint32_t sensors_now = 0;
+static FAInterval sensorInterval;
 fa_override_t override = {0};
 
 void sensorsSetup()
 {
-  sensorsTargetSetup();
+  sensorsSetupPlatform();
 }
 
 void sensorsUpdate()
 {
-  if (intervalCheckSec(sensors_now, settings.temp_sensor_read_interval_sec))
+  if (sensorInterval.checkSec(settings.temp_sensor_read_interval_sec))
   {
-    if (override.enabled)
+    if (!ota.downloading)
     {
-      sensorsReadOverrideData();
+      if (override.enabled)
+      {
+        sensorsReadOverrideData();
+      }
+      else
+      {
+        sensorsRead();
+      }
+      sensorsProcessValues();
     }
-    else
-    {
-      sensorsRead();
-    }
-    sensorsProcessValues();
   }
 }
 

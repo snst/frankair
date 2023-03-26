@@ -13,7 +13,7 @@
   thing[name] = []()          \
   {                           \
     IMSG(LIOT, name);         \
-    cmdFeedback();            \
+    showCmdFeedback();            \
     action();                 \
   };
 

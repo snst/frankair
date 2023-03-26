@@ -3,6 +3,7 @@
 #define FA_OTA_H
 
 #include <stdlib.h>
+#include <stdint.h>
 
 struct fa_ota_t
 {

@@ -14,6 +14,7 @@ void fanSetPWM(uint8_t gpio, uint8_t val, uint8_t freq);
 void fanSetMainOff();
 void fanSetMainMinimum();
 void fanSetMainSniffing();
+void fanSetMainWaiting();
 void fanSetFrostOff();
 void fanSetFrostMinimum();
 

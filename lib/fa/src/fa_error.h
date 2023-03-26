@@ -12,5 +12,8 @@
 void errorUpdate();
 void errorClear();
 void errorSet(uint8_t error);
+bool isError();
+
+extern uint8_t error_state_count;
 
 #endif // FA_ERROR_H

@@ -8,7 +8,7 @@
 extern fa_statistic_t statistic;
 
 void statisticSetup();
-void statisticUpdate(uint32_t delta_ms);
+void statisticUpdate();
 void statisticReset();
 
 #endif // FA_STATISTIC_H

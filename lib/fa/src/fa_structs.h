@@ -13,14 +13,6 @@ enum class controller_mode_t : uint8_t
   kUndefined
 };
 
-enum class controller_submode_auto_t : uint8_t
-{
-  kWait = 0,
-  kOn,
-  kSniff,
-  kUndefined
-};
-
 struct fa_duration_t
 {
   uint32_t sec;
@@ -56,7 +48,7 @@ struct fa_ctrl_active_t
 {
   uint8_t humidity_fan_curve;
   uint8_t temp_fan_curve;
-  uint8_t humidity_fan_off;
+  uint8_t decisions;
   uint8_t frost_fan_curve;
 };
 
@@ -80,7 +72,7 @@ struct fa_override_t
 struct fa_state_t
 {
   uint8_t mode;         // controller_mode_t
-  uint8_t submode_auto; // controller_submode_auto_t
+  uint8_t sm_state;     // fa_sm_gen_StateId
   bool is_online;
   float efficiency;
   fa_actuator_t actuator;
@@ -110,12 +102,17 @@ struct fa_fan_curve_t
   bool enabled;
 };
 
-struct fa_humidity_ctrl_t
+struct fa_simple_ctrl_t
 {
-  float abs_min_on;
-  float abs_min_off;
-  uint8_t rel_min_off;
-  bool enabled;
+  float abs_hum_min_on;
+  float abs_hum_min_wait;
+  uint8_t rel_min_wait;
+  uint8_t desired_temp_min;
+  uint8_t desired_temp_max;
+  bool rel_min_enabled;
+  bool abs_min_enabled;
+  bool desired_temp_min_enabled;
+  bool desired_temp_max_enabled;
 };
 
 struct fa_frost_flap_ctrl_t
@@ -135,7 +132,7 @@ struct fa_ctrl_t
   fa_fan_curve_t temp_fan_curve;
   fa_fan_curve_t humidity_fan_curve;
   fa_fan_curve_t frost_fan_curve;
-  fa_humidity_ctrl_t humidity_fan_ctrl;
+  fa_simple_ctrl_t simple;
   fa_frost_flap_ctrl_t frost_flap_ctrl;
   int8_t fan_offset_fresh;
   int8_t fan_offset_exhaust;
@@ -143,9 +140,10 @@ struct fa_ctrl_t
 
 struct fa_sniff_t
 {
-  uint16_t interval_sec;
-  uint8_t duration_sec;
-  uint8_t fan_level;
+  uint16_t wait_sec;
+  uint8_t sniff_sec;
+  uint8_t fan_level_sniff;
+  uint8_t fan_level_wait;
   bool enabled;
 };
 
@@ -155,16 +153,20 @@ struct fa_settings_t
   uint8_t controller_interval_sec;
   uint8_t mode; // controller_mode_t
   uint8_t log_mask;
-  float measurement_alpha;
+  float measurement_alpha_sniff;
   bool use_calibration_temp;
   bool use_calibration_humidity;
   bool use_calibrated_temp_for_abs_humidity;
   fa_actuator_t manual;
   fa_ctrl_t ctrl;
   fa_sniff_t sniff;
+  uint8_t stream_interval_min;
+  float measurement_alpha_on;
 };
 
 extern fa_state_t state;
 extern fa_state_raw_t state_raw;
+extern fa_settings_t settings;
+extern fa_override_t override;
 
 #endif // FA_STRUCTS_H

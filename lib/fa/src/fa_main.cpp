@@ -14,7 +14,7 @@
 #include "fa_ota.h"
 #include "fa_version.h"
 #include "fa_statistic.h"
-#include "fa_delayed_task.h"
+#include "fa_sm.h"
 
 void setup()
 {
@@ -28,16 +28,16 @@ void setup()
   flapSetup();
   statisticSetup();
   thingSetup();
-  delayedTaskSetup();
+  smInit();
 }
 
 void loop()
 {
-  intervalUpdate();
+  nowUpdate();
   thingUpdate();
   sensorsUpdate();
-  controllerUpdate();
+  smUpdate();
   ledUpdate();
   otaUpdate();
-  delayedTaskUpdate();
+  thingUpdateStream();
 }

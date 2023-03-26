@@ -4,7 +4,7 @@
 #include "fa_controller.h"
 #include "fa_calc.h"
 
-void sensorsTargetSetup()
+void sensorsSetupPlatform()
 {
   sensorsDallasSetup();
   sensorsBME280Setup();

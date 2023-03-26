@@ -5,18 +5,9 @@
 #include "fa_common.h"
 #include "fa_structs.h"
 
-void controllerSetup();
-void controllerUpdate();
-void controllerModeAutoUpdate();
-void controllerStartSniffing();
-void controllerStartWait();
-bool calcFanOffHumidity(uint8_t &fan_level);
 bool calcFanLevelByHumidityCurve(uint8_t &fan_level);
 bool calcFanLevelByTempCurve(uint8_t &fan_level);
-void controllerModeAutoChangeSubMode(controller_submode_auto_t submode);
 uint8_t calcFanFrostLevel();
-void controllerModeAutoOn();
-void controllerForceUpdate();
-void controller_now_reset_for_test();
+bool reduceFanLevel(uint8_t &dest, uint8_t val);
 
 #endif // FA_CONTROLLER_H

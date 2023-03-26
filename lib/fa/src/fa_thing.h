@@ -5,9 +5,12 @@
 #include "fa_common.h"
 
 void thingSetup();
+void thingSetupPlatform();
 void thingUpdate();
 void thingCallEndpoint(const char* endpoint_name);
-void thingStream();
+void thingUpdateStream();
+void thingTriggerStreamUpdate();
+void thingSendStreamState();
 
 
 #endif // FA_THING_H

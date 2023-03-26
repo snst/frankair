@@ -84,3 +84,8 @@ void format()
   nvs_flash_init(); // initialize the NVS partition.
   while(true);*/
 }
+
+void settingsDefaultPlatform()
+{
+    
+}

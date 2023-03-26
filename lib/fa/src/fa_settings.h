@@ -16,6 +16,7 @@ void settingsLoad();
 void settingsWrite();
 void settingsClear();
 void settingsDefault();
+void settingsDefaultPlatform();
 void settingsSanitize();
 
 void format();

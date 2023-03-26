@@ -4,6 +4,8 @@
 
 #include <stdint.h>
 
+extern bool led_on;
+
 bool ledEnable(bool enable);
 void ledSetup();
 void ledUpdate();

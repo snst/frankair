@@ -6,6 +6,7 @@
 #include <cstring>
 #include "fa_calibration.h"
 #include "fa_log.h"
+#include "fa_timer.h"
 
 fa_statistic_t statistic;
 
@@ -26,8 +27,11 @@ void statisticCalculateEfficiency()
     state.efficiency = toRange(efficiency, 0.0f, 100.0f);
 }
 
-void statisticUpdate(uint32_t delta_ms)
+void statisticUpdate()
 {
+    static uint32_t lastMs = now();
+    uint32_t delta_ms = now() - lastMs;
+    lastMs = now();
     float volume = getMainVolume(state.actuator.level_fan_fresh);
     statistic.volume_m3_per_hour = volume;
     statistic.liter_per_hour = state.humidity.abs_delta * volume / 1000.0f;
