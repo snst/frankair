@@ -24,15 +24,6 @@ void smActionModeOff()
   flapClose();
 }
 
-void smActionModeError()
-{
-  IMSG(LSM, __func__);
-  fanSetMainOff();
-  fanSetFrostOff();
-  flapClose();
-  errorUpdate();
-}
-
 void smActionModeSniff()
 {
   IMSG(LSM, __func__);

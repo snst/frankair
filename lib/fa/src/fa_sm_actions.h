@@ -4,7 +4,6 @@
 
 void smActionModeManual();
 void smActionModeOff();
-void smActionModeError();
 void smActionModeSniff();
 void smActionModeWait();
 void smActionModeOnMax();

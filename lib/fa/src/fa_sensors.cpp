@@ -6,6 +6,7 @@
 #include "fa_calibration.h"
 #include "fa_timer.h"
 #include "fa_ota.h"
+#include "fa_error.h"
 
 static FAInterval sensorInterval;
 fa_override_t override = {0};
@@ -17,19 +18,20 @@ void sensorsSetup()
 
 void sensorsUpdate()
 {
-  if (sensorInterval.checkSec(settings.temp_sensor_read_interval_sec))
+  if (sensorInterval.checkSec(settings.sensor_read_interval_sec))
   {
-    if (!ota.downloading)
+    if (!isOtaActive())
     {
-      if (override.enabled)
+      if (isOverrideEnabled())
       {
         sensorsReadOverrideData();
+        sensorsProcessValues();
       }
-      else
+      else if (!isError())
       {
         sensorsRead();
+        sensorsProcessValues();
       }
-      sensorsProcessValues();
     }
   }
 }
@@ -42,4 +44,9 @@ void sensorsReadOverrideData()
   state_raw.temp.exhaust_out = override.temp.exhaust_out;
   state_raw.humidity.rel_exhaust_in = override.humidity_rel_exhaust_in;
   state_raw.humidity.rel_fresh_out = override.humidity_rel_fresh_out;
+}
+
+bool isOverrideEnabled()
+{
+    return override.enabled;
 }

@@ -12,9 +12,6 @@ void sensorsRead();
 void sensorsUpdate();
 void sensorsReadOverrideData();
 
-static bool isOverrideEnabled()
-{
-    return override.enabled;
-}
+bool isOverrideEnabled();
 
 #endif // FA_SENSORS_H

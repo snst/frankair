@@ -110,7 +110,7 @@ void thingSetupPlatform()
 		bool isEmpty = in.is_empty();
 		valUpdate(in, "1.1 Controller mode", settings.mode, isEmpty);
 		valUpdate(in, "1.2 Controller interval sec", settings.controller_interval_sec, isEmpty);
-		valUpdate(in, "1.3 Sensor read interval sec", settings.temp_sensor_read_interval_sec, isEmpty);
+		valUpdate(in, "1.3 Sensor read interval sec", settings.sensor_read_interval_sec, isEmpty);
 		valUpdate(in, "1.4 Bucket stream interval min", settings.stream_interval_min, isEmpty);
 		valUpdate(in, "2.1 Sensor alpha filter sniff", settings.measurement_alpha_sniff, isEmpty);
 		valUpdate(in, "2.2 Sensor alpha filter on", settings.measurement_alpha_on, isEmpty);

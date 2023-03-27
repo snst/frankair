@@ -20,7 +20,7 @@ void settingsDefault()
     memset(&settings, 0U, sizeof(settings));
     settings.mode = (uint8_t)controller_mode_t::kAuto;
     settings.controller_interval_sec = 10U;      // sec
-    settings.temp_sensor_read_interval_sec = 5U; // sec
+    settings.sensor_read_interval_sec = 5U; // sec
     settings.stream_interval_min = 10U;
     settings.measurement_alpha_sniff = 0.8f;
     settings.measurement_alpha_on = 0.5f;

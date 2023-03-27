@@ -9,7 +9,6 @@
 #define ERROR_SENSOR_EXHAUST_IN 4U
 #define ERROR_SENSOR_FRESH_OUT 8U
 
-void errorUpdate();
 void errorClear();
 void errorSet(uint8_t error);
 bool isError();

@@ -149,7 +149,7 @@ struct fa_sniff_t
 
 struct fa_settings_t
 {
-  uint8_t temp_sensor_read_interval_sec;
+  uint8_t sensor_read_interval_sec;
   uint8_t controller_interval_sec;
   uint8_t mode; // controller_mode_t
   uint8_t log_mask;

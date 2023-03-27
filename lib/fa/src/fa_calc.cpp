@@ -75,6 +75,6 @@ void sensorsProcessValues()
     }
     state.humidity.abs_delta = state.humidity.abs_exhaust_in - state.humidity.abs_fresh_out;
 
-    logTempHumidity(LSENSOR, override.enabled ? "SIM" : "RAW", state_raw.temp, state_raw.humidity);
+    logTempHumidity(LSENSOR, isOverrideEnabled() ? "SIM" : "RAW", state_raw.temp, state_raw.humidity);
     logTempHumidity(LSENSOR, "FIL", state.temp, state.humidity);
 }

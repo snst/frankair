@@ -25,5 +25,6 @@ void otaStartSim();
 void otaStart();
 void otaAbort();
 void otaUpdate();
+bool isOtaActive();
 
 #endif // FA_OTA_H

@@ -622,10 +622,10 @@ static void ERROR_enter(fa_sm_gen* self)
     self->current_state_exit_handler = ERROR_exit;
     
     // ERROR behavior
-    // uml: enter / { smActionModeError(); }
+    // uml: enter / { smActionModeOff(); }
     {
-        // Step 1: execute action `smActionModeError();`
-        smActionModeError();
+        // Step 1: execute action `smActionModeOff();`
+        smActionModeOff();
     } // end of behavior for ERROR
 }
 

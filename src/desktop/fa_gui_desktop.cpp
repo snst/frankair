@@ -109,8 +109,8 @@ void GuiUpdate()
         ImGui::SameLine();
         if (ImGui::Button("Update"))
             smSendEvent(fa_sm_gen_EventId::fa_sm_gen_EventId_EV_UPDATE);
-        if (ImGui::Button("Error"))
-            smSendEvent(fa_sm_gen_EventId::fa_sm_gen_EventId_EV_ERROR);
+        if (ImGui::Button("Clear Error"))
+            errorClear();
         ImGui::SameLine();
         if (ImGui::Button("Settings changed"))
             cmdSettingsChanged();
@@ -138,7 +138,7 @@ void GuiUpdate()
         SliderUint8("sniff.sniff_sec", &settings.sniff.sniff_sec, 1, 60);
         SliderUint16("sniff.wait_sec", &settings.sniff.wait_sec, 1, 60);
         SliderUint8("controller_interval_sec", &settings.controller_interval_sec, 0, 60);
-        SliderUint8("temp_sensor_read_interval_sec", &settings.temp_sensor_read_interval_sec, 0, 60);
+        SliderUint8("sensor_read_interval_sec", &settings.sensor_read_interval_sec, 0, 60);
         SliderUint8("stream_interval_min", &settings.stream_interval_min, 0, 60);
         ImGui::SliderFloat("measurement_alpha_sniff", &settings.measurement_alpha_sniff, 0, 1);
         ImGui::SliderFloat("measurement_alpha_on", &settings.measurement_alpha_on, 0, 1);

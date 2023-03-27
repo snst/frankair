@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     setup();
 
     //override.enabled = true;
-    settings.temp_sensor_read_interval_sec = 0;
+    settings.sensor_read_interval_sec = 0;
     override.humidity_rel_exhaust_in = 60;
     override.humidity_rel_fresh_out = 50;
     override.temp.exhaust_in = 12.0f;

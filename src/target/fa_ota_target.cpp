@@ -5,8 +5,6 @@
 #include "fa_log.h"
 #include "fa_secrets.h"
 
-fa_ota_t ota;
-
 static HTTPClient client;
 static WiFiClient *stream = NULL;
 
