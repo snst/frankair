@@ -5,6 +5,7 @@
 #include "fa_sm_actions.h"
 #include "fa_sm_decisions.h"
 #include "fa_error.h"
+#include "fa_ota.h"
 #include <stdbool.h> // required for `consume_event` flag
 #include <string.h> // for memset
 
@@ -166,7 +167,8 @@ static void ROOT_ev_reboot(fa_sm_gen* self)
     // No ancestor state handles `ev_reboot` event.
     
     // ROOT behavior
-    // uml: EV_REBOOT / { smActionReboot(); } TransitionTo(OFF)
+    // uml: EV_REBOOT [!isOtaActive()] / { smActionReboot(); } TransitionTo(OFF)
+    if (!isOtaActive())
     {
         // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
         exit_up_to_state_handler(self, ROOT_exit);
@@ -622,10 +624,11 @@ static void ERROR_enter(fa_sm_gen* self)
     self->current_state_exit_handler = ERROR_exit;
     
     // ERROR behavior
-    // uml: enter / { smActionModeOff(); }
+    // uml: enter / { smActionModeOff();\nfire_ev(EV_REBOOT, (5*60)); }
     {
-        // Step 1: execute action `smActionModeOff();`
+        // Step 1: execute action `smActionModeOff();\nfire_ev(EV_REBOOT, (5*60));`
         smActionModeOff();
+        self->vars.eventSM.send(fa_sm_gen_EventId_EV_REBOOT, ((5*60) * 1000U));
     } // end of behavior for ERROR
 }
 

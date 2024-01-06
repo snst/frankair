@@ -8,7 +8,7 @@ void thingCallEndpoint(const char *endpoint_name)
 
 void thingSendStreamState()
 {
-    //IMSG(LSM, __func__);
+    IMSG(LSM, __func__, state.sm_state);
 }
 
 void thingUpdate()

@@ -12,5 +12,6 @@ void smSendEvent(enum fa_sm_gen_EventId event_id, uint32_t ms = 0U);
 fa_sm_gen_StateId smGetStateId();
 bool smInState(enum fa_sm_gen_StateId state);
 const char *smGetStateStr();
+extern fa_sm_gen g_state_machine;
 
 #endif // FA_SM_H

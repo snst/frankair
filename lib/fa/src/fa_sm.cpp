@@ -20,7 +20,6 @@ void smInit()
 
 void smUpdate()
 {
-  g_update_stream = false;
   fa_sm_gen_EventId id;
   if (g_state_machine.vars.eventSM.update(id))
   {
@@ -29,11 +28,13 @@ void smUpdate()
     fa_sm_gen_dispatch_event(&g_state_machine, id);
   }
 
-  if (g_update_stream || (state.sm_state != (uint8_t)g_state_machine.state_id))
+  if ((state.sm_state != (uint8_t)g_state_machine.state_id))
   {
     state.sm_state = (uint8_t)g_state_machine.state_id;
-    g_update_stream = false;
-    thingTriggerStreamUpdate();
+    if (g_state_machine.state_id != fa_sm_gen_StateId_SNIFF)
+    {
+      thingSendStreamState();
+    }
   }
 }
 
